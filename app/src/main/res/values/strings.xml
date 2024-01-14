@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">MovieMatchDuel</string>
-    <string name="app_name">My Application</string>
     <string name="_30">30</string>
     <string name="temps_par_duel_sec">Temps par duel (sec)</string>
     <string name="start">Démarrer !</string>
@@ -24,4 +23,10 @@
         <item>2</item>
         <item>3</item>
     </string-array>
+    <string name="film_selection_title">Choisis un film !</string>
+    <string name="search_film_or_actor">Rechercher un film ou un acteur…</string>
+    <string name="filters">Filtres</string>
+    <string name="random_search">Choix aléatoire</string>
+    <string name="movie_poster">Movie Poster</string>
+    <string name="more_details">Plus de détails</string>
 </resources>
