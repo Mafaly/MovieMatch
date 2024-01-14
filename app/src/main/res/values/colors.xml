@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#1F799B</color>
     <color name="red">#D05D46</color>
+    <color name="input_bg">#F0F0F0</color>
 </resources>
