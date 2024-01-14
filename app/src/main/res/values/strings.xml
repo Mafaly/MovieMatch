@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">MovieMatchDuel</string>
+    <string name="film_selection_title">Choisis un film !</string>
+    <string name="search_film_or_actor">Rechercher un film ou un acteur…</string>
+    <string name="filters">Filtres</string>
+    <string name="random_search">Choix aléatoire</string>
+    <string name="movie_poster">Movie Poster</string>
+    <string name="more_details">Plus de détails</string>
 </resources>
