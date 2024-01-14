@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <ImageView
+        android:id="@+id/concurrent_iv"
+        android:layout_width="168dp"
+        android:layout_height="250dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/poster_film_land"
+        android:contentDescription="Movie poster"/>
+
+    <TextView
+        android:id="@+id/concurrent_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_medium"
+        android:padding="10dp"
+        android:text="Nom du film"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/concurrent_choice_button"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:backgroundTint="@color/red"
+        android:fontFamily="@font/inter"
+        android:text="Voter"
+        android:textSize="16sp" />
+</androidx.appcompat.widget.LinearLayoutCompat>

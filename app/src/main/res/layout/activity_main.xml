@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/duel_number_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="64dp"
+        android:fontFamily="@font/galada"
+        android:text="Duel n°"
+        android:textSize="28sp" />
+
+    <TextView
+        android:id="@+id/time_left_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/inter_semibold"
+        android:text="Temps restant : s"
+        android:textSize="20sp" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/first_concurrent_component"
+            layout="@layout/concurrent_duel_component"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/poster_film_land"/>
+
+        <include
+            android:id="@+id/second_concurrent_component"
+            layout="@layout/concurrent_duel_component"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="25dp"
+            android:layout_marginTop="15dp" />
+
+    </RelativeLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="65dp" />
+
+    <Button
+        android:id="@+id/random_choice_button"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/action_button"
+        android:fontFamily="@font/inter"
+        android:text="Choix aléatoire"
+        android:textSize="16sp"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>
