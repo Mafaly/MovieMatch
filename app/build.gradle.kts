@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.moviematchduel"
+    namespace = "com.mafaly.moviematchduel"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.moviematchduel"
+        applicationId = "com.mafaly.moviematchduel"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -51,4 +51,4 @@ dependencies {
 
     // UI
     implementation ("com.github.bumptech.glide:glide:4.16.0")
-}
+} 

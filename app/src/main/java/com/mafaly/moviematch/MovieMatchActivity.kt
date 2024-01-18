@@ -1,4 +1,4 @@
-package com.example.moviematchduel
+package com.mafaly.moviematch
 
 import android.os.Bundle
 import android.widget.ArrayAdapter
@@ -7,6 +7,8 @@ import android.widget.EditText
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
+import com.mafaly.moviematch.views.MovieSelectionDialogFragment
+import com.mafaly.moviematchduel.R
 
 class MovieMatchActivity : AppCompatActivity() {
 

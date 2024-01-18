@@ -1,4 +1,4 @@
-package com.example.moviematchduel.model
+package com.mafaly.moviematch.model
 
 data class MovieDTO(
     val id: Int,

@@ -1,4 +1,4 @@
-package com.example.moviematchduel
+package com.mafaly.moviematch
 
 import org.junit.Test
 

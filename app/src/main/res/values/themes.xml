@@ -6,5 +6,5 @@
         <item name="colorSecondary">@color/red</item>
     </style>
 
-    <style name="Theme.MovieMatchDuel" parent="Base.Theme.MovieMatchDuel" />
+    <style name="Theme.MovieMatch" parent="Base.Theme.MovieMatchDuel" />
 </resources>

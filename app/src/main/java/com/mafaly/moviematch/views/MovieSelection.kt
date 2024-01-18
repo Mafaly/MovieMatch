@@ -1,4 +1,4 @@
-package com.example.moviematchduel.views
+package com.mafaly.moviematch.views
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,11 +7,11 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moviematchduel.R
-import com.example.moviematchduel.model.MovieDTO
-import com.example.moviematchduel.views.adapters.MovieListAdapter
-import com.example.moviematchduel.views.adapters.OnMovieClickedInMovieSelectionList
-import com.example.moviematchduel.views.adapters.OnMovieDetailsClicked
+import com.mafaly.moviematch.model.MovieDTO
+import com.mafaly.moviematch.views.adapters.MovieListAdapter
+import com.mafaly.moviematch.views.adapters.OnMovieClickedInMovieSelectionList
+import com.mafaly.moviematch.views.adapters.OnMovieDetailsClicked
+import com.mafaly.moviematchduel.R
 
 class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
     OnMovieDetailsClicked {

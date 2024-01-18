@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MovieMatchDuel</string>
+    <string name="app_name">MovieMatch</string>
     <string name="_30">30</string>
     <string name="temps_par_duel_sec">Temps par duel (sec)</string>
     <string name="start">Démarrer !</string>

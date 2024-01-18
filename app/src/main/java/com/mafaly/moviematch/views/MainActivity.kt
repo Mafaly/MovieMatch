@@ -1,9 +1,9 @@
-package com.example.moviematchduel
+package com.mafaly.moviematch.views
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.moviematchduel.views.MovieSelection
+import com.mafaly.moviematchduel.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

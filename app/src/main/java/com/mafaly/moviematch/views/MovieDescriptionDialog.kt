@@ -1,17 +1,17 @@
-package com.example.moviematchduel
+package com.mafaly.moviematch.views
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import com.example.moviematchduel.databinding.DialogMovieDescriptionBinding
+import com.mafaly.moviematchduel.databinding.DialogMovieDescriptionBinding
 
 class MovieDescriptionDialog : DialogFragment() {
 
     private lateinit var binding: DialogMovieDescriptionBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DialogMovieDescriptionBinding.inflate(inflater, container, false)
         return binding.root
     }

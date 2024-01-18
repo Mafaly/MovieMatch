@@ -1,4 +1,4 @@
-package com.example.moviematchduel
+package com.mafaly.moviematch.views
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,14 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
-import com.example.moviematchduel.databinding.SelectMovieBinding
+import com.mafaly.moviematchduel.databinding.SelectMovieBinding
 
 class MovieSelectionDialogFragment : DialogFragment() {
 
     private var _binding: SelectMovieBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = SelectMovieBinding.inflate(inflater, container, false)
         return binding.root
     }
