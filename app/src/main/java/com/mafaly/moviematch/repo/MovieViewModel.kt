@@ -53,4 +53,35 @@ class MovieViewModel(private val movieRepository: MovieRepository) : ViewModel()
             .addTo(disposeBag)
     }
 
+    fun searchForMovies(query: String) {
+        this.movieRepository.searchForMovies(query)
+            .subscribe(
+                { movies ->
+                    this.movieLiveData.postValue(movies)
+                },
+                { error ->
+                    Log.d(
+                        "Error in function getUpcomingMovies while fetching data from Fake API",
+                        error.message ?: "Default message error"
+                    )
+                })
+            .addTo(disposeBag)
+    }
+
+    // TODO: Implement the following function
+//    fun searchForMoviesWithFilters(query: String) {
+//        this.movieRepository.discoverMoviesByFilters(query)
+//            .subscribe(
+//                { movies ->
+//                    this.movieLiveData.postValue(movies)
+//                },
+//                { error ->
+//                    Log.d(
+//                        "Error in function getUpcomingMovies while fetching data from Fake API",
+//                        error.message ?: "Default message error"
+//                    )
+//                })
+//            .addTo(disposeBag)
+//    }
+
 }

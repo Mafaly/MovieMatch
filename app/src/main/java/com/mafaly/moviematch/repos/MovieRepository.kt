@@ -38,4 +38,19 @@ class MovieRepository(
             }
         }
     }
+
+    fun searchForMovies(query: String = ""): Flowable<List<MovieDAO>> {
+        return movieServiceClient.searchForMovies(query = query).map { it ->
+            Log.d("MovieRepository", Gson().toJson(it))
+            it.results.map {
+                MovieDAO(
+                    it.id,
+                    it.original_title,
+                    it.release_date,
+                    listOf("Romance"),
+                    it.poster_path,
+                )
+            }
+        }
+    }
 }
