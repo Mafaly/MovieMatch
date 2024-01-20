@@ -97,6 +97,7 @@
         android:layout_height="0dp"
         tools:listitem="@layout/movie_cell_layout"
         tools:itemCount="5"
-        android:layout_weight="0.3"/>
+        android:layout_weight="0.3"
+        android:layout_margin="4dp" />
 
 </LinearLayout>
