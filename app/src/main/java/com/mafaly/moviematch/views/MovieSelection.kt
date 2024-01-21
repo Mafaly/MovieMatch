@@ -1,93 +1,147 @@
 package com.mafaly.moviematch.views
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.Spinner
+import android.os.Handler
+import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.mafaly.moviematch.model.MovieDTO
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
+import com.mafaly.moviematch.di.injectModuleDependencies
+import com.mafaly.moviematch.di.parseConfigurationAndAddItToInjectionModules
+import com.mafaly.moviematch.model.MovieDAO
+import com.mafaly.moviematch.repo.MovieViewModel
+import com.mafaly.moviematch.repos.MovieGenre
 import com.mafaly.moviematch.views.adapters.MovieListAdapter
 import com.mafaly.moviematch.views.adapters.OnMovieClickedInMovieSelectionList
 import com.mafaly.moviematch.views.adapters.OnMovieDetailsClicked
 import com.mafaly.moviematchduel.R
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
     OnMovieDetailsClicked {
-    private lateinit var genreSpinner: Spinner
-    private lateinit var platformSpinner: Spinner
+
+    private val movieViewModel: MovieViewModel by viewModel()
+
     private lateinit var movieListRv: RecyclerView
+    private lateinit var randomMovieButton: Button
+    private lateinit var genresChipGroup: ChipGroup
+    private lateinit var searchEditText: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Assign the layout to the activity
         setContentView(R.layout.activity_movie_selection)
 
-        genreSpinner = findViewById(R.id.genre_spr)
-        ArrayAdapter.createFromResource(
-            this,
-            R.array.genre_array,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            // Specify the layout to use when the list of choices appears.
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Apply the adapter to the spinner.
-            genreSpinner.adapter = adapter
+        // map over the MovieGenre map to get the genre names
+        genresChipGroup = findViewById(R.id.genre_cp_grp)
+        // map over the MovieGenre map to get the genre names into chips
+        MovieGenre.genreList.map { it.value }.forEach { genreName ->
+            val chip = Chip(this)
+            chip.text = genreName
+            chip.isCheckable = true
+            genresChipGroup.addView(chip)
         }
 
-        platformSpinner = findViewById(R.id.platform_spr)
-        ArrayAdapter.createFromResource(
-            this,
-            R.array.platform_array,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            // Specify the layout to use when the list of choices appears.
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Apply the adapter to the spinner.
-            platformSpinner.adapter = adapter
-        }
         movieListRv = findViewById(R.id.movie_list_rv)
-        val movieList = generateRandomMovies()
-        setUpMovieList(movieList)
+        randomMovieButton = findViewById(R.id.random_search_btn)
+        searchEditText = findViewById(R.id.movie_search_et)
+
+        setupFiltersBehavior()
+        setupSearchBehavior()
+        setupRandomSearchBehavior()
+
+        // Dependency injection
+        parseConfigurationAndAddItToInjectionModules()
+        injectModuleDependencies(this@MovieSelection)
+
+        // Observe the movie data from the view model
+        this.observeMovieLiveData()
     }
 
-    private fun setUpMovieList(movies: List<MovieDTO>) {
+    private fun observeMovieLiveData() {
+        movieViewModel.movieLiveData.observe(this@MovieSelection) { movieList ->
+            Toast.makeText(
+                this, "Got data about ${movieList.size} random movies", Toast.LENGTH_LONG
+            ).show()
+            setUpMovieListViews(movieList)
+        }
+    }
+
+    private fun setUpMovieListViews(movies: List<MovieDAO>) {
         val movieAdapter = MovieListAdapter(movies, this, this)
         movieListRv.layoutManager = LinearLayoutManager(this)
         movieListRv.adapter = movieAdapter
 
     }
 
-    override fun displayMovieSelectionConfirmationDialog(movieData: MovieDTO) {
-        val text = "Afficher le dialog de confirmation de sélection du film"
+    private fun displayUpcomingMovies() {
+        movieViewModel.getUpcomingMovies()
+    }
+
+    // Implementing the interaction interface methods
+    override fun displayMovieSelectionConfirmationDialog(movieData: MovieDAO) {
+        val text = "Afficher le dialog de confirmation de sélection du film ${movieData.title}"
         val duration = Toast.LENGTH_SHORT
 
         val toast = Toast.makeText(this, text, duration)
         toast.show()
     }
 
-    override fun displayMovieDetails(movieData: MovieDTO) {
-        val text = "Afficher toutes les informations du film sur le dialog"
+    override fun displayMovieDetails(movieData: MovieDAO) {
+        val text = "Afficher toutes les informations du film ${movieData.title} sur le dialog"
         val duration = Toast.LENGTH_SHORT
 
         val toast = Toast.makeText(this, text, duration)
         toast.show()
     }
 
-}
+    private fun setupSearchBehavior() {
+        // Delay the search for movies until the user has stopped typing to prevent too many requests on the Data source
+        searchEditText.addTextChangedListener(object : TextWatcher {
+            private val handler = Handler(Looper.getMainLooper())
+            private val debouncePeriod: Long = 500
+            override fun afterTextChanged(s: Editable?) {
+                handler.removeCallbacksAndMessages(null)
+                handler.postDelayed({
+                    if (searchEditText.isEnabled && searchEditText.text.toString().length > 2 || genresChipGroup.checkedChipIds.isNotEmpty()) {
+                        movieViewModel.searchForMovies(getQuery())
+                    }
+                }, debouncePeriod)
+            }
 
-fun generateRandomMovies(): List<MovieDTO> {
-    val movies = mutableListOf<MovieDTO>()
-    for (i in 0..100) {
-        movies.add(
-            MovieDTO(
-                i,
-                "Movie $i",
-                2000 + i,
-                listOf("genre $i", "genre ${i + 1}", "genre ${i + 2}"),
-                "https://robohash.org/Movie$i"
-            )
-        )
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
     }
-    return movies
+
+    private fun setupFiltersBehavior() {
+        genresChipGroup.setOnCheckedStateChangeListener { chipGroup, checkedId ->
+            if (chipGroup.checkedChipIds.isNotEmpty()) {
+                searchEditText.isEnabled = false
+            } else {
+                searchEditText.isEnabled = true
+            }
+        }
+    }
+
+    private fun setupRandomSearchBehavior() {
+        randomMovieButton.setOnClickListener {
+            displayUpcomingMovies()
+        }
+    }
+
+    private fun getQuery(): String {
+        return searchEditText.text.toString()
+    }
 }
