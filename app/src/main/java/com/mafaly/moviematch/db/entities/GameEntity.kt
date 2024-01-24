@@ -10,5 +10,6 @@ class GameEntity (
     @ColumnInfo(name = "game_name") val gameName: String,
     @ColumnInfo(name = "game_date") val gameDate: String,
     @ColumnInfo(name = "game_movie_count") val gameMovieCount: Int,
+    @ColumnInfo(name = "game_time_per_duel") val gameTimePerDuel: Int,
     @ColumnInfo(name = "game_winner_name") val gameWinnerName: String,
 )

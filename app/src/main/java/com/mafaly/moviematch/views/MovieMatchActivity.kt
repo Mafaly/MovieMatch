@@ -1,5 +1,6 @@
-package com.mafaly.moviematch
+package com.mafaly.moviematch.views
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -7,7 +8,7 @@ import android.widget.EditText
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
-import com.mafaly.moviematch.views.MovieSelectionDialogFragment
+import com.mafaly.moviematch.game.GameManager
 import com.mafaly.moviematchduel.R
 
 class MovieMatchActivity : AppCompatActivity() {
@@ -27,7 +28,7 @@ class MovieMatchActivity : AppCompatActivity() {
         setupSpinner()
 
         buttonStart.setOnClickListener {
-            showMovieDetailsDialog()
+            startGame()
         }
     }
 
@@ -42,20 +43,26 @@ class MovieMatchActivity : AppCompatActivity() {
         }
     }
 
-
-
-    private fun showMovieDetailsDialog() {
+    private fun startGame() {
         val numberOfFilms = spinnerNumberOfFilms.selectedItem.toString().toInt()
         val timePerDuel = editTextTimePerDuel.text.toString().toIntOrNull() ?: 30
 
+        GameManager.getInstance().startNewGame("Game number 1", numberOfFilms, timePerDuel)
 
+        showMovieSelectionActivity()
+    }
 
+    private fun showMovieSelectionActivity() {
+        val intent = Intent(this, MovieSelection::class.java)
+        startActivity(intent)
+    }
+
+    private fun showMovieDetailsDialog() {
         val dialog = MovieSelectionDialogFragment()
 
         // Show the dialog
         val fragmentManager: FragmentManager = supportFragmentManager
         dialog.show(fragmentManager, "MovieSelectionActivity")
     }
+
 }
-
-
