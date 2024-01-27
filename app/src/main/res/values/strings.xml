@@ -31,4 +31,8 @@
     <string name="more_details">Plus de détails</string>
     <string name="releases_on">Sortira le %1$s</string>
     <string name="released_on">Sorti le %1$s</string>
+    <string name="selected_movies">Films séléctionnés</string>
+    <string name="movies_list">Liste des films</string>
+    <string name="popular">Populaires</string>
+    <string name="upcoming">upcoming</string>
 </resources>

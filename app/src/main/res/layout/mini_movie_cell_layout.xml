@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="60dp"
+    android:layout_height="100dp"
+    android:layout_marginEnd="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:baselineAligned="false"
+        android:gravity="top|center"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:id="@+id/movie_poster_iv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="9"
+            android:contentDescription="@string/movie_poster"
+            android:paddingTop="4dp"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/poster_film_lalaland" />
+
+
+        <TextView
+            android:id="@+id/movie_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            tools:text="La La Land" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
