@@ -5,5 +5,5 @@ data class MovieDAO(
     val title: String,
     val year: String,
     val genre: List<String>,
-    val posterPath: String,
+    val posterPath: String?,
 )

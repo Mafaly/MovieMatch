@@ -61,8 +61,7 @@ class MovieListAdapter(
         holder.movieYearTv.text =
             if (isReleased)
                 String.format(context.resources.getString(R.string.released_on), formattedDate)
-            else
-                String.format(context.resources.getString(R.string.releases_on), formattedDate)
+            else String.format(context.resources.getString(R.string.releases_on), formattedDate)
 
         holder.movieGenreTv.text = movie.genre.joinToString(", ")
         holder.itemView.setOnClickListener {
@@ -71,13 +70,11 @@ class MovieListAdapter(
         holder.movieDetailsIb.setOnClickListener {
             onMovieDetailsIconClickHandler.displayMovieDetails(movie)
         }
-        Glide
-            .with(holder.itemView)
-            .load(BuildConfig.TMDB_IMAGE_URL + movie.posterPath)
-            .also {
-                Log.d("MovieListAdapter", "Loading image for movie ${movie.title}")
-            }
-            .into(holder.moviePosterIv)
+        if (movie.posterPath != null) {
+            Glide.with(holder.itemView).load(BuildConfig.TMDB_IMAGE_URL + movie.posterPath).also {
+                    Log.d("MovieListAdapter", "Loading image for movie ${movie.title}")
+                }.into(holder.moviePosterIv)
+        }
     }
 }
 
