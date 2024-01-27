@@ -23,6 +23,7 @@ import com.mafaly.moviematch.views.adapters.OnMovieClickedInMovieSelectionList
 import com.mafaly.moviematch.views.adapters.OnMovieDetailsClicked
 import com.mafaly.moviematchduel.R
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.mafaly.moviematch.game.GameManager
 
 class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
     OnMovieDetailsClicked {
@@ -39,6 +40,16 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
 
         // Assign the layout to the activity
         setContentView(R.layout.activity_movie_selection)
+
+        val gameEntity = GameManager.getInstance().getCurrentGame()
+        if (gameEntity == null) {
+            Toast.makeText(this, "Erreur: GameEntity manquante", Toast.LENGTH_SHORT).show()
+            finish()
+        } else {
+            //TODO ce code temporaire permet d'enregister la partie en BDD comme si c'était la fin du jeu
+            // Utiliser GameManager.getInstance().getCurrentGame() pour récup la partie en cours si besoin.
+            GameManager.getInstance().finishCurrentGame(applicationContext, this, gameEntity)
+        }
 
         // map over the MovieGenre map to get the genre names
         genresChipGroup = findViewById(R.id.genre_cp_grp)

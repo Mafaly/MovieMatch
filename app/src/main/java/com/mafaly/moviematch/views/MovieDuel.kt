@@ -1,15 +1,14 @@
 package com.mafaly.moviematch.views
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.mafaly.moviematchduel.R
 
-class MainActivity : AppCompatActivity() {
+class MovieDuel : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Intent(this, MovieMatchActivity::class.java).also {
-            startActivity(it)
-        }
+        setContentView(R.layout.activity_movie_duel)
     }
 }

@@ -17,6 +17,12 @@
             android:name="com.mafaly.moviematch.views.MovieSelection"
             android:exported="false" />
         <activity
+            android:name="com.mafaly.moviematch.views.MovieMatchActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.mafaly.moviematch.views.MovieDuel"
+            android:exported="false" />
+        <activity
             android:name="com.mafaly.moviematch.views.MainActivity"
             android:exported="true">
             <intent-filter>
