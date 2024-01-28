@@ -56,13 +56,4 @@ class MovieMatchActivity : AppCompatActivity() {
         val intent = Intent(this, MovieSelection::class.java)
         startActivity(intent)
     }
-
-    private fun showMovieDetailsDialog() {
-        val dialog = MovieSelectionDialogFragment()
-
-        // Show the dialog
-        val fragmentManager: FragmentManager = supportFragmentManager
-        dialog.show(fragmentManager, "MovieSelectionActivity")
-    }
-
 }

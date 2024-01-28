@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -99,19 +100,15 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
 
     // Implementing the interaction interface methods
     override fun displayMovieSelectionConfirmationDialog(movieData: MovieDAO) {
-        val text = "Afficher le dialog de confirmation de sélection du film ${movieData.title}"
-        val duration = Toast.LENGTH_SHORT
-
-        val toast = Toast.makeText(this, text, duration)
-        toast.show()
+        movieViewModel.selectMovie(movieData)
+        val selectionDialog = MovieSelectionDialogFragment()
+        selectionDialog.show(supportFragmentManager, "MovieSelectionDialogFragment")
     }
 
     override fun displayMovieDetails(movieData: MovieDAO) {
-        val text = "Afficher toutes les informations du film ${movieData.title} sur le dialog"
-        val duration = Toast.LENGTH_SHORT
-
-        val toast = Toast.makeText(this, text, duration)
-        toast.show()
+        movieViewModel.selectMovie(movieData)
+        val detailsDialog = MovieDescriptionDialog()
+        detailsDialog.show(supportFragmentManager, "MovieDescriptionDialog")
     }
 
     private fun setupSearchBehavior() {
