@@ -26,15 +26,11 @@ class MovieDescriptionDialog : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Observe the LiveData from the ViewModel
         movieViewModel.selectedMovie.observe(viewLifecycleOwner, Observer { movieData ->
-            // Use movieData to update UI
             binding.movieDescriptionTitle.text = movieData.title
             binding.releaseDate.text=movieData.year
-            Glide.with(this) // Context is the Fragment itself
-                .load(BuildConfig.TMDB_IMAGE_URL + movieData.posterPath) // Combine base URL with path
-                .placeholder(R.drawable.poster)
-                //.error(R.drawable.error_image)
+            Glide.with(this)
+                .load(BuildConfig.TMDB_IMAGE_URL + movieData.posterPath)
                 .into(binding.moviePoster)
         })
             //binding.movieDescription.text = movieData.description
