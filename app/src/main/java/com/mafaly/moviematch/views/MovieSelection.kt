@@ -16,23 +16,28 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.mafaly.moviematch.di.injectModuleDependencies
 import com.mafaly.moviematch.di.parseConfigurationAndAddItToInjectionModules
+import com.mafaly.moviematch.game.GameManager
 import com.mafaly.moviematch.model.MovieDAO
 import com.mafaly.moviematch.repo.MovieViewModel
 import com.mafaly.moviematch.repos.MovieGenre
 import com.mafaly.moviematch.views.adapters.MovieListAdapter
 import com.mafaly.moviematch.views.adapters.OnMovieClickedInMovieSelectionList
 import com.mafaly.moviematch.views.adapters.OnMovieDetailsClicked
+import com.mafaly.moviematch.views.adapters.OnSelectedMovieLongClicked
+import com.mafaly.moviematch.views.adapters.OnSelectedMovieSimpleClicked
+import com.mafaly.moviematch.views.adapters.SelectedMovieListAdapter
 import com.mafaly.moviematchduel.R
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import com.mafaly.moviematch.game.GameManager
 
 class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
-    OnMovieDetailsClicked {
+    OnMovieDetailsClicked, OnSelectedMovieLongClicked, OnSelectedMovieSimpleClicked {
 
     private val movieViewModel: MovieViewModel by viewModel()
 
     private lateinit var movieListRv: RecyclerView
-    private lateinit var randomMovieButton: Button
+    private lateinit var selectedMovieListRv: RecyclerView
+    private lateinit var upcomingMovieSarchButton: Button
+    private lateinit var popularMovieSarchButton: Button
     private lateinit var genresChipGroup: ChipGroup
     private lateinit var searchEditText: EditText
 
@@ -63,12 +68,15 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
         }
 
         movieListRv = findViewById(R.id.movie_list_rv)
-        randomMovieButton = findViewById(R.id.random_search_btn)
+        selectedMovieListRv = findViewById(R.id.selected_movie_list_rv)
+        popularMovieSarchButton = findViewById(R.id.popular_search_btn)
+        upcomingMovieSarchButton = findViewById(R.id.upcoming_search_btn)
         searchEditText = findViewById(R.id.movie_search_et)
 
         setupFiltersBehavior()
         setupSearchBehavior()
-        setupRandomSearchBehavior()
+        setupUpcomingSearchBehavior()
+        setupPopularSearchBehavior()
 
         // Dependency injection
         parseConfigurationAndAddItToInjectionModules()
@@ -80,10 +88,10 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
 
     private fun observeMovieLiveData() {
         movieViewModel.movieLiveData.observe(this@MovieSelection) { movieList ->
-            Toast.makeText(
-                this, "Got data about ${movieList.size} random movies", Toast.LENGTH_LONG
-            ).show()
             setUpMovieListViews(movieList)
+        }
+        movieViewModel.selectedMovieLiveData.observe(this@MovieSelection) { movieList ->
+            setUpSelectedMovieListViews(movieList)
         }
     }
 
@@ -94,12 +102,25 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
 
     }
 
+    private fun setUpSelectedMovieListViews(movies: List<MovieDAO>) {
+        val selectedMovieAdapter = SelectedMovieListAdapter(movies, this, this)
+        selectedMovieListRv.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        selectedMovieListRv.adapter = selectedMovieAdapter
+
+    }
+
     private fun displayUpcomingMovies() {
         movieViewModel.getUpcomingMovies()
     }
 
+    private fun displayPopularMovies() {
+        movieViewModel.getPopularMoviesInfos()
+    }
+
     // Implementing the interaction interface methods
     override fun displayMovieSelectionConfirmationDialog(movieData: MovieDAO) {
+      
         movieViewModel.selectMovie(movieData)
         val selectionDialog = MovieSelectionDialogFragment()
         selectionDialog.show(supportFragmentManager, "MovieSelectionDialogFragment")
@@ -134,22 +155,28 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
     }
 
     private fun setupFiltersBehavior() {
-        genresChipGroup.setOnCheckedStateChangeListener { chipGroup, checkedId ->
-            if (chipGroup.checkedChipIds.isNotEmpty()) {
-                searchEditText.isEnabled = false
-            } else {
-                searchEditText.isEnabled = true
-            }
+        genresChipGroup.setOnCheckedStateChangeListener { chipGroup, _ ->
+            searchEditText.isEnabled = chipGroup.checkedChipIds.isEmpty()
         }
     }
 
-    private fun setupRandomSearchBehavior() {
-        randomMovieButton.setOnClickListener {
+    private fun setupUpcomingSearchBehavior() {
+        upcomingMovieSarchButton.setOnClickListener {
             displayUpcomingMovies()
+        }
+    }
+
+    private fun setupPopularSearchBehavior() {
+        popularMovieSarchButton.setOnClickListener {
+            displayPopularMovies()
         }
     }
 
     private fun getQuery(): String {
         return searchEditText.text.toString()
+    }
+
+    override fun removeFromSelection(movie: MovieDAO) {
+        this.movieViewModel.removeFromSelection(movie)
     }
 }

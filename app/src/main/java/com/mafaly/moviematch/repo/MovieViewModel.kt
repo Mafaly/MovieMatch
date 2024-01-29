@@ -15,15 +15,16 @@ class MovieViewModel(private val movieRepository: MovieRepository) : ViewModel()
 
     // Observable list of movies observeb by the viewmodel
     val movieLiveData: MutableLiveData<List<MovieDAO>> = MutableLiveData()
+    val selectedMovieLiveData: MutableLiveData<List<MovieDAO>> = MutableLiveData()
 
     private val _selectedMovie = MutableLiveData<MovieDAO>()
     val selectedMovie: LiveData<MovieDAO> = _selectedMovie
 
     init {
-        this.getMoviesInfos()
+        this.getPopularMoviesInfos()
     }
 
-    private fun getMoviesInfos() {
+    fun getPopularMoviesInfos() {
         this.getCurrentPopularMovies()
     }
 
@@ -47,29 +48,41 @@ class MovieViewModel(private val movieRepository: MovieRepository) : ViewModel()
             .subscribe(
                 { movies ->
                     this.movieLiveData.postValue(movies)
-                },
-                { error ->
+                }, { error ->
                     Log.d(
                         "Error in function getUpcomingMovies while fetching data from Fake API",
                         error.message ?: "Default message error"
                     )
-                })
-            .addTo(disposeBag)
+                }).addTo(disposeBag)
+    }
+
+    fun addMovieToSelectedList(movie: MovieDAO) {
+        val currentSelectedMovies =
+            this.selectedMovieLiveData.value?.toMutableList() ?: mutableListOf()
+        if (currentSelectedMovies.find { it.id == movie.id } != null) {
+            return
+        }
+        currentSelectedMovies.add(movie)
+        this.selectedMovieLiveData.postValue(currentSelectedMovies)
     }
 
     fun searchForMovies(query: String) {
-        this.movieRepository.searchForMovies(query)
-            .subscribe(
-                { movies ->
-                    this.movieLiveData.postValue(movies)
-                },
-                { error ->
-                    Log.d(
-                        "Error in function getUpcomingMovies while fetching data from Fake API",
-                        error.message ?: "Default message error"
-                    )
-                })
-            .addTo(disposeBag)
+        this.movieRepository.searchForMovies(query).subscribe({ movies ->
+            this.movieLiveData.postValue(movies)
+        }, { error ->
+            Log.d(
+                "Error in function getUpcomingMovies while fetching data from Fake API",
+                error.message ?: "Default message error"
+            )
+        }).addTo(disposeBag)
+    }
+
+    fun removeFromSelection(movie: MovieDAO) {
+        val currentSelectedMovies =
+            this.selectedMovieLiveData.value?.toMutableList() ?: mutableListOf()
+        currentSelectedMovies.remove(movie)
+        this.selectedMovieLiveData.postValue(currentSelectedMovies)
+
     }
 
 
