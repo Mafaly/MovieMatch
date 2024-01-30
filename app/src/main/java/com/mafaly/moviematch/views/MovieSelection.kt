@@ -5,15 +5,16 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.gson.Gson
 import com.mafaly.moviematch.di.injectModuleDependencies
 import com.mafaly.moviematch.di.parseConfigurationAndAddItToInjectionModules
 import com.mafaly.moviematch.game.GameManager
@@ -77,6 +78,7 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
         setupSearchBehavior()
         setupUpcomingSearchBehavior()
         setupPopularSearchBehavior()
+        setupMovieSelectedBehavior()
 
         // Dependency injection
         parseConfigurationAndAddItToInjectionModules()
@@ -120,15 +122,20 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
 
     // Implementing the interaction interface methods
     override fun displayMovieSelectionConfirmationDialog(movieData: MovieDAO) {
-      
-        movieViewModel.selectMovie(movieData)
         val selectionDialog = MovieSelectionDialogFragment()
+        val movieJson: String = Gson().toJson(movieData)
+        val args = Bundle()
+        args.putString("movie", movieJson)
+        selectionDialog.arguments = args
         selectionDialog.show(supportFragmentManager, "MovieSelectionDialogFragment")
     }
 
     override fun displayMovieDetails(movieData: MovieDAO) {
-        movieViewModel.selectMovie(movieData)
         val detailsDialog = MovieDescriptionDialog()
+        val movieJson: String = Gson().toJson(movieData)
+        val args = Bundle()
+        args.putString("movie", movieJson)
+        detailsDialog.arguments = args
         detailsDialog.show(supportFragmentManager, "MovieDescriptionDialog")
     }
 
@@ -170,6 +177,20 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
         popularMovieSarchButton.setOnClickListener {
             displayPopularMovies()
         }
+    }
+
+    private fun setupMovieSelectedBehavior() {
+        supportFragmentManager
+            .setFragmentResultListener(
+                "movie_selection_confirm._dialog_selectedMovie",
+                this
+            ) { _, bundle ->
+                Log.d("MovieSelectionDialogConfirmation", "onFragmentResult")
+                // We use a String here, but any type that can be put in a Bundle is supported.
+                val selectedMovieJson = bundle.getString("bundleKey")
+                val selectedMovie = Gson().fromJson(selectedMovieJson, MovieDAO::class.java)
+                movieViewModel.addMovieToSelectedList(selectedMovie)
+            }
     }
 
     private fun getQuery(): String {

@@ -1,7 +1,6 @@
 package com.mafaly.moviematch.repo
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mafaly.moviematch.model.MovieDAO
@@ -16,9 +15,6 @@ class MovieViewModel(private val movieRepository: MovieRepository) : ViewModel()
     // Observable list of movies observeb by the viewmodel
     val movieLiveData: MutableLiveData<List<MovieDAO>> = MutableLiveData()
     val selectedMovieLiveData: MutableLiveData<List<MovieDAO>> = MutableLiveData()
-
-    private val _selectedMovie = MutableLiveData<MovieDAO>()
-    val selectedMovie: LiveData<MovieDAO> = _selectedMovie
 
     init {
         this.getPopularMoviesInfos()
@@ -85,12 +81,6 @@ class MovieViewModel(private val movieRepository: MovieRepository) : ViewModel()
 
     }
 
-
-    fun selectMovie(movie: MovieDAO) {
-        _selectedMovie.value = movie
-    }
-    fun confirmMovieSelection() {
-    }
     // TODO: Implement the following function
 //    fun searchForMoviesWithFilters(query: String) {
 //        this.movieRepository.discoverMoviesByFilters(query)
