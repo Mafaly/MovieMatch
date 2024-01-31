@@ -136,13 +136,9 @@
                 android:text="183 minutes" />
         </LinearLayout>
 
-        <!-- Director Detail Pair -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+        <!-- Director -->
 
-            <TextView
+        <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/director_label"
@@ -151,9 +147,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:text="Francis Ford Coppola" />
-        </LinearLayout>
         <!-- Main Actors Label -->
         <TextView
             android:layout_width="wrap_content"
@@ -174,7 +168,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/moviePoster"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="88dp"
         android:text="@string/description_label"
         android:textSize="18sp"
         android:textStyle="bold" />

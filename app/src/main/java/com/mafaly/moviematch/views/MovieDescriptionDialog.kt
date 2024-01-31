@@ -15,7 +15,12 @@ import com.mafaly.moviematchduel.databinding.DialogMovieDescriptionBinding
 class MovieDescriptionDialog : DialogFragment() {
 
     private lateinit var binding: DialogMovieDescriptionBinding
-
+    override fun onStart() {
+        super.onStart()
+        val width = (resources.displayMetrics.widthPixels * 0.90).toInt()
+        val height = (resources.displayMetrics.heightPixels * 0.70).toInt()
+        dialog?.window?.setLayout(width, height)
+    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DialogMovieDescriptionBinding.inflate(inflater, container, false)
         return binding.root
