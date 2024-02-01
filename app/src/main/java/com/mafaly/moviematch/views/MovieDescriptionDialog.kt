@@ -38,6 +38,7 @@ class MovieDescriptionDialog : DialogFragment() {
 
         binding.movieDescriptionTitle.text = movieData.title
         binding.releaseDate.text = movieData.year
+        binding.genre.text = movieData.genre.joinToString(separator = ", ")
         Glide.with(this)
             .load(BuildConfig.TMDB_IMAGE_URL + movieData.posterPath)
             .into(binding.moviePoster)
