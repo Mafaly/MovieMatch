@@ -35,8 +35,7 @@ class MovieDescriptionDialog : DialogFragment() {
 
         val movieData = Gson().fromJson(movieJson, MovieDAO::class.java)
         Log.d("MovieSelectionDialog", movieData.toString())
-
-        binding.movieDescriptionTitle.text = movieData.title
+        binding.movieTitle.text=movieData.title
         binding.releaseDate.text = movieData.year
         binding.genre.text = movieData.genre.joinToString(separator = ", ")
         Glide.with(this)
