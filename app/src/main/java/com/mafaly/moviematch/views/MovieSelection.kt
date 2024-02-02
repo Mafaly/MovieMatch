@@ -1,5 +1,6 @@
 package com.mafaly.moviematch.views
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -83,6 +84,8 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
 
         // Observe the movie data from the view model
         this.observeMovieLiveData()
+
+        openMovieDuelActivity()
     }
 
     private fun observeMovieLiveData() {
@@ -182,5 +185,10 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
 
     override fun removeFromSelection(movie: MovieDAO) {
         this.movieViewModel.removeFromSelection(movie)
+    }
+
+    private fun openMovieDuelActivity() {
+        val intent = Intent(this, MovieDuel::class.java)
+        startActivity(intent)
     }
 }
