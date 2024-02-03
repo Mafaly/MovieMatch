@@ -4,15 +4,32 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.mafaly.moviematch.db.daos.DuelDao
 import com.mafaly.moviematch.db.daos.GameDao
+import com.mafaly.moviematch.db.daos.GameMoviesDao
+import com.mafaly.moviematch.db.daos.MovieDao
+import com.mafaly.moviematch.db.entities.DuelEntity
 import com.mafaly.moviematch.db.entities.GameEntity
+import com.mafaly.moviematch.db.entities.GameMoviesEntity
+import com.mafaly.moviematch.db.entities.MovieEntity
 
 @Database(
-    entities = [GameEntity::class],
+    entities = [
+        GameEntity::class,
+        MovieEntity::class,
+        GameMoviesEntity::class,
+        DuelEntity::class,
+    ],
     version = 1
 )
+@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun gameDao(): GameDao
+    abstract fun movieDao(): MovieDao
+    abstract fun GameMoviesDao(): GameMoviesDao
+    abstract fun duelDao(): DuelDao
+
 
     companion object {
         // Volatile garantit que la variable est toujours lue à partir de la mémoire principale

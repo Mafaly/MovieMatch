@@ -9,7 +9,7 @@ import com.mafaly.moviematch.db.entities.GameEntity
 @Dao
 interface GameDao {
     @Query("SELECT * FROM game_entity")
-    fun getAll(): List<GameEntity>
+    fun getAllGames(): List<GameEntity>
 
     @Insert
     fun insertNewGame(game: GameEntity)
