@@ -18,7 +18,7 @@ class GameManager private constructor() {
         val gameDate = LocalDate.now()
         val formattedDate = gameDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 
-        currentGame = GameEntity(0, gameName, formattedDate, gameMovieCount, gameTimePerDuel, "")
+        currentGame = GameEntity(0, gameName, formattedDate, gameMovieCount, gameTimePerDuel, null)
     }
 
     fun cancelCurrentGame() {
