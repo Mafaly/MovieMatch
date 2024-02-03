@@ -9,24 +9,9 @@ import io.reactivex.rxjava3.core.Flowable
 class MovieRepository(
     private val movieServiceClient: MovieServiceClient
 ) {
-    fun getPopularMovies(): Flowable<List<MovieDAO>> {
-        return movieServiceClient.getMostPopularMovies().map { it ->
-            Log.d("MovieRepository", Gson().toJson(it))
-            it.results.map {
-                MovieDAO(
-                    it.id,
-                    it.original_title,
-                    it.release_date,
-                    listOf("Romance"),
-                    it.poster_path,
-                    it.overview
-                )
-            }
-        }
-    }
-
-    fun getUpcomingMovies(): Flowable<List<MovieDAO>> {
-        return movieServiceClient.getUpcomingMovies().map { it ->
+    fun discoverRandomMovies(genresId: List<String>): Flowable<List<MovieDAO>> {
+        val genresIdsString = genresId.joinToString(",")
+        return movieServiceClient.discoverMovies(genresIdsString).map { it ->
             Log.d("MovieRepository", Gson().toJson(it))
             it.results.map {
                 MovieDAO(
