@@ -88,8 +88,6 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
             }
             chip.isCheckable = true
             watchProviderChipGroup.addView(chip)
-            //select it
-            chip.isChecked = true
         }
 
         movieListRv = findViewById(R.id.movie_list_rv)

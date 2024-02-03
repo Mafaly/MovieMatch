@@ -18,8 +18,9 @@ class MovieRepository(
                     it.id,
                     it.original_title,
                     it.release_date,
-                    listOf("Romance"),
-                    it.poster_path, it.overview
+                    it.genre_ids,
+                    it.poster_path,
+                    it.overview
                 )
             }
         }
@@ -33,8 +34,9 @@ class MovieRepository(
                     it.id,
                     it.original_title,
                     it.release_date,
-                    listOf("Romance"),
-                    it.poster_path, it.overview
+                    it.genre_ids,
+                    it.poster_path,
+                    it.overview
                 )
             }
         }

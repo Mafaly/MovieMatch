@@ -9,6 +9,7 @@ import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.mafaly.moviematch.model.MovieDAO
+import com.mafaly.moviematch.repos.MovieGenre
 import com.mafaly.moviematchduel.BuildConfig
 import com.mafaly.moviematchduel.databinding.DialogMovieDescriptionBinding
 
@@ -35,9 +36,10 @@ class MovieDescriptionDialog : DialogFragment() {
 
         val movieData = Gson().fromJson(movieJson, MovieDAO::class.java)
         Log.d("MovieSelectionDialog", movieData.toString())
-        binding.movieTitle.text=movieData.title
+        binding.movieTitle.text = movieData.title
         binding.releaseDate.text = movieData.year
-        binding.genre.text = movieData.genre.joinToString(separator = ", ")
+        binding.genre.text =
+            MovieGenre.getGenreNames(movieData.genre, requireContext()).joinToString(", ")
         Glide.with(this)
             .load(BuildConfig.TMDB_IMAGE_URL + movieData.posterPath)
             .into(binding.moviePoster)

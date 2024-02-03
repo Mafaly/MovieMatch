@@ -1,5 +1,8 @@
 package com.mafaly.moviematch.repos
 
+import android.annotation.SuppressLint
+import android.content.Context
+
 object MovieGenre {
     val genreList = mapOf(
         28 to "@string/genre_action",
@@ -22,4 +25,22 @@ object MovieGenre {
         10752 to "@string/genre_war",
         37 to "@string/genre_western"
     )
+
+    /**
+     * Returns a list of genre names from the TMDB Api based on the ids provided.
+     * @param ids List of genre ids from the TMDB Api.
+     * @param context Context to get the resources from.
+     */
+    @SuppressLint("DiscouragedApi")
+    fun getGenreNames(ids: List<Int>, context: Context): List<String> {
+        return getGenreResourcesIds(ids).map { resourceId ->
+            context.resources.getIdentifier(resourceId, "string", context.packageName).let {
+                context.resources.getString(it)
+            }
+        }
+    }
+
+    private fun getGenreResourcesIds(ids: List<Int>): List<String> {
+        return ids.map { genreList[it] ?: "" }
+    }
 }

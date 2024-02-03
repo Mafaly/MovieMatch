@@ -6,4 +6,5 @@ data class MovieDTO(
     val overview: String,
     val poster_path: String,
     val release_date: String,
+    val genre_ids: List<Int>
 )
