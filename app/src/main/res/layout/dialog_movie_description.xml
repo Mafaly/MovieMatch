@@ -10,24 +10,13 @@
         android:layout_height="4dp"
         android:layout_centerHorizontal="true"
         android:background="@color/black" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/details_du_film"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-
     <!-- Movie Poster -->
     <ImageView
         android:id="@+id/moviePoster"
-        android:layout_width="100dp"
-        android:layout_height="150dp"
+        android:layout_width="120dp"
+        android:layout_height="180dp"
         android:layout_marginTop="64dp"
+        android:paddingLeft="8dp"
         android:src="@drawable/poster" />
 
     <!-- Movie Description Title -->
@@ -39,6 +28,15 @@
         android:layout_toEndOf="@id/moviePoster"
         android:orientation="vertical"
         android:padding="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="16dp"
+            android:text="@string/details_du_film"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,6 +50,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/movieTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -71,31 +70,12 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/releaseDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="1979" />
         </LinearLayout>
-
-        <!-- Country Detail Pair -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/country_label"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="USA" />
-        </LinearLayout>
-
         <!-- Genre Detail  -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -109,62 +89,13 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/genre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="Guerre" />
         </LinearLayout>
 
-        <!-- Duration Detail  -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/duration_label"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="183 minutes" />
-        </LinearLayout>
-
-        <!-- Director Detail Pair -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/director_label"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="Francis Ford Coppola" />
-        </LinearLayout>
-        <!-- Main Actors Label -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/main_actors_label"
-            android:textStyle="bold" />
-        <!-- Main Actors Value -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Martin Sheen, Frederic Forrest, Sam Bottoms, Albert Hall, Laurence Fishburne"
-
-            />
     </LinearLayout>
 
     <TextView
@@ -172,18 +103,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/moviePoster"
-        android:layout_marginTop="64dp"
+        android:padding="16dp"
         android:text="@string/description_label"
         android:textSize="18sp"
         android:textStyle="bold" />
 
     <!-- Movie Description Content -->
     <TextView
-        android:id="@+id/movieDescription"
+        android:id="@+id/movie_overview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/movieDescriptionTitle"
-        android:padding="8dp"
+        android:padding="16dp"
         android:text="@string/description_text" />
 
 </RelativeLayout>
