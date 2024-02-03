@@ -35,4 +35,7 @@
     <string name="movies_list">Liste des films</string>
     <string name="popular">Populaires</string>
     <string name="upcoming">upcoming</string>
+    <string name="default_game_name">Game Number 1</string>
+    <string name="movie_match_logo">Movie Match Logo</string>
+    <string name="game">Game :</string>
 </resources>

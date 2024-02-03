@@ -11,31 +11,54 @@
         android:layout_width="231dp"
         android:layout_height="166dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
-        android:src="@drawable/img" />
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
+        android:src="@drawable/img"
+        android:contentDescription="@string/movie_match_logo" />
 
-    <TextView
-        android:id="@+id/textRoom"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/roomInfo"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/imageLogo"
-        android:layout_centerHorizontal="true"
-        android:text="Room: Soirée SCES"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:paddingTop="16dp"
+        android:paddingRight="24dp"
+        android:paddingLeft="24dp"
+        android:orientation="horizontal">
 
-    <!-- Define options section with a LinearLayout or similar -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="16dp"
+            android:text="@string/game"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/editTextGameName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:autofillHints=""
+            android:hint="@string/default_game_name"
+            android:inputType="text"
+            android:padding="16dp"
+            android:text="@string/default_game_name"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 
     <LinearLayout
         android:id="@+id/optionsSection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textRoom"
-        android:layout_marginTop="96dp"
+        android:layout_below="@id/roomInfo"
+        android:layout_marginTop="80dp"
         android:orientation="vertical"
-        android:paddingTop="24dp">
-
+        android:paddingTop="24dp"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp">
 
         <TextView
             android:layout_width="match_parent"
@@ -94,8 +117,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/optionsSection"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
         android:backgroundTint="@color/mainBlue"
         android:text="@string/start" />
-
 </RelativeLayout>

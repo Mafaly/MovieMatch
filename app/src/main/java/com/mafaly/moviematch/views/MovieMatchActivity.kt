@@ -16,6 +16,7 @@ class MovieMatchActivity : AppCompatActivity() {
     private lateinit var buttonStart: Button
     private lateinit var spinnerNumberOfFilms: Spinner
     private lateinit var editTextTimePerDuel: EditText
+    private lateinit var editTextGameName: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +25,7 @@ class MovieMatchActivity : AppCompatActivity() {
         buttonStart = findViewById(R.id.buttonStart)
         spinnerNumberOfFilms = findViewById(R.id.spinnerNumberOfFilms)
         editTextTimePerDuel = findViewById(R.id.editTextTimePerDuel)
+        editTextGameName = findViewById(R.id.editTextGameName)
 
         setupSpinner()
 
@@ -44,10 +46,11 @@ class MovieMatchActivity : AppCompatActivity() {
     }
 
     private fun startGame() {
+        val gameName = editTextGameName.text.toString().trim().ifEmpty { "Game Number 1" }
         val numberOfFilms = spinnerNumberOfFilms.selectedItem.toString().toInt()
         val timePerDuel = editTextTimePerDuel.text.toString().toIntOrNull() ?: 30
 
-        GameManager.getInstance().startNewGame("Game number 1", numberOfFilms, timePerDuel)
+        GameManager.getInstance().startNewGame(gameName, numberOfFilms, timePerDuel)
 
         showMovieSelectionActivity()
     }
@@ -55,14 +58,6 @@ class MovieMatchActivity : AppCompatActivity() {
     private fun showMovieSelectionActivity() {
         val intent = Intent(this, MovieSelection::class.java)
         startActivity(intent)
-    }
-
-    private fun showMovieDetailsDialog() {
-        val dialog = MovieSelectionDialogFragment()
-
-        // Show the dialog
-        val fragmentManager: FragmentManager = supportFragmentManager
-        dialog.show(fragmentManager, "MovieSelectionActivity")
     }
 
 }
