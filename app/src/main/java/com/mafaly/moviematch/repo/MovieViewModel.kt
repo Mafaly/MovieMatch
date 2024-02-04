@@ -16,10 +16,13 @@ class MovieViewModel(private val movieRepository: MovieRepository) : ViewModel()
     val movieLiveData: MutableLiveData<List<MovieDAO>> = MutableLiveData()
     val selectedMovieLiveData: MutableLiveData<List<MovieDAO>> = MutableLiveData()
     val genreFilterIdsLiveData: MutableLiveData<List<String>> = MutableLiveData()
+    val watchProviderFilterIdsLiveData: MutableLiveData<List<String>> = MutableLiveData()
 
     fun getRandomFilteredMovies() {
         val genres = this.genreFilterIdsLiveData.value?.ifEmpty { emptyList() } ?: emptyList()
-        this.movieRepository.discoverRandomMovies(genres)
+        val watchProviders =
+            this.watchProviderFilterIdsLiveData.value?.ifEmpty { emptyList() } ?: emptyList()
+        this.movieRepository.discoverRandomMovies(genres, watchProviders)
             .subscribe(
                 { movies ->
                     this.movieLiveData.postValue(movies)

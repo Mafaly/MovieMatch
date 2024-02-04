@@ -9,9 +9,13 @@ import io.reactivex.rxjava3.core.Flowable
 class MovieRepository(
     private val movieServiceClient: MovieServiceClient
 ) {
-    fun discoverRandomMovies(genresId: List<String>): Flowable<List<MovieDAO>> {
+    fun discoverRandomMovies(
+        genresId: List<String>,
+        watchProviders: List<String>
+    ): Flowable<List<MovieDAO>> {
         val genresIdsString = genresId.joinToString(",")
-        return movieServiceClient.discoverMovies(genresIdsString).map { it ->
+        val watchProvidersString = watchProviders.joinToString("|")
+        return movieServiceClient.discoverMovies(genresIdsString, watchProvidersString).map { it ->
             Log.d("MovieRepository", Gson().toJson(it))
             it.results.map {
                 MovieDAO(

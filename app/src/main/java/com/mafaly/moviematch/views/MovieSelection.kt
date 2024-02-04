@@ -68,25 +68,23 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
         // map over the MovieGenre map to get the genre names into chips
         MovieGenre.genreList.map { it }.forEach { genre ->
             val chip = Chip(this)
-            // get from string resouce
+            chip.id = genre.key
+            chip.isCheckable = true
             chip.text = resources.getIdentifier(genre.value, "string", packageName).let {
                 resources.getString(it)
             }
-            chip.isCheckable = true
-            chip.id = genre.key
             genresChipGroup.addView(chip)
         }
 
         // map over the MovieWatchProviders map to get the genre names
         watchProviderChipGroup = findViewById(R.id.watch_providers_cp_grp)
         // map over the MovieGenre map to get the genre names into chips
-        MovieWatchProviders.watchProvidersList.map { it.value }.forEach { watchProvider ->
+        MovieWatchProviders.watchProvidersList.map { it }.forEach { watchProvider ->
             val chip = Chip(this)
-            // get from string resouce
-            chip.text = resources.getIdentifier(watchProvider, "string", packageName).let {
-                resources.getString(it)
-            }
+            chip.id = watchProvider.key
             chip.isCheckable = true
+            chip.text = MovieWatchProviders.getWatchProviderNames(watchProvider.key, this)
+            chip.chipIcon = MovieWatchProviders.getWatchProviderIcon(watchProvider.key, this)
             watchProviderChipGroup.addView(chip)
         }
 
@@ -176,8 +174,12 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
 
     private fun setupFiltersBehavior() {
         genresChipGroup.setOnCheckedStateChangeListener { chipGroup, _ ->
-            toggleSearchEditText(chipGroup.checkedChipIds.isEmpty())
+            toggleSearchEditText(chipGroup.checkedChipIds.isEmpty() && watchProviderChipGroup.checkedChipIds.isEmpty())
             setGenresFilter(chipGroup.checkedChipIds.toList().map { it.toString() })
+        }
+        watchProviderChipGroup.setOnCheckedStateChangeListener { chipGroup, _ ->
+            toggleSearchEditText(chipGroup.checkedChipIds.isEmpty() && genresChipGroup.checkedChipIds.isEmpty())
+            setWatchProviderFilter(chipGroup.checkedChipIds.toList().map { it.toString() })
         }
     }
 
@@ -221,6 +223,10 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
 
     private fun setGenresFilter(genres: List<String>) {
         this.movieViewModel.genreFilterIdsLiveData.postValue(genres)
+    }
+
+    private fun setWatchProviderFilter(watchProviders: List<String>) {
+        this.movieViewModel.watchProviderFilterIdsLiveData.postValue(watchProviders)
     }
 
     override fun removeFromSelection(movie: MovieDAO) {
