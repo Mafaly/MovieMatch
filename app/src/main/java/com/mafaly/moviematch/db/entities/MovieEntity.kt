@@ -11,4 +11,5 @@ class MovieEntity(
     @ColumnInfo(name = "movie_year") val movieYear: String,
     @ColumnInfo(name = "movie_genre") val movieGenre: List<Int>?,
     @ColumnInfo(name = "movie_poster_path") val moviePosterPath: String?,
+    @ColumnInfo(name = "movie_overview") val movieOverview: String,
 )
