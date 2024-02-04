@@ -21,7 +21,7 @@
     </string-array>
     <string name="film_selection_title">Choisis un film !</string>
     <string name="search_film_or_actor">Rechercher un film ou un acteur…</string>
-    <string name="filters">Filtres</string>
+    <string name="random_movie">Films aléatoires filtrés</string>
     <string name="random_search">Choix aléatoire</string>
     <string name="movie_poster">Movie Poster</string>
     <string name="more_details">Plus de détails</string>
@@ -30,5 +30,31 @@
     <string name="selected_movies">Films séléctionnés</string>
     <string name="movies_list">Liste des films</string>
     <string name="popular">Populaires</string>
-    <string name="upcoming">upcoming</string>
+    <string name="search">Rechercher</string>
+    <string name="genre_action">Action</string>
+    <string name="genre_adventure">Aventure</string>
+    <string name="genre_animation">Animation</string>
+    <string name="genre_comedy">Comédie</string>
+    <string name="genre_crime">Crime</string>
+    <string name="genre_documentary">Documentaire</string>
+    <string name="genre_drama">Drame</string>
+    <string name="genre_family">Famille</string>
+    <string name="genre_fantasy">Fantastique</string>
+    <string name="genre_history">Histoire</string>
+    <string name="genre_horror">Horreur</string>
+    <string name="genre_music">Musique</string>
+    <string name="genre_mystery">Mystère</string>
+    <string name="genre_romance">Romance</string>
+    <string name="genre_science_fiction">Science-fiction</string>
+    <string name="genre_tv_movie">Téléfilm</string>
+    <string name="genre_thriller">Thriller</string>
+    <string name="genre_war">Guerre</string>
+    <string name="genre_western">Western</string>
+    <string name="watch_provider_apple_tv">Apple TV</string>
+    <string name="watch_provider_disney_plus">Disney+</string>
+    <string name="watch_provider_google_play_movies">Google Play Movies</string>
+    <string name="watch_provider_netflix">Netflix</string>
+    <string name="watch_provider_prime_video">Prime Video</string>
+    <string name="reset_filters">Reset the filters applied to the random movie search.</string>
+
 </resources>

@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.mafaly.moviematch.model.MovieDAO
+import com.mafaly.moviematch.repos.MovieGenre
 import com.mafaly.moviematchduel.BuildConfig
 import com.mafaly.moviematchduel.R
 import java.time.LocalDate
@@ -72,8 +73,12 @@ class MovieListAdapter(
         }
         if (movie.posterPath != null) {
             Glide.with(holder.itemView).load(BuildConfig.TMDB_IMAGE_URL + movie.posterPath).also {
-                    Log.d("MovieListAdapter", "Loading image for movie ${movie.title}")
-                }.into(holder.moviePosterIv)
+                Log.d("MovieListAdapter", "Loading image for movie ${movie.title}")
+            }.into(holder.moviePosterIv)
+        }
+        if (movie.genre.isNotEmpty()) {
+            val genreNames = MovieGenre.getGenreNames(movie.genre, context)
+            holder.movieGenreTv.text = genreNames.joinToString(", ")
         }
     }
 }
