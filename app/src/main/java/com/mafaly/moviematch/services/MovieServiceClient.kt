@@ -6,11 +6,11 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface MovieServiceClient {
-    @GET("movie/popular")
-    fun getMostPopularMovies(): Flowable<MovieCollectionDTO>
-
-    @GET("movie/upcoming")
-    fun getUpcomingMovies(): Flowable<MovieCollectionDTO>
+    @GET("discover/movie?sort_by=popularity.desc")
+    fun discoverMovies(
+        @Query("with_genres") genres: String,
+        @Query("with_watch_providers") watchProviders: String
+    ): Flowable<MovieCollectionDTO>
 
     @GET("search/movie")
     fun searchForMovies(
