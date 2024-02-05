@@ -29,7 +29,6 @@
     <string name="released_on">Sorti le %1$s</string>
     <string name="selected_movies">Films séléctionnés</string>
     <string name="movies_list">Liste des films</string>
-    <string name="popular">Populaires</string>
     <string name="search">Rechercher</string>
     <string name="genre_action">Action</string>
     <string name="genre_adventure">Aventure</string>
@@ -55,7 +54,14 @@
     <string name="watch_provider_google_play_movies">Google Play Movies</string>
     <string name="watch_provider_netflix">Netflix</string>
     <string name="watch_provider_prime_video">Prime Video</string>
-    <string name="reset_filters">Reset the filters applied to the random movie search.</string>
+    <string name="reset_filters">Réinitialiser les filtres appliqués à la recherche aléatoire de films..</string>
     <string name="confirm">Confirmer</string>
+    <string name="selection_confirmed">Sélection confirmée</string>
+    <string name="movie_selection_confirmation_error_too_many">Vous avez sélectionné trop de films, %1$s demandés, vous avez en sélectionné %2$s. Retirez-en et veuillez réessayer.</string>
+    <string name="movie_selection_confirmation_error_not_enough">Vous devez sélectionner %1$s movies, %2$s d\'actuellement sélectionnés. Sélectionnez-en plus et veuillez réessayer.</string>
+    <string name="selection_confirmation">Êtes-vous sûr de vouloir confirmer votre sélection ?</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
 
 </resources>

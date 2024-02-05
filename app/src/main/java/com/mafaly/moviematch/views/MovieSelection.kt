@@ -237,12 +237,12 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
     }
 
     override fun askForSelectionConfirmation() {
-        AlertDialog.Builder(this).setTitle("Confirmation")
-            .setMessage("Are you sure you want to confirm your selection?")
-            .setPositiveButton("Yes") { dialog, _ ->
+        AlertDialog.Builder(this).setTitle(getString(R.string.confirmation))
+            .setMessage(getString(R.string.selection_confirmation))
+            .setPositiveButton(getString(R.string.yes)) { dialog, _ ->
                 handleConfirmSelection()
                 dialog.dismiss()
-            }.setNegativeButton("No") { dialog, _ ->
+            }.setNegativeButton(getString(R.string.no)) { dialog, _ ->
                 dialog.dismiss()
             }.show()
 
@@ -253,11 +253,12 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
         when {
             selectedMoviesCount < (GameManager.getCurrentGame()!!.gameMoviesCount) -> {
                 Toast.makeText(
-                    this, "You need to selec ${
-                        GameManager.getCurrentGame()!!.gameMoviesCount
-                    } movies, you have ${
-                        this.movieViewModel.selectedMovieLiveData.value!!.size
-                    } movies selected. Please select more movies and try again.", Toast.LENGTH_SHORT
+                    this,
+                    getString(
+                        R.string.movie_selection_confirmation_error_not_enough,
+                        GameManager.getCurrentGame()!!.gameMoviesCount.toString(),
+                        this.movieViewModel.selectedMovieLiveData.value!!.size.toString()
+                    ), Toast.LENGTH_SHORT
                 ).show()
             }
 
@@ -267,11 +268,12 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
 
             else -> {
                 Toast.makeText(
-                    this, "You have selected too many movies, required ${
-                        GameManager.getCurrentGame()!!.gameMoviesCount
-                    } movies, you have ${
-                        this.movieViewModel.selectedMovieLiveData.value!!.size
-                    } movies selected. Please remove some movies and try again.", Toast.LENGTH_SHORT
+                    this,
+                    getString(
+                        R.string.movie_selection_confirmation_error_too_many,
+                        GameManager.getCurrentGame()!!.gameMoviesCount.toString(),
+                        this.movieViewModel.selectedMovieLiveData.value!!.size.toString()
+                    ), Toast.LENGTH_SHORT
                 ).show()
             }
         }
@@ -289,6 +291,6 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
             }
         }
         movieViewModel.confirmSelection()
-        Toast.makeText(this, "Selection confirmed", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.selection_confirmed), Toast.LENGTH_SHORT).show()
     }
 }
