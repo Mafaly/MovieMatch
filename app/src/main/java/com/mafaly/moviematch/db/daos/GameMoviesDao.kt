@@ -12,11 +12,11 @@ interface GameMoviesDao {
     fun insertGameMovies(gameMovies: GameMoviesEntity)
 
     @Query("SELECT * FROM game_movies WHERE game_id = :gameId")
-    fun getMoviesForGame(gameId: Int): List<GameMoviesEntity>
+    fun getMoviesForGame(gameId: Long): List<GameMoviesEntity>
 
     @Query("SELECT * FROM game_movies WHERE movie_id = :movieId")
-    fun getGamesForMovie(movieId: Int): List<GameMoviesEntity>
+    fun getGamesForMovie(movieId: Long): List<GameMoviesEntity>
 
     @Query("DELETE FROM game_movies WHERE game_id = :gameId AND movie_id = :movieId")
-    fun removeGameMovieAssociation(gameId: Int, movieId: Int)
+    fun removeGameMovieAssociation(gameId: Long, movieId: Long)
 }

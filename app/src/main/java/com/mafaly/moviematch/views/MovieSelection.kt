@@ -11,11 +11,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import com.mafaly.moviematch.di.injectModuleDependencies
 import com.mafaly.moviematch.di.parseConfigurationAndAddItToInjectionModules
@@ -30,11 +32,13 @@ import com.mafaly.moviematch.views.adapters.OnMovieDetailsClicked
 import com.mafaly.moviematch.views.adapters.OnSelectedMovieLongClicked
 import com.mafaly.moviematch.views.adapters.OnSelectedMovieSimpleClicked
 import com.mafaly.moviematch.views.adapters.SelectedMovieListAdapter
+import com.mafaly.moviematch.views.adapters.OnSelectionConfirmation
 import com.mafaly.moviematchduel.R
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
-    OnMovieDetailsClicked, OnSelectedMovieLongClicked, OnSelectedMovieSimpleClicked {
+    OnMovieDetailsClicked, OnSelectedMovieLongClicked, OnSelectedMovieSimpleClicked,
+    OnSelectionConfirmation {
 
     private val movieViewModel: MovieViewModel by viewModel()
 
@@ -45,6 +49,7 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
     private lateinit var searchEditText: EditText
     private lateinit var searchWithFilterButton: Button
     private lateinit var clearFiltersImageButton: ImageButton
+    private lateinit var selectionConfirmationFAB: FloatingActionButton
 
     @SuppressLint("DiscouragedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,16 +57,6 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
 
         // Assign the layout to the activity
         setContentView(R.layout.activity_movie_selection)
-
-        val gameEntity = GameManager.getInstance().getCurrentGame()
-        if (gameEntity == null) {
-            Toast.makeText(this, "Erreur: GameEntity manquante", Toast.LENGTH_SHORT).show()
-            finish()
-        } else {
-            //TODO ce code temporaire permet d'enregister la partie en BDD comme si c'était la fin du jeu
-            // Utiliser GameManager.getInstance().getCurrentGame() pour récup la partie en cours si besoin.
-            GameManager.getInstance().finishCurrentGame(applicationContext, this, gameEntity)
-        }
 
         // map over the MovieGenre map to get the genre names
         genresChipGroup = findViewById(R.id.genre_cp_grp)
@@ -93,11 +88,13 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
         searchEditText = findViewById(R.id.movie_search_et)
         searchWithFilterButton = findViewById(R.id.search_with_filters_btn)
         clearFiltersImageButton = findViewById(R.id.clear_filters_btn)
+        selectionConfirmationFAB = findViewById(R.id.confirm_selection_fab)
 
         setupSearchBehavior()
         setupFiltersBehavior()
         setupSearchWithFiltersBehavior()
         setupMovieSelectedBehavior()
+        setupSelectionConfirmationBehavior()
 
         // Dependency injection
         parseConfigurationAndAddItToInjectionModules()
@@ -217,6 +214,12 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
         }
     }
 
+    private fun setupSelectionConfirmationBehavior() {
+        selectionConfirmationFAB.setOnClickListener {
+            askForSelectionConfirmation()
+        }
+    }
+
     private fun getQuery(): String {
         return searchEditText.text.toString()
     }
@@ -231,5 +234,61 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
 
     override fun removeFromSelection(movie: MovieDAO) {
         this.movieViewModel.removeFromSelection(movie)
+    }
+
+    override fun askForSelectionConfirmation() {
+        AlertDialog.Builder(this).setTitle("Confirmation")
+            .setMessage("Are you sure you want to confirm your selection?")
+            .setPositiveButton("Yes") { dialog, _ ->
+                handleConfirmSelection()
+                dialog.dismiss()
+            }.setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }.show()
+
+    }
+
+    private fun handleConfirmSelection() {
+        val selectedMoviesCount = this.movieViewModel.selectedMovieLiveData.value!!.size
+        when {
+            selectedMoviesCount < (GameManager.getCurrentGame()!!.gameMoviesCount) -> {
+                Toast.makeText(
+                    this, "You need to selec ${
+                        GameManager.getCurrentGame()!!.gameMoviesCount
+                    } movies, you have ${
+                        this.movieViewModel.selectedMovieLiveData.value!!.size
+                    } movies selected. Please select more movies and try again.", Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            selectedMoviesCount == GameManager.getCurrentGame()!!.gameMoviesCount -> {
+                confirmSelection()
+            }
+
+            else -> {
+                Toast.makeText(
+                    this, "You have selected too many movies, required ${
+                        GameManager.getCurrentGame()!!.gameMoviesCount
+                    } movies, you have ${
+                        this.movieViewModel.selectedMovieLiveData.value!!.size
+                    } movies selected. Please remove some movies and try again.", Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+    private fun startGame() {
+        // TODO: Dismiss l'activity et lance le jeu en passant dans l'intent l'id du jeu
+        finish()
+    }
+
+    override fun confirmSelection() {
+        movieViewModel.endSelectionProcessObservable.observe(this@MovieSelection) { endSelection ->
+            if (endSelection) {
+                startGame()
+            }
+        }
+        movieViewModel.confirmSelection()
+        Toast.makeText(this, "Selection confirmed", Toast.LENGTH_SHORT).show()
     }
 }

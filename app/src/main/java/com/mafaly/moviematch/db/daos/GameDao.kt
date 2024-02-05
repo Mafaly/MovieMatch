@@ -11,8 +11,11 @@ interface GameDao {
     @Query("SELECT * FROM game_entity")
     fun getAllGames(): List<GameEntity>
 
+    @Query("SELECT * FROM game_entity WHERE id = :gameId")
+    fun getGameById(gameId: Long): GameEntity
+
     @Insert
-    fun insertNewGame(game: GameEntity)
+    fun insertNewGame(game: GameEntity): Long
 
     @Delete
     fun deleteGame(game: GameEntity)

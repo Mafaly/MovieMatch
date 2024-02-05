@@ -7,7 +7,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
 import com.mafaly.moviematch.game.GameManager
 import com.mafaly.moviematchduel.R
 
@@ -47,7 +46,13 @@ class MovieMatchActivity : AppCompatActivity() {
         val numberOfFilms = spinnerNumberOfFilms.selectedItem.toString().toInt()
         val timePerDuel = editTextTimePerDuel.text.toString().toIntOrNull() ?: 30
 
-        GameManager.getInstance().startNewGame("Game number 1", numberOfFilms, timePerDuel)
+        GameManager.startNewGame(
+            "Movie Match",
+            numberOfFilms,
+            timePerDuel,
+            this,
+            this
+        )
 
         showMovieSelectionActivity()
     }

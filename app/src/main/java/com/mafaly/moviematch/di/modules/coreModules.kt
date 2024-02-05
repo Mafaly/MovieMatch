@@ -9,7 +9,7 @@ import org.koin.dsl.module
 
 internal val coreModules = module {
     // Inject a singleton for the user repo
-    single { MovieRepository(get()) }
+    single { MovieRepository(get(), get()) }
 
     // Inject user view model
     single { MovieViewModel(get()) }

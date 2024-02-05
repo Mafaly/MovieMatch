@@ -3,10 +3,15 @@ package com.mafaly.moviematch.repo
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.mafaly.moviematch.game.GameManager
 import com.mafaly.moviematch.model.MovieDAO
 import com.mafaly.moviematch.repos.MovieRepository
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MovieViewModel(private val movieRepository: MovieRepository) : ViewModel() {
 
@@ -17,6 +22,7 @@ class MovieViewModel(private val movieRepository: MovieRepository) : ViewModel()
     val selectedMovieLiveData: MutableLiveData<List<MovieDAO>> = MutableLiveData()
     val genreFilterIdsLiveData: MutableLiveData<List<String>> = MutableLiveData()
     val watchProviderFilterIdsLiveData: MutableLiveData<List<String>> = MutableLiveData()
+    val endSelectionProcessObservable: MutableLiveData<Boolean> = MutableLiveData(false)
 
     fun getRandomFilteredMovies() {
         val genres = this.genreFilterIdsLiveData.value?.ifEmpty { emptyList() } ?: emptyList()
@@ -61,6 +67,19 @@ class MovieViewModel(private val movieRepository: MovieRepository) : ViewModel()
         currentSelectedMovies.remove(movie)
         this.selectedMovieLiveData.postValue(currentSelectedMovies)
 
+    }
+
+    fun confirmSelection() {
+        GameManager.getCurrentGame()?.id?.let { gameId ->
+            this.selectedMovieLiveData.value?.let { movieList ->
+                CoroutineScope(Dispatchers.IO).launch {
+                    movieRepository.cacheMovieList(movieList)
+                    movieRepository.saveGameMovieList(movieList, gameId)
+                    delay(3000)
+                    endSelectionProcessObservable.postValue(true)
+                }
+            }
+        }
     }
 
     // TODO: Implement the following function
