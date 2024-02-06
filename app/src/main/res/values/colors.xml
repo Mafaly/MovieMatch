@@ -6,5 +6,7 @@
     <color name="red">#D05D46</color>
     <color name="mainBlue">#FF1F799B</color>
     <color name="input_bg">#F0F0F0</color>
+    <color name="input_hint">#565656</color>
     <color name="grey">#727272</color>
+    <color name="fakeBlack">#263238</color>
 </resources>

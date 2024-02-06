@@ -7,14 +7,13 @@ import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -47,8 +46,8 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
     private lateinit var genresChipGroup: ChipGroup
     private lateinit var watchProviderChipGroup: ChipGroup
     private lateinit var searchEditText: EditText
-    private lateinit var searchWithFilterButton: Button
-    private lateinit var clearFiltersImageButton: ImageButton
+    private lateinit var searchWithFilterButton: MaterialButton
+    private lateinit var clearFiltersImageButton: MaterialButton
     private lateinit var selectionConfirmationFAB: FloatingActionButton
 
     @SuppressLint("DiscouragedApi")

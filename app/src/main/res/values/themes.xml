@@ -1,9 +1,10 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.MovieMatchDuel" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/blue</item>
         <item name="colorSecondary">@color/red</item>
+        <item name="buttonBarButtonStyle">@style/ButtonBarButton</item>
     </style>
 
     <style name="Theme.MovieMatch" parent="Base.Theme.MovieMatchDuel" />
