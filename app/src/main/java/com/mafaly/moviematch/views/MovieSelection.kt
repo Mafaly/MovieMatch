@@ -102,6 +102,9 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
 
         // Observe the movie data from the view model
         this.observeMovieLiveData()
+
+        // Display initial data on initial load
+        displayRandomMoviesWithFilters()
     }
 
     private fun observeMovieLiveData() {
