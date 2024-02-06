@@ -63,3 +63,9 @@ interface OnSelectedMovieLongClicked {
 interface OnSelectedMovieSimpleClicked {
     fun removeFromSelection(movie: MovieDAO)
 }
+
+interface OnSelectionConfirmation {
+    fun askForSelectionConfirmation()
+
+    fun confirmSelection()
+}

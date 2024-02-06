@@ -2,8 +2,10 @@ package com.mafaly.moviematch.game
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import com.mafaly.moviematch.db.AppDatabase
 import com.mafaly.moviematch.db.entities.DuelEntity
 import com.mafaly.moviematch.db.entities.GameEntity
 import com.mafaly.moviematch.db.entities.MovieEntity
@@ -16,25 +18,22 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class GameManager private constructor() {
+object GameManager {
 
     private var currentGame: GameEntity? = null
 
     fun startNewGame(
-        context: Context,
-        lifecycleOwner: LifecycleOwner,
         gameName: String,
         gameMovieCount: Int,
-        gameTimePerDuel: Int
+        gameTimePerDuel: Int,
+        context: Context,
+        lifecycleOwner: LifecycleOwner
     ) {
         val gameDate = LocalDate.now()
         val formattedDate = gameDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 
-        currentGame = GameEntity(0, gameName, formattedDate, gameMovieCount, gameTimePerDuel, null)
-
-        lifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-            GameService.insertNewGame(context, currentGame!!)
-        }
+        val newGame = GameEntity(0, gameName, formattedDate, gameMovieCount, gameTimePerDuel, null)
+        saveNewGame(newGame, context, lifecycleOwner)
     }
 
     fun cancelCurrentGame() {
@@ -56,6 +55,24 @@ class GameManager private constructor() {
         return currentGame
     }
 
+    private fun saveNewGame(
+        game: GameEntity,
+        context: Context,
+        lifecycleOwner: LifecycleOwner
+    ) {
+        val appDatabase = AppDatabase.getInstance(context)
+        lifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+            val insertedId = appDatabase.gameDao().insertNewGame(game)
+            currentGame = appDatabase.gameDao().getGameById(insertedId)
+            Log.d("GameManager", "Game inserted with id: $insertedId")
+        }
+    }
+
+    private fun getGameById(gameId: Long, context: Context): GameEntity {
+        val appDatabase = AppDatabase.getInstance(context)
+        return appDatabase.gameDao().getGameById(gameId)
+    }
+
     private fun generateDuels(context: Context, lifecycleOwner: LifecycleOwner) {
         //TODO get game movies from BDD
         val movies = generateSampleMovieList()
@@ -70,7 +87,7 @@ class GameManager private constructor() {
                 if (moviesLeft >= 2) {
                     val movie1 = movies[duelIndex]
                     val movie2 = movies[duelIndex + 1]
-                    var duel = DuelEntity(
+                    val duel = DuelEntity(
                         0,
                         1,
                         movie1.id,
@@ -87,7 +104,7 @@ class GameManager private constructor() {
         }
     }
 
-    fun finishDuel(context: Context, lifecycleOwner: LifecycleOwner, duelId: Int, winnerId: Int) {
+    fun finishDuel(context: Context, lifecycleOwner: LifecycleOwner, duelId: Long, winnerId: Long) {
         lifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             val duel = DuelService.getDuel(context, duelId)
 
@@ -176,16 +193,5 @@ class GameManager private constructor() {
             )
         )
         return movieList
-    }
-
-    companion object {
-        @Volatile
-        private var INSTANCE: GameManager? = null
-
-        fun getInstance(): GameManager {
-            return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: GameManager().also { INSTANCE = it }
-            }
-        }
     }
 }

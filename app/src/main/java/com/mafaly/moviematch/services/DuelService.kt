@@ -3,7 +3,6 @@ package com.mafaly.moviematch.services
 import android.content.Context
 import com.mafaly.moviematch.db.AppDatabase
 import com.mafaly.moviematch.db.entities.DuelEntity
-import com.mafaly.moviematch.db.entities.GameEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
@@ -11,7 +10,7 @@ import kotlinx.coroutines.withContext
 class DuelService {
 
     companion object {
-        suspend fun getDuel(context: Context, duelId: Int): DuelEntity? {
+        suspend fun getDuel(context: Context, duelId: Long): DuelEntity {
             return withContext(Dispatchers.IO) {
                 val appDatabase = AppDatabase.getInstance(context)
                 val deferredDuel = async { appDatabase.duelDao().getDuel(duelId) }
@@ -19,7 +18,7 @@ class DuelService {
             }
         }
 
-        suspend fun getDuelsForGame(context: Context, gameId: Int): List<DuelEntity> {
+        suspend fun getDuelsForGame(context: Context, gameId: Long): List<DuelEntity> {
             return withContext(Dispatchers.IO) {
                 val appDatabase = AppDatabase.getInstance(context)
                 val deferredDuel = async { appDatabase.duelDao().getDuelsForGame(gameId) }

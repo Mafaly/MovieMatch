@@ -23,6 +23,6 @@ import androidx.room.ForeignKey
     ]
 )
 class GameMoviesEntity(
-    @ColumnInfo(name = "game_id") val gameId: Int,
-    @ColumnInfo(name = "movie_id") val movieId: Int
+    @ColumnInfo(name = "game_id") val gameId: Long,
+    @ColumnInfo(name = "movie_id") val movieId: Long
 )
