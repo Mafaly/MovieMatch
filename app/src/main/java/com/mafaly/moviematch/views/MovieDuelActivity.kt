@@ -74,7 +74,7 @@ class MovieDuelActivity : AppCompatActivity() {
                 }
 
                 override fun onFinish() {
-                    timeLeftTextView.text = "Temps écoulé"
+                    timeLeftTextView.text = getString(R.string.times_up)
                     if (movie1 != null && movie2 != null) {
                         handleChoiceButtonClick(makeRandomChoice(movie1, movie2))
                     }
