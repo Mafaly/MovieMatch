@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
 class GameService {
 
     companion object {
-        suspend fun getGameById(context: Context, gameId: Int): GameEntity? {
+        suspend fun getGameById(context: Context, gameId: Long): GameEntity {
             return withContext(Dispatchers.IO) {
                 val appDatabase = AppDatabase.getInstance(context)
                 val deferredDuel = async { appDatabase.gameDao().getGameById(gameId) }

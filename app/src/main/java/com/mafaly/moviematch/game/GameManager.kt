@@ -1,10 +1,18 @@
 package com.mafaly.moviematch.game
 
 import android.content.Context
+import android.content.Intent
+import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.mafaly.moviematch.db.AppDatabase
+import com.mafaly.moviematch.db.entities.DuelEntity
 import com.mafaly.moviematch.db.entities.GameEntity
+import com.mafaly.moviematch.db.entities.MovieEntity
+import com.mafaly.moviematch.services.DuelService
+import com.mafaly.moviematch.services.GameService
+import com.mafaly.moviematch.services.MovieService
+import com.mafaly.moviematch.views.MovieDuelActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -24,7 +32,7 @@ object GameManager {
         val gameDate = LocalDate.now()
         val formattedDate = gameDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 
-        val newGame = GameEntity(gameName, formattedDate, gameMovieCount, gameTimePerDuel, null)
+        val newGame = GameEntity(0, gameName, formattedDate, gameMovieCount, gameTimePerDuel, null)
         saveNewGame(newGame, context, lifecycleOwner)
     }
 
@@ -63,6 +71,8 @@ object GameManager {
     private fun getGameById(gameId: Long, context: Context): GameEntity {
         val appDatabase = AppDatabase.getInstance(context)
         return appDatabase.gameDao().getGameById(gameId)
+    }
+
     private fun generateDuels(context: Context, lifecycleOwner: LifecycleOwner) {
         //TODO get game movies from BDD
         val movies = generateSampleMovieList()
@@ -77,7 +87,7 @@ object GameManager {
                 if (moviesLeft >= 2) {
                     val movie1 = movies[duelIndex]
                     val movie2 = movies[duelIndex + 1]
-                    var duel = DuelEntity(
+                    val duel = DuelEntity(
                         0,
                         1,
                         movie1.id,
@@ -94,7 +104,7 @@ object GameManager {
         }
     }
 
-    fun finishDuel(context: Context, lifecycleOwner: LifecycleOwner, duelId: Int, winnerId: Int) {
+    fun finishDuel(context: Context, lifecycleOwner: LifecycleOwner, duelId: Long, winnerId: Long) {
         lifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             val duel = DuelService.getDuel(context, duelId)
 
@@ -183,16 +193,5 @@ object GameManager {
             )
         )
         return movieList
-    }
-
-    companion object {
-        @Volatile
-        private var INSTANCE: GameManager? = null
-
-        fun getInstance(): GameManager {
-            return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: GameManager().also { INSTANCE = it }
-            }
-        }
     }
 }

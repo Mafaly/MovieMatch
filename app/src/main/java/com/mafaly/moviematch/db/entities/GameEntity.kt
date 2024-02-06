@@ -17,13 +17,10 @@ import androidx.room.PrimaryKey
     ]
 )
 class GameEntity(
+    @PrimaryKey(autoGenerate = true) val id: Long,
     @ColumnInfo(name = "game_name") val gameName: String,
     @ColumnInfo(name = "game_date") val gameDate: String,
     @ColumnInfo(name = "game_movies_count") val gameMoviesCount: Int,
     @ColumnInfo(name = "game_time_per_duel") val gameTimePerDuel: Int,
     @ColumnInfo(name = "game_winner_id") val gameWinnerId: Long?
-) {
-    @PrimaryKey(autoGenerate = true)
-    var id: Long? = null
-
-}
+)
