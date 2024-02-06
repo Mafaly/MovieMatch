@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="12dp"
+    android:background="@color/windowBackground"
     tools:context="com.mafaly.moviematch.views.MovieSelection">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -109,9 +110,9 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/reset_filters"
                     app:icon="@drawable/baseline_close_24"
-                    app:iconTint="?android:textColorPrimary"
+                    android:backgroundTint="@color/lightgrey"
                     android:layout_marginStart="8dp"
-                    android:backgroundTint="@color/input_bg"
+                    app:iconTint="@color/black"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/search_with_filters_btn"
                     app:layout_constraintTop_toTopOf="@+id/search_with_filters_btn"
@@ -132,8 +133,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="start"
-                android:text="@string/movies_list"
-                android:textColor="@color/black" />
+                android:text="@string/movies_list" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/movie_list_rv"
@@ -163,8 +163,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="start"
-                android:text="@string/selected_movies"
-                android:textColor="@color/black" />
+                android:text="@string/selected_movies" />
 
         </LinearLayout>
 
