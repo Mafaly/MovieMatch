@@ -56,5 +56,6 @@
     <string name="watch_provider_netflix">Netflix</string>
     <string name="watch_provider_prime_video">Prime Video</string>
     <string name="reset_filters">Reset the filters applied to the random movie search.</string>
+    <string name="countdown_timer_text">Temps restant : %1$ds</string>
 
 </resources>

@@ -60,7 +60,7 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
         } else {
             //TODO ce code temporaire permet d'enregister la partie en BDD comme si c'était la fin du jeu
             // Utiliser GameManager.getInstance().getCurrentGame() pour récup la partie en cours si besoin.
-            GameManager.getInstance().finishCurrentGame(applicationContext, this, gameEntity)
+            //GameManager.getInstance().finishCurrentGame(applicationContext, this, gameEntity)
         }
 
         // map over the MovieGenre map to get the genre names

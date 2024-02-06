@@ -47,9 +47,11 @@ class MovieMatchActivity : AppCompatActivity() {
         val numberOfFilms = spinnerNumberOfFilms.selectedItem.toString().toInt()
         val timePerDuel = editTextTimePerDuel.text.toString().toIntOrNull() ?: 30
 
-        GameManager.getInstance().startNewGame("Game number 1", numberOfFilms, timePerDuel)
+        GameManager.getInstance().startNewGame(applicationContext, this, "Game number 1", numberOfFilms, timePerDuel)
 
-        showMovieSelectionActivity()
+        //showMovieSelectionActivity()
+
+        GameManager.getInstance().handleGameStep(this, this)
     }
 
     private fun showMovieSelectionActivity() {
