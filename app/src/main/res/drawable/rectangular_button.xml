@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Button background for the normal state -->
+    <item android:state_enabled="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/mainBlue" /> <!-- Button color -->
+            <!-- Optional: Define a border -->
+            <stroke android:width="2dp" android:color="@color/mainBlue" />
+        </shape>
+    </item>
+    <!-- Button background for the disabled state -->
+    <item android:state_enabled="false">
+        <shape android:shape="rectangle">
+            <solid android:color="#FFC0C0C0" /> <!-- Gray color for disabled state -->
+            <stroke android:width="2dp" android:color="@color/mainBlue" />
+        </shape>
+    </item>
+</selector>

@@ -7,8 +7,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
 import com.mafaly.moviematch.game.GameManager
+import com.mafaly.moviematch.views.GameHistoryBottomSheetFragment.Companion.TAG
 import com.mafaly.moviematchduel.R
 
 class MovieMatchActivity : AppCompatActivity() {
@@ -17,6 +17,7 @@ class MovieMatchActivity : AppCompatActivity() {
     private lateinit var spinnerNumberOfFilms: Spinner
     private lateinit var editTextTimePerDuel: EditText
     private lateinit var editTextGameName: EditText
+    private lateinit var buttonHistory: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,12 +27,17 @@ class MovieMatchActivity : AppCompatActivity() {
         spinnerNumberOfFilms = findViewById(R.id.spinnerNumberOfFilms)
         editTextTimePerDuel = findViewById(R.id.editTextTimePerDuel)
         editTextGameName = findViewById(R.id.editTextGameName)
+        buttonHistory=findViewById(R.id.buttonHistory)
 
         setupSpinner()
 
         buttonStart.setOnClickListener {
             startGame()
         }
+        buttonHistory.setOnClickListener {
+                showMovieHistory()
+        }
+
     }
 
     private fun setupSpinner() {
@@ -59,5 +65,10 @@ class MovieMatchActivity : AppCompatActivity() {
         val intent = Intent(this, MovieSelection::class.java)
         startActivity(intent)
     }
-
+    private fun showMovieHistory() {
+        GameHistoryBottomSheetFragment().apply {
+            isCancelable = true
+            show(supportFragmentManager, TAG)
+        }
+    }
 }

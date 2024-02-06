@@ -37,5 +37,12 @@
     <string name="upcoming">upcoming</string>
     <string name="default_game_name">Game Number 1</string>
     <string name="movie_match_logo">Movie Match Logo</string>
-    <string name="game">Game :</string>
+    <string name="game">Nom du jeu :</string>
+    <string name="participants">Participants</string>
+    <string name="winner">Winner</string>
+    <string name="batman_the_dark_knight">Batman: The Dark Knight</string>
+    <string name="joshua_henri_kevin_steph">Joshua, Henri, Kevin, Steph,...</string>
+    <string name="_04_03">04/03</string>
+    <string name="parties_precedentes">Parties précédentes</string>
+
 </resources>
