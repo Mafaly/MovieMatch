@@ -62,6 +62,8 @@ object GameManager {
 
             duel.duelWinnerId = winnerId
             DuelService.updateDuel(context, duel)
+
+            handleGameStep(context, lifecycleOwner)
         }
     }
 
@@ -73,26 +75,30 @@ object GameManager {
 
                 // game does not have duels programmed
                 if (duels.isEmpty()) {
-                    generateDuels(context)
+                    generateFirstRound(context)
                     duels = DuelService.getDuelsForGame(context, currentGame!!.id)
                 }
 
-                // TODO
                 // game has duels programmed so next duel is launched
                 // get the last round not completed
-
                 val lastRoundDuels = filterLastRoundDuels(duels)
 
-                val duelIdToDisplay = lastRoundDuels.firstOrNull()?.id
+                if (isRoundFinished(lastRoundDuels)) {
+                    // the round is finished so let's generate the next round
+                    generateNewRound(context, lastRoundDuels)
+                } else {
+                    // the round is not finished so let's start the next duel
+                    val duelIdToDisplay = lastRoundDuels.firstOrNull { it.duelWinnerId == null }?.id
 
-                val movieDuelIntent = Intent(context, MovieDuelActivity::class.java)
-                movieDuelIntent.putExtra("duelId", duelIdToDisplay)
-                context.startActivity(movieDuelIntent)
+                    val movieDuelIntent = Intent(context, MovieDuelActivity::class.java)
+                    movieDuelIntent.putExtra("duelId", duelIdToDisplay)
+                    context.startActivity(movieDuelIntent)
+                }
             }
         }
     }
 
-    private suspend fun generateDuels(context: Context) {
+    private suspend fun generateFirstRound(context: Context) {
         val currentGame = currentGame ?: return
         val movies = MovieService.getMoviesForGame(context, currentGame.id)
 
@@ -116,8 +122,20 @@ object GameManager {
         }
     }
 
+    private suspend fun generateNewRound(context: Context, duels: List<DuelEntity>) {
+        if (duels.size == 1) {
+            // launch winner layout
+        } else if (duels.size >= 2) {
+            //TODO generate new round
+        }
+    }
+
     private fun filterLastRoundDuels(duels: List<DuelEntity>): List<DuelEntity> {
         val maxTurnNumber = duels.maxByOrNull { it.duelTurnNumber }?.duelTurnNumber
         return duels.filter { it.duelTurnNumber == maxTurnNumber }
+    }
+
+    private fun isRoundFinished(duels: List<DuelEntity>): Boolean {
+        return duels.all { it.duelWinnerId != null }
     }
 }

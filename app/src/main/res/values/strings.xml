@@ -15,9 +15,12 @@
     <string name="No">Non</string>
     <string name="Yes">Oui</string>
     <string-array name="number_of_films_array">
-        <item>1</item>
         <item>2</item>
-        <item>3</item>
+        <item>4</item>
+        <item>6</item>
+        <item>8</item>
+        <item>10</item>
+        <item>12</item>
     </string-array>
     <string name="film_selection_title">Choisis un film !</string>
     <string name="search_film_or_actor">Rechercher un film ou un acteur…</string>
