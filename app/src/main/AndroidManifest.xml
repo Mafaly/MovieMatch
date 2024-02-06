@@ -21,7 +21,7 @@
             android:name="com.mafaly.moviematch.views.MovieMatchActivity"
             android:exported="false" />
         <activity
-            android:name="com.mafaly.moviematch.views.MovieDuel"
+            android:name="com.mafaly.moviematch.views.MovieDuelActivity"
             android:exported="false" />
         <activity
             android:name="com.mafaly.moviematch.views.MainActivity"

@@ -11,13 +11,11 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
 import com.mafaly.moviematch.di.injectModuleDependencies
 import com.mafaly.moviematch.di.parseConfigurationAndAddItToInjectionModules
@@ -32,7 +30,6 @@ import com.mafaly.moviematch.views.adapters.OnMovieDetailsClicked
 import com.mafaly.moviematch.views.adapters.OnSelectedMovieLongClicked
 import com.mafaly.moviematch.views.adapters.OnSelectedMovieSimpleClicked
 import com.mafaly.moviematch.views.adapters.SelectedMovieListAdapter
-import com.mafaly.moviematch.views.adapters.OnSelectionConfirmation
 import com.mafaly.moviematchduel.R
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

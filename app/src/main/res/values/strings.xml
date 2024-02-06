@@ -54,6 +54,7 @@
     <string name="watch_provider_google_play_movies">Google Play Movies</string>
     <string name="watch_provider_netflix">Netflix</string>
     <string name="watch_provider_prime_video">Prime Video</string>
+    <string name="countdown_timer_text">Temps restant : %1$ds</string>
     <string name="reset_filters">Réinitialiser les filtres appliqués à la recherche aléatoire de films..</string>
     <string name="confirm">Confirmer</string>
     <string name="selection_confirmed">Sélection confirmée</string>

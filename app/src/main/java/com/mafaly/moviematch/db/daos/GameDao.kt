@@ -11,6 +11,9 @@ interface GameDao {
     @Query("SELECT * FROM game_entity")
     fun getAllGames(): List<GameEntity>
 
+    @Query("SELECT * FROM game_entity ORDER BY id DESC LIMIT 1")
+    fun getLastGame(): GameEntity?
+
     @Query("SELECT * FROM game_entity WHERE id = :gameId")
     fun getGameById(gameId: Long): GameEntity
 
