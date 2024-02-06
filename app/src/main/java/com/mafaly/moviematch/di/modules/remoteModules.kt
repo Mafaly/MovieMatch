@@ -48,6 +48,7 @@ private fun createOkHttpClient(bearerToken: String = "", locale: Locale): OkHttp
             val url = originalHttpUrl.newBuilder()
                 .addQueryParameter("language", locale.toLanguageTag())
                 .addQueryParameter("region", locale.country)
+                .addQueryParameter("watch_region", locale.country)
                 .build()
             val request = original.newBuilder()
                 .url(url)

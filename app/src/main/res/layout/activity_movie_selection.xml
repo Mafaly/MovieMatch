@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingHorizontal="12dp"
+    android:padding="12dp"
     tools:context="com.mafaly.moviematch.views.MovieSelection">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/movie_search_section_cl"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:layout_constraintHeight_percent="0.825"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/selection_title_tv"
@@ -31,120 +33,164 @@
             android:importantForAutofill="no"
             android:id="@+id/movie_search_et"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_marginTop="16dp"
             android:background="@color/input_bg"
             android:hint="@string/search_film_or_actor"
             android:inputType="text"
             android:padding="8dp"
-            app:layout_constraintEnd_toEndOf="@+id/selection_title_tv"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/selection_title_tv"
-            app:layout_constraintTop_toBottomOf="@+id/selection_title_tv" />
+            app:layout_constraintTop_toBottomOf="@id/selection_title_tv"
+            app:layout_constraintBottom_toTopOf="@id/filters_section_cl" />
 
-        <LinearLayout
-            android:id="@+id/selected_movies_section_ll"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/filters_section_cl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:minHeight="135dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/movie_search_et">
+
+            <TextView
+                android:id="@+id/movie_selection_filter_tv"
+                style="@style/SectionTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/random_movie"
+                android:textColor="@color/black"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <HorizontalScrollView
+                android:id="@+id/horizontalScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:scrollbars="none"
+                app:layout_constraintTop_toBottomOf="@+id/movie_selection_filter_tv">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/genre_cp_grp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toTopOf="@+id/random_search_btn"
+                    app:layout_constraintTop_toBottomOf="@+id/movie_selection_filter_tv"
+                    app:singleLine="true" />
+            </HorizontalScrollView>
+
+            <HorizontalScrollView
+                android:id="@+id/horizontalWatchProviderScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:scrollbars="none"
+                app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/watch_providers_cp_grp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toTopOf="@+id/random_search_btn"
+                    app:layout_constraintTop_toBottomOf="@+id/movie_selection_filter_tv"
+                    app:singleLine="true" />
+            </HorizontalScrollView>
+
+
+            <Button
+                android:id="@+id/search_with_filters_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="?attr/colorPrimary"
+                android:padding="10dp"
+                android:text="@string/search"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toStartOf="@+id/movie_selection_filter_tv"
+                app:layout_constraintTop_toBottomOf="@+id/horizontalWatchProviderScrollView" />
+
+            <ImageButton
+                android:id="@+id/clear_filters_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/reset_filters"
+                android:scaleX="2"
+                android:scaleY="2"
+                android:src="@drawable/baseline_close_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/search_with_filters_btn"
+                app:layout_constraintTop_toTopOf="@+id/search_with_filters_btn"
+                app:tint="@color/grey" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/movies_search_results_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@id/movie_search_et">
+            app:layout_constraintTop_toBottomOf="@id/filters_section_cl">
 
             <TextView
                 style="@style/SectionTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="start"
-                android:text="@string/selected_movies"
+                android:text="@string/movies_list"
                 android:textColor="@color/black" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/selected_movie_list_rv"
+                android:id="@+id/movie_list_rv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="5"
-                tools:listitem="@layout/mini_movie_cell_layout" />
+                tools:listitem="@layout/movie_cell_layout" />
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/movie_selection_filter_tv"
-            style="@style/SectionTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/filters"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/selected_movies_section_ll" />
-
-        <HorizontalScrollView
-            android:id="@+id/horizontalScrollView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:scrollbars="none"
-            app:layout_constraintTop_toBottomOf="@+id/movie_selection_filter_tv">
-
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/genre_cp_grp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@+id/random_search_btn"
-                app:layout_constraintTop_toBottomOf="@+id/movie_selection_filter_tv"
-                app:singleLine="true" />
-        </HorizontalScrollView>
-
-
-        <Button
-            android:id="@+id/upcoming_search_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="?attr/colorPrimary"
-            android:padding="10dp"
-            android:text="@string/upcoming"
-            android:textColor="@color/white"
-            app:layout_constraintStart_toStartOf="@+id/movie_search_et"
-            app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
-
-        <Button
-            android:id="@+id/popular_search_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:backgroundTint="?attr/colorPrimary"
-            android:padding="10dp"
-            android:text="@string/popular"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="@+id/upcoming_search_btn"
-            app:layout_constraintStart_toEndOf="@+id/upcoming_search_btn"
-            app:layout_constraintTop_toTopOf="@+id/upcoming_search_btn" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
     <LinearLayout
+        android:id="@+id/selected_movies_section_ll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.3"
-        android:orientation="vertical">
+        android:minHeight="135dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/movie_search_section_cl">
 
-        <TextView
-            style="@style/SectionTitle"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="start"
-            android:text="@string/movies_list"
-            android:textColor="@color/black" />
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/SectionTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="@string/selected_movies"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/movie_list_rv"
+            android:id="@+id/selected_movie_list_rv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="5"
-            tools:listitem="@layout/movie_cell_layout" />
+            tools:listitem="@layout/mini_movie_cell_layout" />
+
     </LinearLayout>
 
-</LinearLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/confirm_selection_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="?attr/colorPrimary"
+        android:contentDescription="@string/confirm"
+        android:src="@drawable/outline_check_24"
+        android:tint="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

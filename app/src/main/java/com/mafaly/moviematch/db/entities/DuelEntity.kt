@@ -35,10 +35,10 @@ import androidx.room.PrimaryKey
     ]
 )
 class DuelEntity(
-    @PrimaryKey(autoGenerate = true) val id: Int,
-    @ColumnInfo(name = "duel_game_id") val duelGameId: Int,
-    @ColumnInfo(name = "duel_movie_1_id") val duelMovie1Id: Int,
-    @ColumnInfo(name = "duel_movie_2_id") val duelMovie2Id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Long,
+    @ColumnInfo(name = "duel_game_id") val duelGameId: Long,
+    @ColumnInfo(name = "duel_movie_1_id") val duelMovie1Id: Long,
+    @ColumnInfo(name = "duel_movie_2_id") val duelMovie2Id: Long?,
     @ColumnInfo(name = "duel_turn_number") val duelTurnNumber: Int,
-    @ColumnInfo(name = "duel_winner_id") val duelWinnerId: Int?
+    @ColumnInfo(name = "duel_winner_id") var duelWinnerId: Long?
 )
