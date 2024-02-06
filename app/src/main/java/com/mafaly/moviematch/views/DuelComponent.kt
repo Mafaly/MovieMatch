@@ -2,10 +2,13 @@ package com.mafaly.moviematch.views
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.bumptech.glide.Glide
+import com.mafaly.moviematchduel.BuildConfig
 import com.mafaly.moviematchduel.R
 
 class DuelComponent @JvmOverloads constructor(
@@ -27,7 +30,10 @@ class DuelComponent @JvmOverloads constructor(
     }
 
     fun setMovieDetails(movieTitle: String, moviePosterPath: String?) {
-        imageView.setImageResource(R.drawable.poster_film_land)
+        Glide.with(this)
+            .load(BuildConfig.TMDB_IMAGE_URL + moviePosterPath)
+            //.error(R.drawable.error_image) // Ajoutez une image d'erreur si le chargement échoue
+            .into(imageView)
         titleTextView.text = movieTitle
     }
 }

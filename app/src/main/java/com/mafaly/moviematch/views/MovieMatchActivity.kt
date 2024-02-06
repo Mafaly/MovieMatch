@@ -47,13 +47,14 @@ class MovieMatchActivity : AppCompatActivity() {
         val timePerDuel = editTextTimePerDuel.text.toString().toIntOrNull() ?: 30
 
         GameManager.startNewGame(
+            this,
+            this,
             "Movie Match",
             numberOfFilms,
             timePerDuel,
-            this,
-            this
         )
 
+        finish()
         showMovieSelectionActivity()
     }
 

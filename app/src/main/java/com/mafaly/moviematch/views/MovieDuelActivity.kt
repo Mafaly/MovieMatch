@@ -22,7 +22,7 @@ class MovieDuelActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie_duel)
 
-        val duelId = intent.getLongExtra("duelId", -1)
+        val duelId = intent.getLongExtra("duelId", (-1).toLong())
         if (duelId == (-1).toLong()) {
             Toast.makeText(this, "Erreur: DuelId manquant", Toast.LENGTH_SHORT).show()
             finish()
@@ -30,17 +30,9 @@ class MovieDuelActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             val duel = DuelService.getDuel(this@MovieDuelActivity, duelId)
-            if (duel == null) {
-                Toast.makeText(
-                    this@MovieDuelActivity,
-                    "Erreur: Duel non existant en BDD",
-                    Toast.LENGTH_SHORT
-                ).show()
-                finish()
-            }
 
-            val movie1 = duel?.duelMovie1Id?.let { MovieService.getMovieById(this@MovieDuelActivity, it) }
-            val movie2 = duel?.duelMovie2Id?.let { MovieService.getMovieById(this@MovieDuelActivity, it) }
+            val movie1 = duel.duelMovie1Id.let { MovieService.getMovieById(this@MovieDuelActivity, it) }
+            val movie2 = duel.duelMovie2Id?.let { MovieService.getMovieById(this@MovieDuelActivity, it) }
 
             firstDuelComponent = findViewById(R.id.first_concurrent_component)
             secondDuelComponent = findViewById(R.id.second_concurrent_component)
