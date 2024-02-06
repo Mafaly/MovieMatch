@@ -14,9 +14,9 @@ class DuelComponent @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
-    val imageView: ImageView
-    val titleTextView: TextView
-    val choiceButton: Button
+    private val imageView: ImageView
+    private val titleTextView: TextView
+    private val choiceButton: Button
 
     init {
         inflate(context, R.layout.concurrent_duel_component, this)
@@ -26,7 +26,7 @@ class DuelComponent @JvmOverloads constructor(
         choiceButton = findViewById(R.id.concurrent_choice_button)
     }
 
-    fun setMovieDetails(movieTitle: String, posterResId: Int) {
+    fun setMovieDetails(movieTitle: String, moviePosterPath: String?) {
         imageView.setImageResource(R.drawable.poster_film_land)
         titleTextView.text = movieTitle
     }
