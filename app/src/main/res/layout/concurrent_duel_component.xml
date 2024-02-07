@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:gravity="center">
 
@@ -12,16 +12,7 @@
         android:layout_height="250dp"
         android:scaleType="centerCrop"
         android:src="@drawable/poster_film_land"
-        android:contentDescription="Movie poster"/>
-
-    <TextView
-        android:id="@+id/concurrent_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/roboto_medium"
-        android:padding="10dp"
-        android:text="Nom du film"
-        android:textSize="16sp" />
+        android:contentDescription="@string/movie_poster" />
 
     <Button
         android:id="@+id/concurrent_choice_button"
@@ -29,6 +20,18 @@
         android:layout_width="wrap_content"
         android:backgroundTint="@color/red"
         android:fontFamily="@font/inter"
-        android:text="Voter"
+        android:text="@string/vote"
+        android:textColor="@color/white"
         android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/concurrent_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_medium"
+        android:padding="10dp"
+        tools:text="Nom du film"
+        android:gravity="center"
+        android:textSize="16sp" />
+
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/windowBackground"
     android:orientation="vertical">
 
     <TextView
@@ -14,7 +13,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="64dp"
         android:fontFamily="@font/galada"
-        android:text="Duel n°"
+        android:text="@string/duel_number"
         android:textSize="28sp" />
 
     <TextView
@@ -24,7 +23,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/inter_semibold"
-        android:text="Temps restant : s"
+        android:text="@string/countdown_timer_text"
         android:textSize="20sp" />
 
     <Space
@@ -66,7 +65,8 @@
         android:layout_gravity="center"
         android:background="@drawable/action_button"
         android:fontFamily="@font/inter"
-        android:text="Choix aléatoire"
-        android:textSize="16sp"/>
+        android:text="@string/random_choice"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>
