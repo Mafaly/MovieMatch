@@ -1,7 +1,15 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.MovieMatchDuel" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorSecondary">@color/red</item>
     </style>
+
+    <item name="inputBackground" type="color">@color/deepButLightBlue</item>
+    <item name="inputHint" type="color">@color/white</item>
+    <item name="windowBackground" type="color">@color/deepestBlue</item>
+    <item name="secondaryBackground" type="color">@color/lessDeepBlue</item>
+
+
 </resources>
