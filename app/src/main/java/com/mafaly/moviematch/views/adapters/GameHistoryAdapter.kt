@@ -25,7 +25,7 @@ class GameHistoryAdapter(private val gameList: List<GameEntity>?) : RecyclerView
         val game = gameList?.get(position)
 
         if (game != null) {
-            holder.gameDateTv.text = game.gameDate.
+            holder.gameDateTv.text = game.gameDate
             holder.gameNameTv.text = game.gameName
             holder.winnerMovieTitleTv.text= game.gameWinnerId.toString()
         }
