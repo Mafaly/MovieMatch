@@ -10,7 +10,7 @@
     <item name="inputBackground" type="color">@color/lightgrey</item>
     <item name="inputHint" type="color">@color/kindaDarkGrey</item>
     <item name="windowBackground" type="color">@color/white</item>
-    <item name="secondaryBackground" type="color">@android:color/transparent</item>
+    <item name="secondaryBackground" type="color">@color/white</item>
 
     <style name="Theme.MovieMatch" parent="Base.Theme.MovieMatchDuel" />
 </resources>

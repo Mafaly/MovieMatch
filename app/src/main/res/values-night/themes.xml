@@ -7,7 +7,7 @@
     </style>
 
     <item name="inputBackground" type="color">@color/deepButLightBlue</item>
-    <item name="inputHint" type="color">?android:textColorPrimary</item>
+    <item name="inputHint" type="color">@color/white</item>
     <item name="windowBackground" type="color">@color/deepestBlue</item>
     <item name="secondaryBackground" type="color">@color/lessDeepBlue</item>
 
