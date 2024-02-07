@@ -20,7 +20,8 @@
     <!-- Horizontal LinearLayout to contain the movie poster and the movie title -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="302dp"
+        android:layout_height="wrap_content"
+        android:minHeight="250dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
