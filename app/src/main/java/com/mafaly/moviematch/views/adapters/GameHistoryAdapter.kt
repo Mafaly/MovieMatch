@@ -11,9 +11,9 @@ import com.mafaly.moviematchduel.R
 class GameHistoryAdapter(private val gameList: List<GameEntity>?) : RecyclerView.Adapter<GameHistoryAdapter.GameViewHolder>() {
 
     class GameViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tvGameName: TextView = view.findViewById(R.id.tvGameName)
-        val tvGameDate: TextView = view.findViewById(R.id.tvGameDate)
-        val tvWinnerMovieTitle: TextView = view.findViewById(R.id.tvWinnerMovieTitle)
+        val gameNameTv: TextView = view.findViewById(R.id.game_name_tv)
+        val gameDateTv: TextView = view.findViewById(R.id.game_date_tv)
+        val winnerMovieTitleTv: TextView = view.findViewById(R.id.winner_movie_title_tv)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameViewHolder {
@@ -25,9 +25,9 @@ class GameHistoryAdapter(private val gameList: List<GameEntity>?) : RecyclerView
         val game = gameList?.get(position)
 
         if (game != null) {
-            holder.tvGameDate.text = game.gameDate
-            holder.tvGameName.text = game.gameName
-            holder.tvWinnerMovieTitle.text= game.gameWinnerId.toString()
+            holder.gameDateTv.text = game.gameDate.
+            holder.gameNameTv.text = game.gameName
+            holder.winnerMovieTitleTv.text= game.gameWinnerId.toString()
         }
 
 

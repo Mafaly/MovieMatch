@@ -42,7 +42,7 @@ class MovieDescriptionDialog : DialogFragment() {
             MovieGenre.getGenreNames(movieData.genre, requireContext()).joinToString(", ")
         Glide.with(this)
             .load(BuildConfig.TMDB_IMAGE_URL + movieData.posterPath)
-            .into(binding.moviePoster)
+            .into(binding.moviePosterIv)
 
         binding.movieOverview.text = movieData.overview
 

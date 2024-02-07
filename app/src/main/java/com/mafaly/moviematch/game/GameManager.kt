@@ -13,8 +13,10 @@ import com.mafaly.moviematch.services.DuelService
 import com.mafaly.moviematch.services.GameService
 import com.mafaly.moviematch.services.MovieService
 import com.mafaly.moviematch.views.MovieDuelActivity
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -72,6 +74,16 @@ object GameManager {
         val appDatabase = AppDatabase.getInstance(context)
         return appDatabase.gameDao().getGameById(gameId)
     }
+    fun getAllGames(context: Context, callback: (List<GameEntity>?) -> Unit) {
+        val appDatabase = AppDatabase.getInstance(context)
+        CoroutineScope(Dispatchers.IO).launch {
+            val list = appDatabase.gameDao().getAllGames()
+            withContext(Dispatchers.Main) {
+                callback(list)
+            }
+        }
+    }
+
 
     private fun generateDuels(context: Context, lifecycleOwner: LifecycleOwner) {
         //TODO get game movies from BDD

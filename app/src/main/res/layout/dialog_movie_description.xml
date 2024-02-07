@@ -12,11 +12,12 @@
         android:background="@color/black" />
     <!-- Movie Poster -->
     <ImageView
-        android:id="@+id/moviePoster"
-        android:layout_width="120dp"
+        android:id="@+id/movie_poster_iv"
+        android:layout_width="128dp"
         android:layout_height="180dp"
         android:layout_marginTop="64dp"
         android:paddingLeft="8dp"
+        android:paddingRight="8dp"
         android:src="@drawable/poster" />
 
     <!-- Movie Description Title -->
@@ -25,17 +26,17 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="64dp"
-        android:layout_toEndOf="@id/moviePoster"
+        android:layout_toEndOf="@id/movie_poster_iv"
         android:orientation="vertical"
         android:padding="8dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_marginBottom="16dp"
             android:text="@string/details_du_film"
-            android:textSize="18sp"
+            android:fontFamily="@font/inter"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -46,6 +47,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
                 android:text="@string/name_label"
                 android:textStyle="bold" />
 
@@ -54,7 +56,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Apocalypse Now Final Cut" />
+                android:fontFamily="@font/inter"
+                android:text="@string/apocalypse_now_final_cut" />
         </LinearLayout>
 
         <!-- Release Year Detail Pair -->
@@ -66,6 +69,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
                 android:text="@string/release_label"
                 android:textStyle="bold" />
 
@@ -74,7 +78,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="1979" />
+                android:fontFamily="@font/inter"
+                android:text="@string/_1979" />
         </LinearLayout>
         <!-- Genre Detail  -->
         <LinearLayout
@@ -85,6 +90,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
                 android:text="@string/genre_label"
                 android:textStyle="bold" />
 
@@ -93,7 +99,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="Guerre" />
+                android:fontFamily="@font/inter"
+                android:text="@string/guerre" />
         </LinearLayout>
 
     </LinearLayout>
@@ -102,8 +109,9 @@
         android:id="@+id/movieDescriptionTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/moviePoster"
+        android:layout_below="@id/movie_poster_iv"
         android:padding="16dp"
+        android:fontFamily="@font/inter"
         android:text="@string/description_label"
         android:textSize="18sp"
         android:textStyle="bold" />
@@ -114,6 +122,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/movieDescriptionTitle"
+        android:fontFamily="@font/inter"
         android:padding="16dp"
         android:text="@string/description_text" />
 

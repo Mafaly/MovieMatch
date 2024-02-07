@@ -11,6 +11,7 @@ import androidx.fragment.app.setFragmentResult
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.mafaly.moviematch.model.MovieDAO
+import com.mafaly.moviematch.repos.MovieGenre
 import com.mafaly.moviematchduel.BuildConfig
 import com.mafaly.moviematchduel.databinding.SelectMovieBinding
 
@@ -19,6 +20,13 @@ class MovieSelectionDialogFragment : DialogFragment() {
 
     private var _binding: SelectMovieBinding? = null
     private val binding get() = _binding!!
+
+    override fun onStart() {
+        super.onStart()
+        val width = (resources.displayMetrics.widthPixels)
+        val height = (resources.displayMetrics.heightPixels * 0.55).toInt()
+        dialog?.window?.setLayout(width, height)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -37,16 +45,16 @@ class MovieSelectionDialogFragment : DialogFragment() {
         val movieData = Gson().fromJson(movieJson, MovieDAO::class.java)
         Log.d("MovieSelectionDialog", movieData.toString())
 
-        binding.textViewMovieTitle.text = movieData.title
-        Glide.with(this).load(BuildConfig.TMDB_IMAGE_URL + movieData.posterPath)
-            //.placeholder(R.drawable.placeholder) // Replace with your placeholder image
-            //.error(R.drawable.error_image) // Replace with your error image
-            .into(binding.imageMoviePoster)
+        binding.movieTitleTv.text = movieData.title
+        binding.movieGenreTv.text =  MovieGenre.getGenreNames(movieData.genre, requireContext()).joinToString(", ")
 
-        binding.buttonNo.setOnClickListener {
+        Glide.with(this).load(BuildConfig.TMDB_IMAGE_URL + movieData.posterPath)
+            .into(binding.moviePosterIv)
+
+        binding.noButton.setOnClickListener {
             dismiss()
         }
-        binding.buttonYes.setOnClickListener {
+        binding.yesButton.setOnClickListener {
             setFragmentResult(
                 "movie_selection_confirm._dialog_selectedMovie",
                 bundleOf("bundleKey" to movieJson)

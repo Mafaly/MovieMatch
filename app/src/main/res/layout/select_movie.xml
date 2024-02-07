@@ -2,7 +2,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp"
+    android:paddingTop="24dp"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp"
+    android:paddingBottom="0dp"
     android:orientation="vertical">
 
     <TextView
@@ -10,41 +13,52 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="@string/select_film"
-        android:textSize="36sp"
+        android:fontFamily="@font/galada"
+        android:textSize="28sp"
         android:textStyle="bold" />
 
     <!-- Horizontal LinearLayout to contain the movie poster and the movie title -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="340dp"
+        android:layout_height="302dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <!-- Movie Poster ImageView -->
         <ImageView
-            android:id="@+id/imageMoviePoster"
+            android:id="@+id/movie_poster_iv"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:contentDescription="Movie poster"
+            android:contentDescription="@string/movie_poster"
             android:src="@drawable/poster" />
 
         <!-- LinearLayout for Movie Title TextView -->
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="340dp"
+            android:layout_height="wrap_content"
             android:layout_weight="2"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:gravity="center_vertical"
             android:orientation="vertical">
 
             <!-- Movie Title TextView -->
             <TextView
-                android:id="@+id/textViewMovieTitle"
+                android:id="@+id/movie_title_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Aquaman and the Lost Kingdom"
-                android:textSize="18sp" />
+                android:text="@string/aquaman_and_the_lost_kingdom"
+                android:fontFamily="@font/inter"
+                android:textSize="24sp" />
+            <!-- Movie Title TextView -->
+            <TextView
+                android:id="@+id/movie_genre_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/action"
+                android:fontFamily="@font/inter"
+                android:textSize="15sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -52,23 +66,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="24dp">
+        android:gravity="center_horizontal">
 
         <Button
-            android:id="@+id/buttonNo"
+            android:id="@+id/no_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:text="No"
+            android:text="@string/yes"
             android:backgroundTint="@color/mainBlue"
             />
 
         <Button
-            android:id="@+id/buttonYes"
+            android:id="@+id/yes_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Yes"
+            android:text="@string/no"
             android:backgroundTint="@color/mainBlue"/>
     </LinearLayout>
 </LinearLayout>

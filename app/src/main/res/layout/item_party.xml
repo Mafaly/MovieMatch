@@ -5,7 +5,6 @@
     android:padding="8dp">
 
     <LinearLayout
-        android:id="@+id/list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -14,14 +13,13 @@
 
         <!-- Date TextView -->
         <TextView
-            android:id="@+id/tvGameDate"
+            android:id="@+id/game_date_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/_04_03"
             android:textSize="16sp"
             android:textColor="@color/black"
-            android:textStyle="bold"
-
+            android:fontFamily="@font/inter"
             android:layout_marginEnd="16dp"/>
 
         <!-- Vertical LinearLayout for Participants and Movie Title -->
@@ -45,11 +43,12 @@
                     android:layout_marginEnd="8dp" />
 
                 <TextView
-                    android:id="@+id/tvGameName"
+                    android:id="@+id/game_name_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter"
                     android:text="@string/joshua_henri_kevin_steph"
-                    android:textSize="14sp"
+                    android:textSize="16sp"
                     android:textColor="@color/black" />
             </LinearLayout>
 
@@ -69,12 +68,12 @@
                     android:layout_marginEnd="8dp" />
 
                 <TextView
-                    android:id="@+id/tvWinnerMovieTitle"
+                    android:id="@+id/winner_movie_title_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/batman_the_dark_knight"
-                    android:textStyle="bold"
                     android:textSize="16sp"
+                    android:fontFamily="@font/inter"
                     android:textColor="@color/black" />
             </LinearLayout>
 

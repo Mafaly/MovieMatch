@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     android:background="@color/white">
     <LinearLayout
-        android:id="@+id/Parties"
+        android:id="@+id/parties_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -11,7 +11,7 @@
         android:gravity="center_horizontal">
 
         <TextView
-            android:id="@+id/tvPreviousParties"
+            android:id="@+id/previous_parties_tv"
             android:layout_height="match_parent"
             android:layout_width="wrap_content"
             android:layout_margin="6dp"
@@ -28,10 +28,10 @@
         />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvPartiesList"
+        android:id="@+id/parties_list_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/Parties"
+        android:layout_below="@id/parties_ll"
         android:scrollbars="vertical" />
 </RelativeLayout>
 

@@ -28,11 +28,11 @@ class GameHistoryBottomSheetFragment : BottomSheetDialogFragment() {
 
         val context = context ?: return
 
-        val rvPartiesList: RecyclerView = view.findViewById(R.id.rvPartiesList)
+        val rvPartiesList: RecyclerView = view.findViewById(R.id.parties_list_rv)
         rvPartiesList.layoutManager = LinearLayoutManager(context)
         rvPartiesList.setHasFixedSize(true)
 
-        GameManager.getInstance().getAllGames(context) { gameList ->
+        GameManager.getAllGames(context) { gameList ->
             if (!gameList.isNullOrEmpty()) {
                 rvPartiesList.adapter = GameHistoryAdapter(gameList)
             } else {
