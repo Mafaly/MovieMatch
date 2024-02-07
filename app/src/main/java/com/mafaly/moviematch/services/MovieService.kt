@@ -13,8 +13,18 @@ class MovieService {
         suspend fun getMovieById(context: Context, movieId: Long): MovieEntity? {
             return withContext(Dispatchers.IO) {
                 val appDatabase = AppDatabase.getInstance(context)
-                val deferredDuel = async { appDatabase.movieDao().getMovieById(movieId) }
-                deferredDuel.await()
+                val deferredMovie = async { appDatabase.movieDao().getMovieById(movieId) }
+                deferredMovie.await()
+            }
+        }
+
+        suspend fun getMoviesForGame(context: Context, gameId: Long): List<MovieEntity> {
+            return withContext(Dispatchers.IO) {
+                val appDatabase = AppDatabase.getInstance(context)
+                val moviesGame = appDatabase.GameMoviesDao().getMoviesForGame(gameId)
+                val moviesIds = moviesGame.map { it.movieId }
+                val deferredMovies = async { appDatabase.movieDao().getMoviesByIds(moviesIds) }
+                deferredMovies.await()
             }
         }
 

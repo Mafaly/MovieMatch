@@ -283,8 +283,8 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
     }
 
     private fun startGame() {
-        // TODO: Dismiss l'activity et lance le jeu en passant dans l'intent l'id du jeu
         finish()
+        GameManager.handleGameStep(this, this)
     }
 
     override fun confirmSelection() {

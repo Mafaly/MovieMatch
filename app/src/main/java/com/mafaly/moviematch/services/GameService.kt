@@ -13,16 +13,16 @@ class GameService {
         suspend fun getGameById(context: Context, gameId: Long): GameEntity {
             return withContext(Dispatchers.IO) {
                 val appDatabase = AppDatabase.getInstance(context)
-                val deferredDuel = async { appDatabase.gameDao().getGameById(gameId) }
-                deferredDuel.await()
+                val deferredGame = async { appDatabase.gameDao().getGameById(gameId) }
+                deferredGame.await()
             }
         }
 
         suspend fun getLastGame(context: Context): GameEntity? {
             return withContext(Dispatchers.IO) {
                 val appDatabase = AppDatabase.getInstance(context)
-                val deferredDuel = async { appDatabase.gameDao().getLastGame() }
-                deferredDuel.await()
+                val deferredGame = async { appDatabase.gameDao().getLastGame() }
+                deferredGame.await()
             }
         }
 
