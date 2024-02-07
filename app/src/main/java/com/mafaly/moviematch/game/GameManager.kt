@@ -8,7 +8,6 @@ import androidx.lifecycle.lifecycleScope
 import com.mafaly.moviematch.db.AppDatabase
 import com.mafaly.moviematch.db.entities.DuelEntity
 import com.mafaly.moviematch.db.entities.GameEntity
-import com.mafaly.moviematch.db.entities.MovieEntity
 import com.mafaly.moviematch.services.DuelService
 import com.mafaly.moviematch.services.GameService
 import com.mafaly.moviematch.services.MovieService
@@ -87,37 +86,6 @@ object GameManager {
     private fun getGameById(gameId: Long, context: Context): GameEntity {
         val appDatabase = AppDatabase.getInstance(context)
         return appDatabase.gameDao().getGameById(gameId)
-    }
-
-    private fun generateDuels(context: Context, lifecycleOwner: LifecycleOwner) {
-        //TODO get game movies from BDD
-        val movies = generateSampleMovieList()
-        lifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-            for (movie in movies) {
-                MovieService.insertMovie(context, movie)
-            }
-
-            var moviesLeft = movies.size
-            var duelIndex = 0
-            while (duelIndex != movies.size) {
-                if (moviesLeft >= 2) {
-                    val movie1 = movies[duelIndex]
-                    val movie2 = movies[duelIndex + 1]
-                    val duel = DuelEntity(
-                        0,
-                        1,
-                        movie1.id,
-                        movie2.id,
-                        1,
-                        null
-                    )
-
-                    DuelService.insertDuel(context, duel)
-                    duelIndex += 2
-                    moviesLeft -= 2
-                }
-            }
-        }
     }
 
     fun finishDuel(context: Context, lifecycleOwner: LifecycleOwner, duelId: Long, winnerId: Long) {
