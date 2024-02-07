@@ -69,5 +69,8 @@
     <string name="yes">Oui</string>
     <string name="no">Non</string>
     <string name="reset">Réinitialiser</string>
+    <string name="duel_number">Duel n°%1$s</string>
+    <string name="random_choice">Choix aléatoire</string>
+    <string name="vote">Voter</string>
 
 </resources>
