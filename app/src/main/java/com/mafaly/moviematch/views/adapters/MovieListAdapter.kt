@@ -56,14 +56,17 @@ class MovieListAdapter(
         // formatting the date
         val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         val outputFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
-        val date = LocalDate.parse(movie.year, inputFormatter)
-        val formattedDate = date.format(outputFormatter)
-        val isReleased = date.isBefore(LocalDate.now())
-        holder.movieYearTv.text =
-            if (isReleased)
-                String.format(context.resources.getString(R.string.released_on), formattedDate)
-            else String.format(context.resources.getString(R.string.releases_on), formattedDate)
+        Log.d("MovieListAdapter", "Movie title: ${movie.title} movie id: ${movie.id}")
+        if (movie.year != "") {
+            val date = LocalDate.parse(movie.year, inputFormatter)
+            val formattedDate = date.format(outputFormatter)
+            val isReleased = date.isBefore(LocalDate.now())
+            holder.movieYearTv.text =
+                if (isReleased)
+                    String.format(context.resources.getString(R.string.released_on), formattedDate)
+                else String.format(context.resources.getString(R.string.releases_on), formattedDate)
 
+        }
         holder.movieGenreTv.text = movie.genre.joinToString(", ")
         holder.itemView.setOnClickListener {
             onClickHandler.displayMovieSelectionConfirmationDialog(movie)
