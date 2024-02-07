@@ -49,9 +49,13 @@ object GameManager {
         return currentGame
     }
 
-    fun getAllGames(context: Context, lifecycleOwner: LifecycleOwner, callback: (List<GameEntity>?) -> Unit) {
-        lifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-            callback(GameService.getAllGames(context))
+    fun getAllGames(context: Context, callback: (List<GameEntity>?) -> Unit) {
+        val appDatabase = AppDatabase.getInstance(context)
+        CoroutineScope(Dispatchers.IO).launch {
+            val list = appDatabase.gameDao().getAllGames()
+            withContext(Dispatchers.Main) {
+                callback(list)
+            }
         }
     }
 
