@@ -1,19 +1,19 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="24dp"
+    android:background="@color/windowBackground"
+    android:orientation="vertical"
     android:paddingLeft="24dp"
+    android:paddingTop="24dp"
     android:paddingRight="24dp"
-    android:paddingBottom="0dp"
-    android:orientation="vertical">
+    android:paddingBottom="0dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="@string/select_film"
         android:fontFamily="@font/galada"
+        android:text="@string/select_film"
         android:textSize="28sp"
         android:textStyle="bold" />
 
@@ -38,26 +38,26 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
             android:gravity="center_vertical"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
 
             <!-- Movie Title TextView -->
             <TextView
                 android:id="@+id/movie_title_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/aquaman_and_the_lost_kingdom"
                 android:fontFamily="@font/inter"
+                android:text="@string/aquaman_and_the_lost_kingdom"
                 android:textSize="24sp" />
             <!-- Movie Title TextView -->
             <TextView
                 android:id="@+id/movie_genre_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/action"
                 android:fontFamily="@font/inter"
+                android:text="@string/action"
                 android:textSize="15sp" />
         </LinearLayout>
     </LinearLayout>
@@ -68,21 +68,22 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/yes_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:text="@string/yes"
             android:backgroundTint="@color/mainBlue"
-            />
+            android:text="@string/yes"
+            android:textColor="@color/white" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/no_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/mainBlue"
             android:text="@string/no"
-            android:backgroundTint="@color/mainBlue"/>
+            android:textColor="@color/white" />
     </LinearLayout>
 </LinearLayout>
 
