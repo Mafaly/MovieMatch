@@ -32,7 +32,7 @@ class GameHistoryBottomSheetFragment : BottomSheetDialogFragment() {
         rvPartiesList.layoutManager = LinearLayoutManager(context)
         rvPartiesList.setHasFixedSize(true)
 
-        GameManager.getAllGames(context) { gameList ->
+        GameManager.getAllGames(context, this) { gameList ->
             if (!gameList.isNullOrEmpty()) {
                 rvPartiesList.adapter = GameHistoryAdapter(gameList)
             } else {
