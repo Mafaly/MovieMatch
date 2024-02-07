@@ -2,16 +2,20 @@ package com.mafaly.moviematch.game
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import com.mafaly.moviematch.db.AppDatabase
 import com.mafaly.moviematch.db.entities.DuelEntity
 import com.mafaly.moviematch.db.entities.GameEntity
 import com.mafaly.moviematch.services.DuelService
 import com.mafaly.moviematch.services.GameService
 import com.mafaly.moviematch.services.MovieService
 import com.mafaly.moviematch.views.MovieDuelActivity
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -54,6 +58,34 @@ object GameManager {
 
     fun getCurrentGame(): GameEntity? {
         return currentGame
+    }
+
+    fun getAllGames(context: Context, callback: (List<GameEntity>?) -> Unit) {
+        val appDatabase = AppDatabase.getInstance(context)
+        CoroutineScope(Dispatchers.IO).launch {
+            val list = appDatabase.gameDao().getAllGames()
+            withContext(Dispatchers.Main) {
+                callback(list)
+            }
+        }
+    }
+
+    private fun saveNewGame(
+        game: GameEntity,
+        context: Context,
+        lifecycleOwner: LifecycleOwner
+    ) {
+        val appDatabase = AppDatabase.getInstance(context)
+        lifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+            val insertedId = appDatabase.gameDao().insertNewGame(game)
+            currentGame = appDatabase.gameDao().getGameById(insertedId)
+            Log.d("GameManager", "Game inserted with id: $insertedId")
+        }
+    }
+
+    private fun getGameById(gameId: Long, context: Context): GameEntity {
+        val appDatabase = AppDatabase.getInstance(context)
+        return appDatabase.gameDao().getGameById(gameId)
     }
 
     fun finishDuel(context: Context, lifecycleOwner: LifecycleOwner, duelId: Long, winnerId: Long) {

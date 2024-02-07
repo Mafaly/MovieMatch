@@ -1,0 +1,87 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#D3D3D3"
+    android:padding="8dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- Date TextView -->
+        <TextView
+            android:id="@+id/game_date_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/_04_03"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/inter"
+            android:layout_marginEnd="16dp"/>
+
+        <!-- Vertical LinearLayout for Participants and Movie Title -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Participants TextView -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:src="@drawable/movie"
+                    android:contentDescription="@string/participants"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:id="@+id/game_name_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/inter"
+                    android:text="@string/joshua_henri_kevin_steph"
+                    android:textSize="16sp"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <!-- Movie Title TextView -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="4dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_trophee"
+                    android:contentDescription="@string/winner"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:id="@+id/winner_movie_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/batman_the_dark_knight"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/inter"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
+
+
+
+
