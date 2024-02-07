@@ -1,10 +1,16 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.MovieMatchDuel" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/blue</item>
         <item name="colorSecondary">@color/red</item>
+        <item name="buttonBarButtonStyle">@style/ButtonBarButton</item>
     </style>
+
+    <item name="inputBackground" type="color">@color/lightgrey</item>
+    <item name="inputHint" type="color">@color/kindaDarkGrey</item>
+    <item name="windowBackground" type="color">@color/white</item>
+    <item name="secondaryBackground" type="color">@color/white</item>
 
     <style name="Theme.MovieMatch" parent="Base.Theme.MovieMatchDuel" />
 </resources>

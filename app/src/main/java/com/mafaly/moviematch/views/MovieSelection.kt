@@ -7,17 +7,17 @@ import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.gson.Gson
 import com.mafaly.moviematch.di.injectModuleDependencies
 import com.mafaly.moviematch.di.parseConfigurationAndAddItToInjectionModules
@@ -47,9 +47,10 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
     private lateinit var genresChipGroup: ChipGroup
     private lateinit var watchProviderChipGroup: ChipGroup
     private lateinit var searchEditText: EditText
-    private lateinit var searchWithFilterButton: Button
-    private lateinit var clearFiltersImageButton: ImageButton
+    private lateinit var searchWithFilterButton: MaterialButton
+    private lateinit var clearFiltersImageButton: MaterialButton
     private lateinit var selectionConfirmationFAB: FloatingActionButton
+    private lateinit var progressIndicator: LinearProgressIndicator
 
     @SuppressLint("DiscouragedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,6 +90,10 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
         searchWithFilterButton = findViewById(R.id.search_with_filters_btn)
         clearFiltersImageButton = findViewById(R.id.clear_filters_btn)
         selectionConfirmationFAB = findViewById(R.id.confirm_selection_fab)
+        progressIndicator = findViewById(R.id.confirmed_selection_lpi)
+
+        progressIndicator.hide()
+        progressIndicator.isIndeterminate = true
 
         setupSearchBehavior()
         setupFiltersBehavior()
@@ -283,11 +288,12 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
     }
 
     private fun startGame() {
-        // TODO: Dismiss l'activity et lance le jeu en passant dans l'intent l'id du jeu
+        GameManager.handleGameStep(this, this)
         finish()
     }
 
     override fun confirmSelection() {
+        progressIndicator.show()
         movieViewModel.endSelectionProcessObservable.observe(this@MovieSelection) { endSelection ->
             if (endSelection) {
                 startGame()

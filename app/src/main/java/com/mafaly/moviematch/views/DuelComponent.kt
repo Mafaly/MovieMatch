@@ -6,6 +6,8 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.bumptech.glide.Glide
+import com.mafaly.moviematchduel.BuildConfig
 import com.mafaly.moviematchduel.R
 
 class DuelComponent @JvmOverloads constructor(
@@ -16,7 +18,7 @@ class DuelComponent @JvmOverloads constructor(
 
     private val imageView: ImageView
     private val titleTextView: TextView
-    private val choiceButton: Button
+    val choiceButton: Button
 
     init {
         inflate(context, R.layout.concurrent_duel_component, this)
@@ -27,7 +29,10 @@ class DuelComponent @JvmOverloads constructor(
     }
 
     fun setMovieDetails(movieTitle: String, moviePosterPath: String?) {
-        imageView.setImageResource(R.drawable.poster_film_land)
+        Glide.with(this)
+            .load(BuildConfig.TMDB_IMAGE_URL + moviePosterPath)
+            //.error(R.drawable.error_image) // Ajoutez une image d'erreur si le chargement échoue
+            .into(imageView)
         titleTextView.text = movieTitle
     }
 }

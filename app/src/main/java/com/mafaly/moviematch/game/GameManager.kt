@@ -25,17 +25,21 @@ object GameManager {
     private var currentGame: GameEntity? = null
 
     fun startNewGame(
+        context: Context,
+        lifecycleOwner: LifecycleOwner,
         gameName: String,
         gameMovieCount: Int,
         gameTimePerDuel: Int,
-        context: Context,
-        lifecycleOwner: LifecycleOwner
     ) {
         val gameDate = LocalDate.now()
         val formattedDate = gameDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 
         val newGame = GameEntity(0, gameName, formattedDate, gameMovieCount, gameTimePerDuel, null)
-        saveNewGame(newGame, context, lifecycleOwner)
+
+        lifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+            GameService.insertNewGame(context, newGame)
+            currentGame = GameService.getLastGame(context)
+        }
     }
 
     fun cancelCurrentGame() {
@@ -57,6 +61,16 @@ object GameManager {
         return currentGame
     }
 
+    fun getAllGames(context: Context, callback: (List<GameEntity>?) -> Unit) {
+        val appDatabase = AppDatabase.getInstance(context)
+        CoroutineScope(Dispatchers.IO).launch {
+            val list = appDatabase.gameDao().getAllGames()
+            withContext(Dispatchers.Main) {
+                callback(list)
+            }
+        }
+    }
+
     private fun saveNewGame(
         game: GameEntity,
         context: Context,
@@ -74,16 +88,6 @@ object GameManager {
         val appDatabase = AppDatabase.getInstance(context)
         return appDatabase.gameDao().getGameById(gameId)
     }
-    fun getAllGames(context: Context, callback: (List<GameEntity>?) -> Unit) {
-        val appDatabase = AppDatabase.getInstance(context)
-        CoroutineScope(Dispatchers.IO).launch {
-            val list = appDatabase.gameDao().getAllGames()
-            withContext(Dispatchers.Main) {
-                callback(list)
-            }
-        }
-    }
-
 
     private fun generateDuels(context: Context, lifecycleOwner: LifecycleOwner) {
         //TODO get game movies from BDD
@@ -120,40 +124,73 @@ object GameManager {
         lifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             val duel = DuelService.getDuel(context, duelId)
 
-            if (duel != null) {
-                duel.duelWinnerId = winnerId
-                DuelService.updateDuel(context, duel)
-            }
+            duel.duelWinnerId = winnerId
+            DuelService.updateDuel(context, duel)
+
+            handleGameStep(context, lifecycleOwner)
         }
     }
 
     fun handleGameStep(context: Context, lifecycleOwner: LifecycleOwner) {
 
         lifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-            //val lastGame = GameService.getLastGame(context)
-            val lastGame = GameService.getGameById(context, 1)
-            if (lastGame != null) {
-                var duels = DuelService.getDuelsForGame(context, lastGame.id)
+            if (currentGame != null) {
+                var duels = DuelService.getDuelsForGame(context, currentGame!!.id)
 
                 // game does not have duels programmed
                 if (duels.isEmpty()) {
-                    generateDuels(context, lifecycleOwner)
-                    duels = DuelService.getDuelsForGame(context, lastGame.id)
+                    generateFirstRound(context)
+                    duels = DuelService.getDuelsForGame(context, currentGame!!.id)
                 }
 
-                // TODO
                 // game has duels programmed so next duel is launched
                 // get the last round not completed
-
                 val lastRoundDuels = filterLastRoundDuels(duels)
 
-                // Suppose you have the information needed to start MovieDuelActivity, such as the duelId
-                val duelIdToDisplay = lastRoundDuels.firstOrNull()?.id
+                if (isRoundFinished(lastRoundDuels)) {
+                    // the round is finished so let's generate the next round
+                    generateNewRound(context, lastRoundDuels)
+                } else {
+                    // the round is not finished so let's start the next duel
+                    val duelIdToDisplay = lastRoundDuels.firstOrNull { it.duelWinnerId == null }?.id
 
-                val movieDuelIntent = Intent(context, MovieDuelActivity::class.java)
-                movieDuelIntent.putExtra("duelId", duelIdToDisplay)
-                context.startActivity(movieDuelIntent)
+                    val movieDuelIntent = Intent(context, MovieDuelActivity::class.java)
+                    movieDuelIntent.putExtra("duelId", duelIdToDisplay)
+                    context.startActivity(movieDuelIntent)
+                }
             }
+        }
+    }
+
+    private suspend fun generateFirstRound(context: Context) {
+        val currentGame = currentGame ?: return
+        val movies = MovieService.getMoviesForGame(context, currentGame.id)
+
+        if (movies.size >= 2) {
+            var duelIndex = 0
+            while (duelIndex < movies.size - 1) {
+                val movie1 = movies[duelIndex]
+                val movie2 = movies[duelIndex + 1]
+                val duel = DuelEntity(
+                    0,
+                    currentGame.id,
+                    movie1.id,
+                    movie2.id,
+                    1,
+                    null
+                )
+
+                DuelService.insertDuel(context, duel)
+                duelIndex += 2
+            }
+        }
+    }
+
+    private suspend fun generateNewRound(context: Context, duels: List<DuelEntity>) {
+        if (duels.size == 1) {
+            // launch winner layout
+        } else if (duels.size >= 2) {
+            //TODO generate new round
         }
     }
 
@@ -162,48 +199,7 @@ object GameManager {
         return duels.filter { it.duelTurnNumber == maxTurnNumber }
     }
 
-    private fun generateSampleMovieList(): List<MovieEntity> {
-        val movieList = mutableListOf<MovieEntity>()
-        movieList.add(
-            MovieEntity(
-                1,
-                "Movie 1",
-                "2022",
-                listOf(28, 12),
-                "path/to/poster1.jpg",
-                "hello"
-            )
-        )
-        movieList.add(
-            MovieEntity(
-                2,
-                "Movie 2",
-                "2022",
-                listOf(28, 12),
-                "path/to/poster2.jpg",
-                "good morning"
-            )
-        )
-        movieList.add(
-            MovieEntity(
-                3,
-                "Movie 3",
-                "2022",
-                listOf(28, 12),
-                "path/to/poster3.jpg",
-                "good afternoon"
-            )
-        )
-        movieList.add(
-            MovieEntity(
-                4,
-                "Movie 4",
-                "2022",
-                listOf(28, 12),
-                "path/to/poster4.jpg",
-                "good night"
-            )
-        )
-        return movieList
+    private fun isRoundFinished(duels: List<DuelEntity>): Boolean {
+        return duels.all { it.duelWinnerId != null }
     }
 }

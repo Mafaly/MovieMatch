@@ -17,6 +17,9 @@ interface MovieDao {
     @Query("SELECT * FROM movie_entity WHERE id = :movieId")
     fun getMovieById(movieId: Long): MovieEntity?
 
+    @Query("SELECT * FROM movie_entity WHERE id IN (:movieIds)")
+    fun getMoviesByIds(movieIds: List<Long>): List<MovieEntity>
+
     @Query("DELETE FROM movie_entity")
     fun deleteAllMovies()
 

@@ -5,6 +5,11 @@
     <color name="blue">#1F799B</color>
     <color name="red">#D05D46</color>
     <color name="mainBlue">#FF1F799B</color>
-    <color name="input_bg">#F0F0F0</color>
+    <color name="lightgrey">#F0F0F0</color>
+    <color name="kindaDarkGrey">#565656</color>
     <color name="grey">#727272</color>
+    <color name="fakeBlack">#263238</color>
+    <color name="deepestBlue">#030637</color>
+    <color name="lessDeepBlue">#720455</color>
+    <color name="deepButLightBlue">#910A67</color>
 </resources>

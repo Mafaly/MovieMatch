@@ -21,8 +21,8 @@ class DuelService {
         suspend fun getDuelsForGame(context: Context, gameId: Long): List<DuelEntity> {
             return withContext(Dispatchers.IO) {
                 val appDatabase = AppDatabase.getInstance(context)
-                val deferredDuel = async { appDatabase.duelDao().getDuelsForGame(gameId) }
-                deferredDuel.await()
+                val deferredDuels = async { appDatabase.duelDao().getDuelsForGame(gameId) }
+                deferredDuels.await()
             }
         }
 
