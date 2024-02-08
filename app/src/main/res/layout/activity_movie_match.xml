@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/windowBackground">
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
@@ -34,10 +35,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:text="@string/game"
-                android:fontFamily="@font/inter"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -47,10 +48,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:autofillHints=""
+                android:fontFamily="@font/inter"
                 android:hint="@string/default_game_name"
                 android:inputType="text"
                 android:padding="16dp"
-                android:fontFamily="@font/inter"
                 android:text="@string/default_game_name"
                 android:textSize="16sp" />
         </LinearLayout>
@@ -70,9 +71,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
+                android:fontFamily="@font/inter"
                 android:text="@string/options"
                 android:textSize="20sp"
-                android:fontFamily="@font/inter"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -86,8 +87,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/inter"
-                    android:textSize="16sp"
-                    android:text="@string/films_dans_le_tournoi" />
+                    android:text="@string/films_dans_le_tournoi"
+                    android:textSize="16sp" />
 
                 <Spinner
                     android:id="@+id/number_films_s"
@@ -108,8 +109,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/inter"
-                    android:textSize="16sp"
-                    android:text="@string/temps_par_duel_sec" />
+                    android:text="@string/temps_par_duel_sec"
+                    android:textSize="16sp" />
 
                 <EditText
                     android:id="@+id/time_per_duel_et"
@@ -132,9 +133,10 @@
             android:layout_marginTop="90dp"
             android:layout_marginEnd="32dp"
             android:backgroundTint="@color/mainBlue"
-            android:textSize="16sp"
             android:fontFamily="@font/inter"
-            android:text="@string/start" />
+            android:text="@string/start"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
     </RelativeLayout>
 
     <Button
@@ -142,10 +144,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/rectangular_button"
-        android:text="@string/parties_precedentes"
-        app:layout_anchor="@+id/relativeLayout"
         android:fontFamily="@font/galada"
+        android:text="@string/parties_precedentes"
+        android:textColor="@color/white"
         android:textSize="28sp"
+        app:layout_anchor="@+id/relativeLayout"
         app:layout_anchorGravity="bottom|center" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
