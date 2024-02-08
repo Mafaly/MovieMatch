@@ -43,5 +43,12 @@ class GameService {
                 }
             }
         }
+
+        suspend fun updateGame(context: Context, gameEntity: GameEntity) {
+            withContext(Dispatchers.IO) {
+                val appDatabase = AppDatabase.getInstance(context)
+                appDatabase.gameDao().updateGame(gameEntity)
+            }
+        }
     }
 }
