@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import com.mafaly.moviematch.db.entities.GameEntity
 
 @Dao
@@ -19,6 +20,9 @@ interface GameDao {
 
     @Insert
     fun insertNewGame(game: GameEntity): Long
+
+    @Update
+    fun updateGame(game: GameEntity)
 
     @Delete
     fun deleteGame(game: GameEntity)

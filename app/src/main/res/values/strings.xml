@@ -69,13 +69,11 @@
     <string name="yes">Oui</string>
     <string name="no">Non</string>
     <string name="reset">Réinitialiser</string>
-    <string name="duel_number">Duel n°%1$s</string>
     <string name="random_choice">Choix aléatoire</string>
     <string name="vote">Voter</string>
-
     <string name="popular">Populaires</string>
     <string name="upcoming">upcoming</string>
-    <string name="default_game_name">Game Number 1</string>
+    <string name="default_game_name">Partie du</string>
     <string name="movie_match_logo">Movie Match Logo</string>
     <string name="game">Nom du jeu :</string>
     <string name="participants">Participants</string>
@@ -89,5 +87,5 @@
     <string name="guerre">Guerre</string>
     <string name="apocalypse_now_final_cut">Apocalypse Now Final Cut</string>
     <string name="_1979">1979</string>
-
+    <string name="turn_number">Tour n°%1$d</string>
 </resources>
