@@ -12,6 +12,7 @@ import com.mafaly.moviematch.services.DuelService
 import com.mafaly.moviematch.services.GameService
 import com.mafaly.moviematch.services.MovieService
 import com.mafaly.moviematch.views.MovieDuelActivity
+import com.mafaly.moviematch.views.MovieWinnerActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -75,7 +76,10 @@ object GameManager {
         lifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             if (currentGame != null) {
                 if (currentGame!!.gameWinnerId != null) {
-                    //launch winner
+                    val movieWinnerIntent = Intent(context, MovieWinnerActivity::class.java)
+                    movieWinnerIntent.putExtra("movieId", currentGame!!.gameWinnerId)
+                    context.startActivity(movieWinnerIntent)
+
                     Log.d("WINNER", "gameWinnerId : $currentGame!!.gameWinnerId")
 
                     return@launch

@@ -1,5 +1,6 @@
 package com.mafaly.moviematch.views
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -8,6 +9,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.google.gson.Gson
+import com.mafaly.moviematch.model.MovieDAO
+import com.mafaly.moviematch.repos.MovieGenre
 import com.mafaly.moviematch.services.MovieService
 import com.mafaly.moviematchduel.BuildConfig
 import com.mafaly.moviematchduel.R
@@ -40,20 +44,44 @@ class MovieWinnerActivity : AppCompatActivity() {
             descriptionButton = findViewById(R.id.description_button)
             returnHomePageButton = findViewById(R.id.return_home_page_button)
             if (movie != null) {
-                setMovieDetails(movie.movieTitle,movie.moviePosterPath,movie.movieGenre)
+                movie.movieGenre?.let { setMovieDetails(movie.movieTitle,movie.moviePosterPath, it) }
+            }
+
+            if (movie != null) {
+                descriptionButton.setOnClickListener {
+                    val movieDao = movie.toDAO()
+                    displayMovieDetails(movieDao)
+                }
+            }
+
+            returnHomePageButton.setOnClickListener{
+                goToHomePage()
             }
 
         }
     }
 
 
-    private fun setMovieDetails(movieTitle: String, moviePosterPath: String?,movieGenre : List<Int>?) {
+    private fun setMovieDetails(movieTitle: String, moviePosterPath: String?,movieGenre : List<Int>) {
         Glide.with(this)
             .load(BuildConfig.TMDB_IMAGE_URL + moviePosterPath)
-            //.error(R.drawable.error_image) // Ajoutez une image d'erreur si le chargement échoue
             .into(posterImageView)
         movieTitleTv.text = movieTitle
-        movieGenreTv.text=movieGenre.toString()
+        movieGenreTv.text=
+            movieGenre.let { MovieGenre.getGenreNames(movieGenre,this@MovieWinnerActivity).joinToString(", ") }
+    }
+
+    private fun displayMovieDetails(movieData: MovieDAO) {
+        val detailsDialog = MovieDescriptionDialog()
+        val movieJson: String = Gson().toJson(movieData)
+        val args = Bundle()
+        args.putString("movie", movieJson)
+        detailsDialog.arguments = args
+        detailsDialog.show(supportFragmentManager, "MovieDescriptionDialog")
+    }
+    private fun goToHomePage(){
+        val intent = Intent(this, MovieMatchActivity::class.java)
+        startActivity(intent)
     }
 
 }
