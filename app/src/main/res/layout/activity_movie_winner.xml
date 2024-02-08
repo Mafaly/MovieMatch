@@ -12,12 +12,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/galada"
+        android:layout_marginBottom="88dp"
         android:text="@string/et_le_gagnant_est"
         android:textSize="28sp" />
     <ImageView
         android:id="@+id/poster_iv"
-        android:layout_width="168dp"
-        android:layout_height="250dp"
+        android:layout_width="217dp"
+        android:layout_height="303dp"
         android:scaleType="centerCrop"
         android:src="@drawable/poster_film_land"
         android:contentDescription="@string/movie_poster"/>
@@ -39,6 +40,7 @@
         android:fontFamily="@font/inter"
         android:padding="10dp"
         android:text="@string/guerre"
+        android:layout_marginBottom="30dp"
         android:textSize="15sp" />
 
     <Button
