@@ -30,7 +30,7 @@
     <string name="more_details">Plus de détails</string>
     <string name="releases_on">Sortira le %1$s</string>
     <string name="released_on">Sorti le %1$s</string>
-    <string name="selected_movies">Films séléctionnés</string>
+    <string name="selected_movies">Films sélectionnés</string>
     <string name="movies_list">Liste des films</string>
     <string name="search">Rechercher</string>
     <string name="genre_action">Action</string>
@@ -79,7 +79,7 @@
     <string name="participants">Participants</string>
     <string name="winner">Winner</string>
     <string name="batman_the_dark_knight">Batman: The Dark Knight</string>
-    <string name="joshua_henri_kevin_steph">Joshua, Henri, Kevin, Steph,...</string>
+    <string name="joshua_henri_kevin_steph">Joshua, Henri, Kevin, Steph,…</string>
     <string name="_04_03">04/03</string>
     <string name="parties_precedentes">Parties précédentes</string>
     <string name="aquaman_and_the_lost_kingdom">Aquaman and the Lost Kingdom</string>
