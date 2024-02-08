@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/galada"
         android:layout_marginBottom="88dp"
-        android:text="@string/et_le_gagnant_est"
+        android:text="@string/winner_is"
         android:textSize="28sp" />
     <ImageView
         android:id="@+id/poster_iv"
@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/inter"
         android:padding="10dp"
-        android:text="@string/nom_du_film"
+        android:text="@string/film_name"
         android:textSize="24sp" />
 
 
@@ -50,7 +50,7 @@
         android:layout_gravity="center"
         android:background="@drawable/action_button"
         android:fontFamily="@font/inter"
-        android:text="@string/voir_la_description_du_film"
+        android:text="@string/see_description"
         android:layout_margin="16dp"
         android:textSize="16sp"/>
 
@@ -62,7 +62,7 @@
         android:layout_gravity="center"
         android:background="@drawable/action_button"
         android:fontFamily="@font/inter"
-        android:text="@string/retour_l_accueil"
+        android:text="@string/back_to_main_page"
         android:textSize="16sp"/>
 
 

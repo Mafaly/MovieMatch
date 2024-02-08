@@ -146,7 +146,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/rectangular_button"
         android:fontFamily="@font/galada"
-        android:text="@string/parties_precedentes"
+        android:text="@string/previous_matchs"
         android:textColor="@color/white"
         android:textSize="28sp"
         app:layout_anchor="@+id/relativeLayout"
