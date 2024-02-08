@@ -45,17 +45,6 @@ object GameManager {
         currentGame = null
     }
 
-    fun finishCurrentGame(
-        context: Context,
-        lifecycleOwner: LifecycleOwner,
-        gameEntity: GameEntity
-    ) {
-        lifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-            GameService.insertNewGame(context, gameEntity)
-        }
-        currentGame = null
-    }
-
     fun getCurrentGame(): GameEntity? {
         return currentGame
     }
@@ -68,24 +57,6 @@ object GameManager {
                 callback(list)
             }
         }
-    }
-
-    private fun saveNewGame(
-        game: GameEntity,
-        context: Context,
-        lifecycleOwner: LifecycleOwner
-    ) {
-        val appDatabase = AppDatabase.getInstance(context)
-        lifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-            val insertedId = appDatabase.gameDao().insertNewGame(game)
-            currentGame = appDatabase.gameDao().getGameById(insertedId)
-            Log.d("GameManager", "Game inserted with id: $insertedId")
-        }
-    }
-
-    private fun getGameById(gameId: Long, context: Context): GameEntity {
-        val appDatabase = AppDatabase.getInstance(context)
-        return appDatabase.gameDao().getGameById(gameId)
     }
 
     fun finishDuel(context: Context, lifecycleOwner: LifecycleOwner, duelId: Long, winnerId: Long) {
@@ -103,6 +74,13 @@ object GameManager {
 
         lifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             if (currentGame != null) {
+                if (currentGame!!.gameWinnerId != null) {
+                    //launch winner
+                    Log.d("WINNER", "gameWinnerId : $currentGame!!.gameWinnerId")
+
+                    return@launch
+                }
+
                 var duels = DuelService.getDuelsForGame(context, currentGame!!.id)
 
                 // game does not have duels programmed
@@ -117,7 +95,7 @@ object GameManager {
 
                 if (isRoundFinished(lastRoundDuels)) {
                     // the round is finished so let's generate the next round
-                    generateNewRound(context, lastRoundDuels)
+                    generateNewRound(context, lifecycleOwner, lastRoundDuels)
                 } else {
                     // the round is not finished so let's start the next duel
                     val duelIdToDisplay = lastRoundDuels.firstOrNull { it.duelWinnerId == null }?.id
@@ -154,12 +132,42 @@ object GameManager {
         }
     }
 
-    private suspend fun generateNewRound(context: Context, duels: List<DuelEntity>) {
+    private suspend fun generateNewRound(context: Context, lifecycleOwner: LifecycleOwner, duels: List<DuelEntity>) {
+        val currentGame = currentGame ?: return
+
         if (duels.size == 1) {
+            val movieWinnerId = duels.first().duelWinnerId
+            currentGame.gameWinnerId = movieWinnerId
+            GameService.updateGame(context, currentGame)
             // launch winner layout
+            Log.d("WINNER", "movieWinnerId : $movieWinnerId")
         } else if (duels.size >= 2) {
-            //TODO generate new round
+            var duelIndex = 0
+            while (duelIndex < duels.size) {
+                val firstDuel = duels[duelIndex]
+                val newDuel = DuelEntity(
+                    0,
+                    currentGame.id,
+                    firstDuel.duelWinnerId!!,
+                    null,
+                    firstDuel.duelTurnNumber + 1,
+                    null
+                )
+                duelIndex++
+
+                if (duelIndex < duels.size) {
+                    val secondDuel = duels[duelIndex]
+                    newDuel.duelMovie2Id = secondDuel.duelWinnerId
+                    duelIndex++
+
+                    DuelService.insertDuel(context, newDuel)
+                } else {
+                    newDuel.duelWinnerId = newDuel.duelMovie1Id
+                    DuelService.insertDuel(context, newDuel)
+                }
+            }
         }
+        handleGameStep(context, lifecycleOwner)
     }
 
     private fun filterLastRoundDuels(duels: List<DuelEntity>): List<DuelEntity> {

@@ -2,6 +2,7 @@ package com.mafaly.moviematch.services
 
 import android.content.Context
 import com.mafaly.moviematch.db.AppDatabase
+import com.mafaly.moviematch.db.entities.DuelEntity
 import com.mafaly.moviematch.db.entities.GameEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -26,10 +27,25 @@ class GameService {
             }
         }
 
+        suspend fun getAllGames(context: Context): List<GameEntity> {
+            return withContext(Dispatchers.IO) {
+                val appDatabase = AppDatabase.getInstance(context)
+                val deferredGames = async { appDatabase.gameDao().getAllGames() }
+                deferredGames.await()
+            }
+        }
+
         suspend fun insertNewGame(context: Context, gameEntity: GameEntity) {
             withContext(Dispatchers.IO) {
                 val appDatabase = AppDatabase.getInstance(context)
                 appDatabase.gameDao().insertNewGame(gameEntity)
+            }
+        }
+
+        suspend fun updateGame(context: Context, gameEntity: GameEntity) {
+            withContext(Dispatchers.IO) {
+                val appDatabase = AppDatabase.getInstance(context)
+                appDatabase.gameDao().updateGame(gameEntity)
             }
         }
     }

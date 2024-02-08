@@ -22,6 +22,7 @@ class MovieDuelActivity : AppCompatActivity() {
     private lateinit var firstDuelComponent: DuelComponent
     private lateinit var secondDuelComponent: DuelComponent
     private lateinit var randomChoiceButton: Button
+    private lateinit var duelNumberTextView: TextView
     private lateinit var timeLeftTextView: TextView
     private lateinit var countdownTimer: CountDownTimer
 
@@ -47,6 +48,9 @@ class MovieDuelActivity : AppCompatActivity() {
             secondDuelComponent = findViewById(R.id.second_concurrent_component)
             timeLeftTextView = findViewById(R.id.time_left_tv)
             randomChoiceButton = findViewById(R.id.random_choice_button)
+            duelNumberTextView = findViewById(R.id.duel_number_tv)
+
+            duelNumberTextView.text = getString(R.string.turn_number, duel.duelTurnNumber)
 
             if (movie1 != null && movie2 != null) {
                 firstDuelComponent.setMovieDetails(movie1.movieTitle, movie1.moviePosterPath)
@@ -66,20 +70,23 @@ class MovieDuelActivity : AppCompatActivity() {
             }
 
             // Once all the elements are charged, countDownTime initialization
-            countdownTimer = object : CountDownTimer(30000, 1000) {
-                override fun onTick(millisUntilFinished: Long) {
-                    val secondsRemaining = millisUntilFinished / 1000
-                    val countdownText = getString(R.string.countdown_timer_text, secondsRemaining)
-                    timeLeftTextView.text = countdownText
-                }
-
-                override fun onFinish() {
-                    timeLeftTextView.text = getString(R.string.times_up)
-                    if (movie1 != null && movie2 != null) {
-                        handleChoiceButtonClick(makeRandomChoice(movie1, movie2))
+            if (GameManager.getCurrentGame() != null) {
+                val timePerDuel = GameManager.getCurrentGame()!!.gameTimePerDuel.times(1000).toLong()
+                countdownTimer = object : CountDownTimer(timePerDuel, 1000) {
+                    override fun onTick(millisUntilFinished: Long) {
+                        val secondsRemaining = millisUntilFinished / 1000
+                        val countdownText = getString(R.string.countdown_timer_text, secondsRemaining)
+                        timeLeftTextView.text = countdownText
                     }
-                }
-            }.start()
+
+                    override fun onFinish() {
+                        timeLeftTextView.text = getString(R.string.times_up)
+                        if (movie1 != null && movie2 != null) {
+                            handleChoiceButtonClick(makeRandomChoice(movie1, movie2))
+                        }
+                    }
+                }.start()
+            }
         }
     }
 
@@ -89,6 +96,7 @@ class MovieDuelActivity : AppCompatActivity() {
     }
 
     private fun finishDuel(winnerId: Long) {
+        finish()
         GameManager.finishDuel(this, this, duelId, winnerId)
     }
 
