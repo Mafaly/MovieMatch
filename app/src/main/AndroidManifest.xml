@@ -15,6 +15,9 @@
         android:theme="@style/Theme.MovieMatch"
         tools:targetApi="31">
         <activity
+            android:name="com.mafaly.moviematch.views.MovieWinnerActivity"
+            android:exported="false" />
+        <activity
             android:name="com.mafaly.moviematch.views.MovieSelection"
             android:windowSoftInputMode="adjustPan"
             android:exported="false" />
