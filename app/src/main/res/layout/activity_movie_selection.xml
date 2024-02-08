@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="12dp"
+    android:paddingHorizontal="12dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="0dp"
     android:background="@color/windowBackground"
     tools:context="com.mafaly.moviematch.views.MovieSelection">
 
@@ -32,6 +34,7 @@
             android:importantForAutofill="no"
             android:id="@+id/movie_search_et"
             style="@style/SearchBar"
+            android:alpha="0.5"
             android:layout_height="48dp"
             android:layout_width="match_parent"
             android:layout_marginTop="16dp"

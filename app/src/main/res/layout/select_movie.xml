@@ -20,7 +20,8 @@
     <!-- Horizontal LinearLayout to contain the movie poster and the movie title -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="302dp"
+        android:layout_height="wrap_content"
+        android:minHeight="250dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -69,20 +70,23 @@
         android:gravity="center_horizontal">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/yes_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:backgroundTint="@color/mainBlue"
-            android:text="@string/yes"
-            android:textColor="@color/white" />
-
-        <com.google.android.material.button.MaterialButton
             android:id="@+id/no_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/mainBlue"
+            android:backgroundTint="?attr/colorPrimary"
             android:text="@string/no"
+            android:textColor="@color/white" />
+
+        <Space
+            android:layout_width="16dp"
+            android:layout_height="wrap_content" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/yes_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="?attr/colorPrimary"
+            android:text="@string/yes"
             android:textColor="@color/white" />
     </LinearLayout>
 </LinearLayout>
