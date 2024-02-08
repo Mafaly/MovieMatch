@@ -143,7 +143,7 @@ object GameManager {
             Log.d("WINNER", "movieWinnerId : $movieWinnerId")
         } else if (duels.size >= 2) {
             var duelIndex = 0
-            while (duelIndex < duels.size - 1) {
+            while (duelIndex < duels.size) {
                 val firstDuel = duels[duelIndex]
                 val newDuel = DuelEntity(
                     0,
@@ -155,21 +155,18 @@ object GameManager {
                 )
                 duelIndex++
 
-                val secondDuel = duels[duelIndex]
-                newDuel.duelMovie2Id = secondDuel.duelWinnerId
-                duelIndex++
+                if (duelIndex < duels.size) {
+                    val secondDuel = duels[duelIndex]
+                    newDuel.duelMovie2Id = secondDuel.duelWinnerId
+                    duelIndex++
 
-                DuelService.insertDuel(context, newDuel)
-            }
-            val incompleteDuels = DuelService.getIncompleteDuelsForGame(context, currentGame.id)
-            if (incompleteDuels.isNotEmpty()) {
-                for (incompleteDuel in incompleteDuels) {
-                    incompleteDuel.duelWinnerId = incompleteDuel.duelMovie1Id
-                    DuelService.updateDuel(context, incompleteDuel)
+                    DuelService.insertDuel(context, newDuel)
+                } else {
+                    newDuel.duelWinnerId = newDuel.duelMovie1Id
+                    DuelService.insertDuel(context, newDuel)
                 }
             }
         }
-
         handleGameStep(context, lifecycleOwner)
     }
 
