@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.mafaly.moviematch.game.GameManager
+import com.mafaly.moviematch.services.GameService
 import com.mafaly.moviematch.views.adapters.GameHistoryAdapter
 import com.mafaly.moviematchduel.R
 
@@ -32,7 +33,7 @@ class GameHistoryBottomSheetFragment : BottomSheetDialogFragment() {
         rvPartiesList.layoutManager = LinearLayoutManager(context)
         rvPartiesList.setHasFixedSize(true)
 
-        GameManager.getAllGames(context) { gameList ->
+        GameService.getAllGames(context) { gameList ->
             if (!gameList.isNullOrEmpty()) {
                 rvPartiesList.adapter = GameHistoryAdapter(gameList)
             } else {

@@ -89,5 +89,9 @@
     <string name="guerre">Guerre</string>
     <string name="apocalypse_now_final_cut">Apocalypse Now Final Cut</string>
     <string name="_1979">1979</string>
+    <string name="et_le_gagnant_est">Et le gagnant est ..</string>
+    <string name="nom_du_film">Nom du film</string>
+    <string name="voir_la_description_du_film">Voir la description du film</string>
+    <string name="retour_l_accueil">Retour à l’accueil</string>
 
 </resources>

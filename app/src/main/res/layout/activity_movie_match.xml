@@ -134,6 +134,7 @@
             android:layout_marginEnd="32dp"
             android:backgroundTint="@color/mainBlue"
             android:fontFamily="@font/inter"
+            android:background="@drawable/action_button"
             android:text="@string/start"
             android:textColor="@color/white"
             android:textSize="16sp" />
