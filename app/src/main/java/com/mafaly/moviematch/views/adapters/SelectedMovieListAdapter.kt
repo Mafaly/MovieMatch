@@ -8,12 +8,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.mafaly.moviematch.model.MovieDAO
+import com.mafaly.moviematch.model.MovieDTO
 import com.mafaly.moviematchduel.BuildConfig
 import com.mafaly.moviematchduel.R
 
 class SelectedMovieListAdapter(
-    private val movies: List<MovieDAO>,
+    private val movies: List<MovieDTO>,
     private val onSelectedMovieLongClicked: OnSelectedMovieLongClicked,
     private val onSelectedMovieSimpleClicked: OnSelectedMovieSimpleClicked
 ) :
@@ -57,11 +57,11 @@ class SelectedMovieListAdapter(
 }
 
 interface OnSelectedMovieLongClicked {
-    fun displayMovieDetails(movieData: MovieDAO)
+    fun displayMovieDetails(movieData: MovieDTO)
 }
 
 interface OnSelectedMovieSimpleClicked {
-    fun removeFromSelection(movie: MovieDAO)
+    fun removeFromSelection(movie: MovieDTO)
 }
 
 interface OnSelectionConfirmation {

@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mafaly.moviematch.game.GameManager
-import com.mafaly.moviematch.model.MovieDAO
+import com.mafaly.moviematch.model.MovieDTO
 import com.mafaly.moviematch.repos.MovieRepository
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
@@ -18,8 +18,8 @@ class MovieViewModel(private val movieRepository: MovieRepository) : ViewModel()
     private val disposeBag = CompositeDisposable()
 
     // Observable list of movies observeb by the viewmodel
-    val movieLiveData: MutableLiveData<List<MovieDAO>> = MutableLiveData()
-    val selectedMovieLiveData: MutableLiveData<List<MovieDAO>> = MutableLiveData()
+    val movieLiveData: MutableLiveData<List<MovieDTO>> = MutableLiveData()
+    val selectedMovieLiveData: MutableLiveData<List<MovieDTO>> = MutableLiveData()
     val genreFilterIdsLiveData: MutableLiveData<List<String>> = MutableLiveData()
     val watchProviderFilterIdsLiveData: MutableLiveData<List<String>> = MutableLiveData()
     val endSelectionProcessObservable: MutableLiveData<Boolean> = MutableLiveData(false)
@@ -40,7 +40,7 @@ class MovieViewModel(private val movieRepository: MovieRepository) : ViewModel()
                 }).addTo(disposeBag)
     }
 
-    fun addMovieToSelectedList(movie: MovieDAO) {
+    fun addMovieToSelectedList(movie: MovieDTO) {
         val currentSelectedMovies =
             this.selectedMovieLiveData.value?.toMutableList() ?: mutableListOf()
         if (currentSelectedMovies.find { it.id == movie.id } != null) {
@@ -61,7 +61,7 @@ class MovieViewModel(private val movieRepository: MovieRepository) : ViewModel()
         }).addTo(disposeBag)
     }
 
-    fun removeFromSelection(movie: MovieDAO) {
+    fun removeFromSelection(movie: MovieDTO) {
         val currentSelectedMovies =
             this.selectedMovieLiveData.value?.toMutableList() ?: mutableListOf()
         currentSelectedMovies.remove(movie)

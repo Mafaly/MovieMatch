@@ -22,7 +22,7 @@ import com.google.gson.Gson
 import com.mafaly.moviematch.di.injectModuleDependencies
 import com.mafaly.moviematch.di.parseConfigurationAndAddItToInjectionModules
 import com.mafaly.moviematch.game.GameManager
-import com.mafaly.moviematch.model.MovieDAO
+import com.mafaly.moviematch.model.MovieDTO
 import com.mafaly.moviematch.repo.MovieViewModel
 import com.mafaly.moviematch.repos.MovieGenre
 import com.mafaly.moviematch.repos.MovieWatchProviders
@@ -121,14 +121,14 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
         }
     }
 
-    private fun setUpMovieListViews(movies: List<MovieDAO>) {
+    private fun setUpMovieListViews(movies: List<MovieDTO>) {
         val movieAdapter = MovieListAdapter(movies, this, this)
         movieListRv.layoutManager = LinearLayoutManager(this)
         movieListRv.adapter = movieAdapter
 
     }
 
-    private fun setUpSelectedMovieListViews(movies: List<MovieDAO>) {
+    private fun setUpSelectedMovieListViews(movies: List<MovieDTO>) {
         val selectedMovieAdapter = SelectedMovieListAdapter(movies, this, this)
         selectedMovieListRv.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -137,7 +137,7 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
     }
 
     // Implementing the interaction interface methods
-    override fun displayMovieSelectionConfirmationDialog(movieData: MovieDAO) {
+    override fun displayMovieSelectionConfirmationDialog(movieData: MovieDTO) {
         val selectionDialog = MovieSelectionDialogFragment()
         val movieJson: String = Gson().toJson(movieData)
         val args = Bundle()
@@ -146,7 +146,7 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
         selectionDialog.show(supportFragmentManager, "MovieSelectionDialogFragment")
     }
 
-    override fun displayMovieDetails(movieData: MovieDAO) {
+    override fun displayMovieDetails(movieData: MovieDTO) {
         val detailsDialog = MovieDescriptionDialog()
         val movieJson: String = Gson().toJson(movieData)
         val args = Bundle()
@@ -217,7 +217,7 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
             Log.d("MovieSelectionDialogConfirmation", "onFragmentResult")
             // We use a String here, but any type that can be put in a Bundle is supported.
             val selectedMovieJson = bundle.getString("bundleKey")
-            val selectedMovie = Gson().fromJson(selectedMovieJson, MovieDAO::class.java)
+            val selectedMovie = Gson().fromJson(selectedMovieJson, MovieDTO::class.java)
             movieViewModel.addMovieToSelectedList(selectedMovie)
         }
     }
@@ -240,7 +240,7 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
         this.movieViewModel.watchProviderFilterIdsLiveData.postValue(watchProviders)
     }
 
-    override fun removeFromSelection(movie: MovieDAO) {
+    override fun removeFromSelection(movie: MovieDTO) {
         this.movieViewModel.removeFromSelection(movie)
     }
 

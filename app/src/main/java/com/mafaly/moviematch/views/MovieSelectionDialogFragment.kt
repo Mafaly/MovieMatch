@@ -10,7 +10,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
-import com.mafaly.moviematch.model.MovieDAO
+import com.mafaly.moviematch.model.MovieDTO
 import com.mafaly.moviematch.repos.MovieGenre
 import com.mafaly.moviematchduel.BuildConfig
 import com.mafaly.moviematchduel.databinding.SelectMovieBinding
@@ -42,7 +42,7 @@ class MovieSelectionDialogFragment : DialogFragment() {
             Log.d("MovieSelectionDialog", movieJson)
         }
 
-        val movieData = Gson().fromJson(movieJson, MovieDAO::class.java)
+        val movieData = Gson().fromJson(movieJson, MovieDTO::class.java)
         Log.d("MovieSelectionDialog", movieData.toString())
 
         binding.movieTitleTv.text = movieData.title
