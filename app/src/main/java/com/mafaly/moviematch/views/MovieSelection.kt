@@ -107,6 +107,7 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
 
         // Observe the movie data from the view model
         this.observeMovieLiveData()
+        handleSubmitButtonStatus()
 
         // Display initial data on initial load
         displayRandomMoviesWithFilters()
@@ -118,6 +119,7 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
         }
         movieViewModel.selectedMovieLiveData.observe(this@MovieSelection) { movieList ->
             setUpSelectedMovieListViews(movieList)
+            handleSubmitButtonStatus()
         }
     }
 
@@ -290,6 +292,13 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
     private fun startGame() {
         GameManager.handleGameStep(this, this)
         finish()
+    }
+
+    private fun handleSubmitButtonStatus() {
+        val selectedMoviesCount = this.movieViewModel.selectedMovieLiveData.value?.size
+        selectionConfirmationFAB.isEnabled =
+            selectedMoviesCount == GameManager.getCurrentGame()!!.gameMoviesCount
+        selectionConfirmationFAB.alpha = if (selectionConfirmationFAB.isEnabled) 1f else 0.38f
     }
 
     override fun confirmSelection() {
