@@ -21,6 +21,7 @@ class MovieRepository(
         val watchProvidersString = watchProviders.joinToString("|")
         return movieServiceClient.discoverMovies(genresIdsString, watchProvidersString).map {
             Log.d("MovieRepository", Gson().toJson(it))
+            cacheMovieList(it.results)
             it.results
         }
     }
@@ -28,6 +29,7 @@ class MovieRepository(
     fun searchForMovies(query: String = ""): Flowable<List<MovieDTO>> {
         return movieServiceClient.searchForMovies(query = query).map {
             Log.d("MovieRepository", Gson().toJson(it))
+            cacheMovieList(it.results)
             it.results
         }
     }
