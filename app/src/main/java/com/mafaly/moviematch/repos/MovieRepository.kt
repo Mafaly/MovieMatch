@@ -48,6 +48,21 @@ class MovieRepository(
         }
     }
 
+    fun getAllSavedGames(): List<MovieDTO> {
+        val appDatabase = AppDatabase.getInstance(context)
+        return appDatabase.movieDao().getAllMovies().map { movieEntity ->
+            MovieDTO(
+                movieEntity.id,
+                movieEntity.movieTitle,
+                movieEntity.movieYear,
+                movieEntity.movieGenre ?: emptyList(),
+                movieEntity.moviePosterPath,
+                movieEntity.movieOverview
+            )
+        }
+    }
+
+
     private fun cacheMovie(movie: MovieDTO) {
         if (!movieExists(movie)) {
             createGame(movie)

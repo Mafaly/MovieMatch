@@ -1,9 +1,12 @@
 package com.mafaly.moviematch.views.adapters
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -20,8 +23,14 @@ class MovieListAdapter(
     private val movies: List<MovieDTO>,
     private val onClickHandler: OnMovieClickedInMovieSelectionList,
     private val onMovieDetailsIconClickHandler: OnMovieDetailsClicked
-) :
+) : Filterable,
     RecyclerView.Adapter<MovieListAdapter.MovieCellViewHolder>() {
+    private val filteredMovies = mutableListOf<MovieDTO>()
+
+    init {
+        filteredMovies.addAll(movies)
+    }
+
     inner class MovieCellViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var movieTitleTv: TextView
         var movieYearTv: TextView
@@ -45,12 +54,12 @@ class MovieListAdapter(
     }
 
     override fun getItemCount(): Int {
-        return movies.size
+        return filteredMovies.size
     }
 
     override fun onBindViewHolder(holder: MovieCellViewHolder, position: Int) {
         val context = holder.itemView.context
-        val movie = this.movies[position]
+        val movie = this.filteredMovies[position]
         holder.movieTitleTv.text = movie.title
 
         // formatting the date
@@ -82,6 +91,34 @@ class MovieListAdapter(
         if (movie.genre.isNotEmpty()) {
             val genreNames = MovieGenre.getGenreNames(movie.genre, context)
             holder.movieGenreTv.text = genreNames.joinToString(", ")
+        }
+    }
+
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+                val filteredList = mutableListOf<MovieDTO>()
+                if (constraint.isNullOrEmpty()) {
+                    filteredList.addAll(movies)
+                } else {
+                    val filterPattern = constraint.toString().lowercase().trim()
+                    for (movie in movies) {
+                        if (movie.title.lowercase().contains(filterPattern)) {
+                            filteredList.add(movie)
+                        }
+                    }
+                }
+                val results = FilterResults()
+                results.values = filteredList
+                filteredMovies.clear()
+                filteredMovies.addAll(filteredList)
+                return results
+            }
+
+            @SuppressLint("NotifyDataSetChanged")
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                notifyDataSetChanged()
+            }
         }
     }
 }
