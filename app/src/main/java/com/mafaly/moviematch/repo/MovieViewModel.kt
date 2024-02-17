@@ -122,21 +122,4 @@ class MovieViewModel(
             selectedMovieLiveData.postValue(currentSelectedMovies)
         }
     }
-
-    // TODO: Implement the following function
-//    fun searchForMoviesWithFilters(query: String) {
-//        this.movieRepository.discoverMoviesByFilters(query)
-//            .subscribe(
-//                { movies ->
-//                    this.movieLiveData.postValue(movies)
-//                },
-//                { error ->
-//                    Log.d(
-//                        "Error in function getUpcomingMovies while fetching data from Fake API",
-//                        error.message ?: "Default message error"
-//                    )
-//                })
-//            .addTo(disposeBag)
-//    }
-
 }

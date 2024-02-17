@@ -148,7 +148,7 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
         }
         movieViewModel.selectedMovieLiveData.observe(this@MovieSelection) { movieList ->
             setUpSelectedMovieListViews(movieList)
-            // TODO check: handleSubmitButtonStatus()
+            handleSubmitButtonStatus()
         }
     }
 
