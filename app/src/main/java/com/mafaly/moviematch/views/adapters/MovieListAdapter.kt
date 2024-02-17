@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.mafaly.moviematch.model.MovieDAO
+import com.mafaly.moviematch.model.MovieDTO
 import com.mafaly.moviematch.repos.MovieGenre
 import com.mafaly.moviematchduel.BuildConfig
 import com.mafaly.moviematchduel.R
@@ -17,7 +17,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 class MovieListAdapter(
-    private val movies: List<MovieDAO>,
+    private val movies: List<MovieDTO>,
     private val onClickHandler: OnMovieClickedInMovieSelectionList,
     private val onMovieDetailsIconClickHandler: OnMovieDetailsClicked
 ) :
@@ -87,9 +87,9 @@ class MovieListAdapter(
 }
 
 interface OnMovieClickedInMovieSelectionList {
-    fun displayMovieSelectionConfirmationDialog(movieData: MovieDAO)
+    fun displayMovieSelectionConfirmationDialog(movieData: MovieDTO)
 }
 
 interface OnMovieDetailsClicked {
-    fun displayMovieDetails(movieData: MovieDAO)
+    fun displayMovieDetails(movieData: MovieDTO)
 }
