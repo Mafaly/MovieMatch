@@ -91,4 +91,5 @@
     <string name="see_description">Voir la description du film</string>
     <string name="back_to_main_page">Retour à l’accueil</string>
     <string name="turn_number">Tour n°%1$d</string>
+    <string name="confirm_quit_game">Voulez-vous vraiment quitter la partie ?</string>
 </resources>
