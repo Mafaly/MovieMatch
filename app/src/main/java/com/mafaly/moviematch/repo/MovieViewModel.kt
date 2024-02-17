@@ -6,14 +6,21 @@ import androidx.lifecycle.ViewModel
 import com.mafaly.moviematch.game.GameManager
 import com.mafaly.moviematch.model.MovieDTO
 import com.mafaly.moviematch.repos.MovieRepository
+import com.mafaly.moviematch.tools.ConnectivityObserver
+import com.mafaly.moviematch.tools.NetworkConnectivityObserver
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
-class MovieViewModel(private val movieRepository: MovieRepository) : ViewModel() {
+class MovieViewModel(
+    private val movieRepository: MovieRepository,
+    private val connectivityObserver: NetworkConnectivityObserver
+) : ViewModel() {
 
     private val disposeBag = CompositeDisposable()
 
@@ -23,6 +30,26 @@ class MovieViewModel(private val movieRepository: MovieRepository) : ViewModel()
     val genreFilterIdsLiveData: MutableLiveData<List<String>> = MutableLiveData()
     val watchProviderFilterIdsLiveData: MutableLiveData<List<String>> = MutableLiveData()
     val endSelectionProcessObservable: MutableLiveData<Boolean> = MutableLiveData(false)
+
+    init {
+        this.connectivityObserver.observe().onEach { status ->
+            when (status) {
+                ConnectivityObserver.Status.UNAVAILABLE -> {
+                    this.getOfflineMovies()
+                }
+                else -> {
+                    this.getOfflineMovies()
+                }
+            }
+        }.launchIn(CoroutineScope(Dispatchers.IO))
+        if (!connectivityObserver.isOnline()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                getOfflineMovies()
+            }
+        } else {
+            this.getRandomFilteredMovies()
+        }
+    }
 
     fun getRandomFilteredMovies() {
         val genres = this.genreFilterIdsLiveData.value?.ifEmpty { emptyList() } ?: emptyList()
@@ -82,6 +109,12 @@ class MovieViewModel(private val movieRepository: MovieRepository) : ViewModel()
         }
     }
 
+    private fun getOfflineMovies() {
+        this.movieRepository.getAllSavedGames().let { movies ->
+            this.movieLiveData.postValue(movies)
+        }
+    }
+
     fun clearSelectedMovies() {
         selectedMovieLiveData.value?.let {
             val currentSelectedMovies = it.toMutableList()
@@ -89,21 +122,4 @@ class MovieViewModel(private val movieRepository: MovieRepository) : ViewModel()
             selectedMovieLiveData.postValue(currentSelectedMovies)
         }
     }
-
-    // TODO: Implement the following function
-//    fun searchForMoviesWithFilters(query: String) {
-//        this.movieRepository.discoverMoviesByFilters(query)
-//            .subscribe(
-//                { movies ->
-//                    this.movieLiveData.postValue(movies)
-//                },
-//                { error ->
-//                    Log.d(
-//                        "Error in function getUpcomingMovies while fetching data from Fake API",
-//                        error.message ?: "Default message error"
-//                    )
-//                })
-//            .addTo(disposeBag)
-//    }
-
 }

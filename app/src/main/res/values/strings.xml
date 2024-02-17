@@ -92,4 +92,6 @@
     <string name="back_to_main_page">Retour à l’accueil</string>
     <string name="turn_number">Tour n°%1$d</string>
     <string name="confirm_quit_game">Voulez-vous vraiment quitter la partie ?</string>
+    <string name="offline">hors-ligne</string>
+    <string name="offline_message">Vous n\'avez plus accès à internet.\nVous ne pourrez aps rechercher de nouveaux films en ligne. Cependant, vous pouvez rechercher et choisir parmi les films que vous avez déjà consultés sur l\'application.</string>
 </resources>

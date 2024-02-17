@@ -21,6 +21,7 @@ class MovieRepository(
         val watchProvidersString = watchProviders.joinToString("|")
         return movieServiceClient.discoverMovies(genresIdsString, watchProvidersString).map {
             Log.d("MovieRepository", Gson().toJson(it))
+            cacheMovieList(it.results)
             it.results
         }
     }
@@ -28,6 +29,7 @@ class MovieRepository(
     fun searchForMovies(query: String = ""): Flowable<List<MovieDTO>> {
         return movieServiceClient.searchForMovies(query = query).map {
             Log.d("MovieRepository", Gson().toJson(it))
+            cacheMovieList(it.results)
             it.results
         }
     }
@@ -47,6 +49,21 @@ class MovieRepository(
             appDatabase.GameMoviesDao().insertGameMovies(GameMoviesEntity(gameID, movie.id))
         }
     }
+
+    fun getAllSavedGames(): List<MovieDTO> {
+        val appDatabase = AppDatabase.getInstance(context)
+        return appDatabase.movieDao().getAllMovies().map { movieEntity ->
+            MovieDTO(
+                movieEntity.id,
+                movieEntity.movieTitle,
+                movieEntity.movieYear,
+                movieEntity.movieGenre ?: emptyList(),
+                movieEntity.moviePosterPath,
+                movieEntity.movieOverview
+            )
+        }
+    }
+
 
     private fun cacheMovie(movie: MovieDTO) {
         if (!movieExists(movie)) {

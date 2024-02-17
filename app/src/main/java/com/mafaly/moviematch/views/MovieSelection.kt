@@ -8,10 +8,13 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
@@ -27,6 +30,8 @@ import com.mafaly.moviematch.model.MovieDTO
 import com.mafaly.moviematch.repo.MovieViewModel
 import com.mafaly.moviematch.repos.MovieGenre
 import com.mafaly.moviematch.repos.MovieWatchProviders
+import com.mafaly.moviematch.tools.ConnectivityObserver
+import com.mafaly.moviematch.tools.NetworkConnectivityObserver
 import com.mafaly.moviematch.views.adapters.MovieListAdapter
 import com.mafaly.moviematch.views.adapters.OnMovieClickedInMovieSelectionList
 import com.mafaly.moviematch.views.adapters.OnMovieDetailsClicked
@@ -35,13 +40,20 @@ import com.mafaly.moviematch.views.adapters.OnSelectedMovieSimpleClicked
 import com.mafaly.moviematch.views.adapters.OnSelectionConfirmation
 import com.mafaly.moviematch.views.adapters.SelectedMovieListAdapter
 import com.mafaly.moviematchduel.R
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.Locale
 
 class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
     OnMovieDetailsClicked, OnSelectedMovieLongClicked, OnSelectedMovieSimpleClicked,
     OnSelectionConfirmation {
 
     private val movieViewModel: MovieViewModel by viewModel()
+    private val connectivityObserver: NetworkConnectivityObserver by inject()
+
+    private lateinit var movieAdapter: MovieListAdapter
 
     private lateinit var movieListRv: RecyclerView
     private lateinit var selectedMovieListRv: RecyclerView
@@ -52,10 +64,18 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
     private lateinit var clearFiltersImageButton: MaterialButton
     private lateinit var selectionConfirmationFAB: FloatingActionButton
     private lateinit var progressIndicator: LinearProgressIndicator
+    private lateinit var filtersSectionConstraintLayout: ConstraintLayout
+    private lateinit var movieListTitleTv: TextView
+
+    private var searchEditTextTextWatcher: TextWatcher? = null
 
     @SuppressLint("DiscouragedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Dependency injection
+        parseConfigurationAndAddItToInjectionModules()
+        injectModuleDependencies(this@MovieSelection)
 
         // Assign the layout to the activity
         setContentView(R.layout.activity_movie_selection)
@@ -92,19 +112,18 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
         clearFiltersImageButton = findViewById(R.id.clear_filters_btn)
         selectionConfirmationFAB = findViewById(R.id.confirm_selection_fab)
         progressIndicator = findViewById(R.id.confirmed_selection_lpi)
+        filtersSectionConstraintLayout = findViewById(R.id.filters_section_cl)
+        movieListTitleTv = findViewById(R.id.movies_list_title_tv)
 
         progressIndicator.hide()
         progressIndicator.isIndeterminate = true
 
-        setupSearchBehavior()
+        handleInitialConneciivityStatus()
+        handleConnectivtyStatus()
         setupFiltersBehavior()
         setupSearchWithFiltersBehavior()
         setupMovieSelectedBehavior()
         setupSelectionConfirmationBehavior()
-
-        // Dependency injection
-        parseConfigurationAndAddItToInjectionModules()
-        injectModuleDependencies(this@MovieSelection)
 
         movieViewModel.clearSelectedMovies()
 
@@ -113,6 +132,7 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
         handleSubmitButtonStatus()
 
         // Display initial data on initial load
+//        displayRandomMoviesWithFilters()
         displayRandomMoviesWithFilters()
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
@@ -133,7 +153,7 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
     }
 
     private fun setUpMovieListViews(movies: List<MovieDTO>) {
-        val movieAdapter = MovieListAdapter(movies, this, this)
+        movieAdapter = MovieListAdapter(movies, this, this)
         movieListRv.layoutManager = LinearLayoutManager(this)
         movieListRv.adapter = movieAdapter
 
@@ -166,26 +186,53 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
         detailsDialog.show(supportFragmentManager, "MovieDescriptionDialog")
     }
 
-    private fun setupSearchBehavior() {
-        // Delay the search for movies until the user has stopped typing to prevent too many requests on the Data source
-        searchEditText.addTextChangedListener(object : TextWatcher {
-            private val handler = Handler(Looper.getMainLooper())
-            private val debouncePeriod: Long = 500
-            override fun afterTextChanged(s: Editable?) {
-                handler.removeCallbacksAndMessages(null)
-                handler.postDelayed({
-                    if (searchEditText.isEnabled && searchEditText.text.toString().length > 2 || genresChipGroup.checkedChipIds.isNotEmpty()) {
-                        movieViewModel.searchForMovies(getQuery())
-                    }
-                }, debouncePeriod)
-            }
+    private fun setupSearchBehavior(online: Boolean) {
+        if (online) {
+            if (searchEditTextTextWatcher != null) searchEditText.removeTextChangedListener(
+                searchEditTextTextWatcher
+            )
+            // Delay the search for movies until the user has stopped typing to prevent too many requests on the Data source
+            searchEditTextTextWatcher = object : TextWatcher {
+                private val handler = Handler(Looper.getMainLooper())
+                private val debouncePeriod: Long = 500
+                override fun afterTextChanged(s: Editable?) {
+                    handler.removeCallbacksAndMessages(null)
+                    handler.postDelayed({
+                        if (searchEditText.isEnabled && searchEditText.text.toString().length > 2 || genresChipGroup.checkedChipIds.isNotEmpty()) {
+                            movieViewModel.searchForMovies(getQuery())
+                        }
+                    }, debouncePeriod)
+                }
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
+                override fun beforeTextChanged(
+                    s: CharSequence?, start: Int, count: Int, after: Int
+                ) {
+                }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                }
             }
-        })
+            searchEditText.addTextChangedListener(searchEditTextTextWatcher)
+        } else {
+            if (searchEditTextTextWatcher != null) searchEditText.removeTextChangedListener(
+                searchEditTextTextWatcher
+            )
+            searchEditTextTextWatcher = object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                    movieAdapter.filter.filter(getQuery())
+                }
+
+                override fun beforeTextChanged(
+                    s: CharSequence?, start: Int, count: Int, after: Int
+                ) {
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                }
+            }
+            searchEditText.addTextChangedListener(searchEditTextTextWatcher)
+        }
+
     }
 
     private fun setupFiltersBehavior() {
@@ -299,8 +346,8 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
     }
 
     private fun startGame() {
-        finish()
         GameManager.handleGameStep(this, this)
+        finish()
     }
 
     private fun handleSubmitButtonStatus() {
@@ -308,6 +355,55 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
         selectionConfirmationFAB.isEnabled =
             selectedMoviesCount == GameManager.getCurrentGame()!!.gameMoviesCount
         selectionConfirmationFAB.alpha = if (selectionConfirmationFAB.isEnabled) 1f else 0.38f
+    }
+
+    private fun handleInitialConneciivityStatus() {
+        if (connectivityObserver.isOnline()) {
+            setupOnlineUI()
+        } else {
+            setupOfflineUI()
+        }
+    }
+
+    private fun handleConnectivtyStatus() {
+        connectivityObserver.observe().onEach { status ->
+            when (status) {
+                ConnectivityObserver.Status.AVAILABLE -> {
+                    setupOnlineUI()
+                }
+
+                else -> {
+                    setupOfflineUI()
+                }
+            }
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun setupOfflineUI() {
+        setupSearchBehavior(online = false)
+        filtersSectionConstraintLayout.visibility = ConstraintLayout.GONE
+        val offlineMessage =
+            "${getString(R.string.movies_list)} (${getString(R.string.offline)})"
+        movieListTitleTv.text = offlineMessage
+        // show a dialog to inform the user that they are offline
+        AlertDialog.Builder(this).setTitle(getString(R.string.offline).replaceFirstChar {
+            if (it.isLowerCase()) it.titlecase(
+                Locale.getDefault()
+            ) else it.toString()
+        })
+            .setMessage(getString(R.string.offline_message))
+            .setPositiveButton(getString(android.R.string.ok)) { dialog, _ ->
+                dialog.dismiss()
+            }.show()
+
+    }
+
+    private fun setupOnlineUI() {
+        setupSearchBehavior(online = true)
+        filtersSectionConstraintLayout.visibility = ConstraintLayout.VISIBLE
+        val onlineMessage = getString(R.string.movies_list)
+        movieListTitleTv.text = onlineMessage
+
     }
 
     override fun confirmSelection() {
