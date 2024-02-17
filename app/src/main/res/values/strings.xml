@@ -62,8 +62,8 @@
     <string name="reset_filters">Réinitialiser les filtres appliqués à la recherche aléatoire de films..</string>
     <string name="confirm">Confirmer</string>
     <string name="selection_confirmed">Sélection confirmée</string>
-    <string name="movie_selection_confirmation_error_too_many">Vous avez sélectionné trop de films, %1$s demandés, vous avez en sélectionné %2$s. Retirez-en et veuillez réessayer.</string>
     <string name="movie_selection_confirmation_error_not_enough">Vous devez sélectionner %1$s movies, %2$s d\'actuellement sélectionnés. Sélectionnez-en plus et veuillez réessayer.</string>
+    <string name="movie_selection_error_too_many">Vous avez déjà sélectionné le nombre maximal de film pour votre partie.</string>
     <string name="selection_confirmation">Êtes-vous sûr de vouloir confirmer votre sélection ?</string>
     <string name="confirmation">Confirmation</string>
     <string name="yes">Oui</string>
