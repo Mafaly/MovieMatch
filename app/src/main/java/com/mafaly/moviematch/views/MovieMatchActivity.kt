@@ -29,6 +29,8 @@ class MovieMatchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie_match)
 
+        GameManager.cancelCurrentGame()
+
         startButton = findViewById(R.id.start_button)
         numberOfFilmsSpinner = findViewById(R.id.number_films_s)
         timePerDuelEditText = findViewById(R.id.time_per_duel_et)
