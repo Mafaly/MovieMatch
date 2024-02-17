@@ -24,7 +24,7 @@ class MovieViewModel(
 
     private val disposeBag = CompositeDisposable()
 
-    // Observable list of movies observeb by the viewmodel
+    // Observable list of movies observed by the viewModel
     val movieLiveData: MutableLiveData<List<MovieDTO>> = MutableLiveData()
     val selectedMovieLiveData: MutableLiveData<List<MovieDTO>> = MutableLiveData()
     val genreFilterIdsLiveData: MutableLiveData<List<String>> = MutableLiveData()
@@ -112,6 +112,14 @@ class MovieViewModel(
     private fun getOfflineMovies() {
         this.movieRepository.getAllSavedGames().let { movies ->
             this.movieLiveData.postValue(movies)
+        }
+    }
+
+    fun clearSelectedMovies() {
+        selectedMovieLiveData.value?.let {
+            val currentSelectedMovies = it.toMutableList()
+            currentSelectedMovies.clear()
+            selectedMovieLiveData.postValue(currentSelectedMovies)
         }
     }
 

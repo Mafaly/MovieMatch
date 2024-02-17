@@ -10,6 +10,7 @@ import android.util.Log
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -124,11 +125,21 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
         setupMovieSelectedBehavior()
         setupSelectionConfirmationBehavior()
 
+        movieViewModel.clearSelectedMovies()
+
         // Observe the movie data from the view model
         this.observeMovieLiveData()
+        handleSubmitButtonStatus()
 
         // Display initial data on initial load
 //        displayRandomMoviesWithFilters()
+        displayRandomMoviesWithFilters()
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finish()
+            }
+        })
     }
 
     private fun observeMovieLiveData() {
@@ -137,6 +148,7 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
         }
         movieViewModel.selectedMovieLiveData.observe(this@MovieSelection) { movieList ->
             setUpSelectedMovieListViews(movieList)
+            // TODO check: handleSubmitButtonStatus()
         }
     }
 
@@ -336,6 +348,13 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
     private fun startGame() {
         GameManager.handleGameStep(this, this)
         finish()
+    }
+
+    private fun handleSubmitButtonStatus() {
+        val selectedMoviesCount = this.movieViewModel.selectedMovieLiveData.value?.size
+        selectionConfirmationFAB.isEnabled =
+            selectedMoviesCount == GameManager.getCurrentGame()!!.gameMoviesCount
+        selectionConfirmationFAB.alpha = if (selectionConfirmationFAB.isEnabled) 1f else 0.38f
     }
 
     private fun handleInitialConneciivityStatus() {
