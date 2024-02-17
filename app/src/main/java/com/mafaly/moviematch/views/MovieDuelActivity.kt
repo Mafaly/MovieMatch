@@ -5,7 +5,9 @@ import android.os.CountDownTimer
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import com.mafaly.moviematch.db.entities.MovieEntity
 import com.mafaly.moviematch.game.GameManager
@@ -35,6 +37,12 @@ class MovieDuelActivity : AppCompatActivity() {
             Toast.makeText(this, "Erreur: DuelId manquant", Toast.LENGTH_SHORT).show()
             finish()
         }
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                showExitConfirmationDialog()
+            }
+        })
 
         lifecycleScope.launch {
             val duel = DuelService.getDuel(this@MovieDuelActivity, duelId)
@@ -88,6 +96,18 @@ class MovieDuelActivity : AppCompatActivity() {
                 }.start()
             }
         }
+    }
+
+    private fun showExitConfirmationDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(getString(R.string.confirmation))
+            .setMessage(getString(R.string.confirm_quit_game))
+            .setPositiveButton(getString(R.string.yes)) { _, _ ->
+                finish()
+                GameManager.cancelCurrentGame()
+            }
+            .setNegativeButton(getString(R.string.no), null)
+            .show()
     }
 
     private fun handleChoiceButtonClick(selectedMovie: MovieEntity) {

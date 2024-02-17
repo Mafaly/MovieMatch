@@ -9,6 +9,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -105,11 +106,20 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
         parseConfigurationAndAddItToInjectionModules()
         injectModuleDependencies(this@MovieSelection)
 
+        movieViewModel.clearSelectedMovies()
+
         // Observe the movie data from the view model
         this.observeMovieLiveData()
+        handleSubmitButtonStatus()
 
         // Display initial data on initial load
         displayRandomMoviesWithFilters()
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finish()
+            }
+        })
     }
 
     private fun observeMovieLiveData() {
@@ -118,6 +128,7 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
         }
         movieViewModel.selectedMovieLiveData.observe(this@MovieSelection) { movieList ->
             setUpSelectedMovieListViews(movieList)
+            handleSubmitButtonStatus()
         }
     }
 
@@ -288,8 +299,15 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
     }
 
     private fun startGame() {
-        GameManager.handleGameStep(this, this)
         finish()
+        GameManager.handleGameStep(this, this)
+    }
+
+    private fun handleSubmitButtonStatus() {
+        val selectedMoviesCount = this.movieViewModel.selectedMovieLiveData.value?.size
+        selectionConfirmationFAB.isEnabled =
+            selectedMoviesCount == GameManager.getCurrentGame()!!.gameMoviesCount
+        selectionConfirmationFAB.alpha = if (selectionConfirmationFAB.isEnabled) 1f else 0.38f
     }
 
     override fun confirmSelection() {
