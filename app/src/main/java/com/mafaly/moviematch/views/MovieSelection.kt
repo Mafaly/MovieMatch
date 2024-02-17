@@ -8,6 +8,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -42,6 +43,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.Locale
 
 class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
     OnMovieDetailsClicked, OnSelectedMovieLongClicked, OnSelectedMovieSimpleClicked,
@@ -62,6 +64,7 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
     private lateinit var selectionConfirmationFAB: FloatingActionButton
     private lateinit var progressIndicator: LinearProgressIndicator
     private lateinit var filtersSectionConstraintLayout: ConstraintLayout
+    private lateinit var movieListTitleTv: TextView
 
     private var searchEditTextTextWatcher: TextWatcher? = null
 
@@ -109,6 +112,7 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
         selectionConfirmationFAB = findViewById(R.id.confirm_selection_fab)
         progressIndicator = findViewById(R.id.confirmed_selection_lpi)
         filtersSectionConstraintLayout = findViewById(R.id.filters_section_cl)
+        movieListTitleTv = findViewById(R.id.movies_list_title_tv)
 
         progressIndicator.hide()
         progressIndicator.isIndeterminate = true
@@ -344,7 +348,6 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
 
     private fun handleConnectivtyStatus() {
         connectivityObserver.observe().onEach { status ->
-            searchWithFilterButton.text = status.name
             when (status) {
                 ConnectivityObserver.Status.AVAILABLE -> {
                     setupOnlineUI()
@@ -360,11 +363,28 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
     private fun setupOfflineUI() {
         setupSearchBehavior(online = false)
         filtersSectionConstraintLayout.visibility = ConstraintLayout.GONE
+        val offlineMessage =
+            "${getString(R.string.movies_list)} (${getString(R.string.offline)})"
+        movieListTitleTv.text = offlineMessage
+        // show a dialog to inform the user that they are offline
+        AlertDialog.Builder(this).setTitle(getString(R.string.offline).replaceFirstChar {
+            if (it.isLowerCase()) it.titlecase(
+                Locale.getDefault()
+            ) else it.toString()
+        })
+            .setMessage(getString(R.string.offline_message))
+            .setPositiveButton(getString(android.R.string.ok)) { dialog, _ ->
+                dialog.dismiss()
+            }.show()
+
     }
 
     private fun setupOnlineUI() {
         setupSearchBehavior(online = true)
         filtersSectionConstraintLayout.visibility = ConstraintLayout.VISIBLE
+        val onlineMessage = getString(R.string.movies_list)
+        movieListTitleTv.text = onlineMessage
+
     }
 
     override fun confirmSelection() {
