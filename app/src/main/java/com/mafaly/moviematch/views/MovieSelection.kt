@@ -6,7 +6,6 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
@@ -169,6 +168,16 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
 
     // Implementing the interaction interface methods
     override fun displayMovieSelectionConfirmationDialog(movieData: MovieDTO) {
+        if (movieViewModel.selectedMovieLiveData.value != null && movieViewModel.selectedMovieLiveData.value!!.size >= GameManager.getCurrentGame()!!.gameMoviesCount) {
+            Toast.makeText(
+                this,
+                getString(
+                    R.string.movie_selection_error_too_many
+                ),
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
         val selectionDialog = MovieSelectionDialogFragment()
         val movieJson: String = Gson().toJson(movieData)
         val args = Bundle()
@@ -272,8 +281,6 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
         supportFragmentManager.setFragmentResultListener(
             "movie_selection_confirm._dialog_selectedMovie", this
         ) { _, bundle ->
-            Log.d("MovieSelectionDialogConfirmation", "onFragmentResult")
-            // We use a String here, but any type that can be put in a Bundle is supported.
             val selectedMovieJson = bundle.getString("bundleKey")
             val selectedMovie = Gson().fromJson(selectedMovieJson, MovieDTO::class.java)
             movieViewModel.addMovieToSelectedList(selectedMovie)
@@ -336,9 +343,7 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
                 Toast.makeText(
                     this,
                     getString(
-                        R.string.movie_selection_confirmation_error_too_many,
-                        GameManager.getCurrentGame()!!.gameMoviesCount.toString(),
-                        this.movieViewModel.selectedMovieLiveData.value!!.size.toString()
+                        R.string.movie_selection_error_too_many
                     ), Toast.LENGTH_SHORT
                 ).show()
             }
