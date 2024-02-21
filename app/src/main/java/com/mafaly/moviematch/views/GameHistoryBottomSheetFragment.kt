@@ -6,10 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.mafaly.moviematch.game.GameManager
 import com.mafaly.moviematch.services.GameService
 import com.mafaly.moviematch.views.adapters.GameHistoryAdapter
 import com.mafaly.moviematchduel.R
@@ -35,7 +35,8 @@ class GameHistoryBottomSheetFragment : BottomSheetDialogFragment() {
 
         GameService.getAllGames(context) { gameList ->
             if (!gameList.isNullOrEmpty()) {
-                rvPartiesList.adapter = GameHistoryAdapter(gameList)
+                rvPartiesList.adapter =
+                    GameHistoryAdapter(gameList, viewLifecycleOwner.lifecycleScope)
             } else {
                 Toast.makeText(context, "No games found", Toast.LENGTH_LONG).show()
             }
