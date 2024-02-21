@@ -6,9 +6,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.mafaly.moviematch.db.entities.GameEntity
+import com.mafaly.moviematch.services.MovieService
 import com.mafaly.moviematchduel.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class GameHistoryAdapter(private val gameList: List<GameEntity>?) : RecyclerView.Adapter<GameHistoryAdapter.GameViewHolder>() {
+class GameHistoryAdapter(private val gameList: List<GameEntity>?,private val scope: CoroutineScope) : RecyclerView.Adapter<GameHistoryAdapter.GameViewHolder>() {
 
     class GameViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val gameNameTv: TextView = view.findViewById(R.id.game_name_tv)
@@ -27,10 +32,18 @@ class GameHistoryAdapter(private val gameList: List<GameEntity>?) : RecyclerView
         if (game != null) {
             holder.gameDateTv.text = game.gameDate
             holder.gameNameTv.text = game.gameName
-            holder.winnerMovieTitleTv.text= game.gameWinnerId.toString()
+            scope.launch {
+                val movieEntity =
+                    game.gameWinnerId?.let {
+                        MovieService.getMovieById(holder.itemView.context,
+                            it
+                        )
+                    }
+                withContext(Dispatchers.Main) {
+                    holder.winnerMovieTitleTv.text = movieEntity?.movieTitle ?: "Title Not Found"
+                }
+            }
         }
-
-
     }
 
     override fun getItemCount(): Int {
