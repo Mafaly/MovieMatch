@@ -13,7 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class GameHistoryAdapter(private val gameList: List<GameEntity>?,private val scope: CoroutineScope) : RecyclerView.Adapter<GameHistoryAdapter.GameViewHolder>() {
+class GameHistoryAdapter(private val gameList: List<GameEntity>?, private val scope: CoroutineScope) : RecyclerView.Adapter<GameHistoryAdapter.GameViewHolder>() {
 
     class GameViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val gameNameTv: TextView = view.findViewById(R.id.game_name_tv)

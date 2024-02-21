@@ -35,7 +35,8 @@ class GameHistoryBottomSheetFragment : BottomSheetDialogFragment() {
 
         GameService.getAllGames(context) { gameList ->
             if (!gameList.isNullOrEmpty()) {
-                rvPartiesList.adapter = GameHistoryAdapter(gameList,viewLifecycleOwner.lifecycleScope )
+                rvPartiesList.adapter =
+                    GameHistoryAdapter(gameList, viewLifecycleOwner.lifecycleScope)
             } else {
                 Toast.makeText(context, "No games found", Toast.LENGTH_LONG).show()
             }
