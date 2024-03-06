@@ -26,7 +26,7 @@ import com.mafaly.moviematch.di.injectModuleDependencies
 import com.mafaly.moviematch.di.parseConfigurationAndAddItToInjectionModules
 import com.mafaly.moviematch.game.GameManager
 import com.mafaly.moviematch.model.MovieDTO
-import com.mafaly.moviematch.repo.MovieViewModel
+import com.mafaly.moviematch.viewmodel.MovieViewModel
 import com.mafaly.moviematch.repos.MovieGenre
 import com.mafaly.moviematch.repos.MovieWatchProviders
 import com.mafaly.moviematch.tools.ConnectivityObserver
@@ -351,7 +351,7 @@ class MovieSelection : AppCompatActivity(), OnMovieClickedInMovieSelectionList,
     }
 
     private fun startGame() {
-        GameManager.handleGameStep(this, this)
+        GameManager.handleGameStep(this)
         finish()
     }
 

@@ -117,7 +117,7 @@ class MovieDuelActivity : AppCompatActivity() {
 
     private fun finishDuel(winnerId: Long) {
         finish()
-        GameManager.finishDuel(this, this, duelId, winnerId)
+        GameManager.finishDuel(this, duelId, winnerId)
     }
 
     private fun makeRandomChoice(movie1: MovieEntity, movie2: MovieEntity): MovieEntity {

@@ -27,12 +27,5 @@ class MovieService {
                 deferredMovies.await()
             }
         }
-
-        suspend fun insertMovie(context: Context, movieEntity: MovieEntity) {
-            withContext(Dispatchers.IO) {
-                val appDatabase = AppDatabase.getInstance(context)
-                appDatabase.movieDao().insertMovie(movieEntity)
-            }
-        }
     }
 }

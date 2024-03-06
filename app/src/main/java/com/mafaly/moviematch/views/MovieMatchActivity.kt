@@ -7,7 +7,6 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.mafaly.moviematch.game.GameManager
 import com.mafaly.moviematch.views.GameHistoryBottomSheetFragment.Companion.TAG
@@ -35,7 +34,7 @@ class MovieMatchActivity : AppCompatActivity() {
         numberOfFilmsSpinner = findViewById(R.id.number_films_s)
         timePerDuelEditText = findViewById(R.id.time_per_duel_et)
         gameNameEditText = findViewById(R.id.game_name_et)
-        historyButton=findViewById(R.id.history_button)
+        historyButton = findViewById(R.id.history_button)
 
         val currentDate = SimpleDateFormat("dd/MM", Locale.getDefault()).format(Date())
         defaultGameName = getString(R.string.default_game_name) + " " + currentDate
@@ -48,7 +47,7 @@ class MovieMatchActivity : AppCompatActivity() {
             startGame()
         }
         historyButton.setOnClickListener {
-                showMovieHistory()
+            showMovieHistory()
         }
 
     }
@@ -69,7 +68,7 @@ class MovieMatchActivity : AppCompatActivity() {
         val numberOfFilms = numberOfFilmsSpinner.selectedItem.toString().toInt()
         val timePerDuel = timePerDuelEditText.text.toString().toIntOrNull() ?: 30
 
-        GameManager.startNewGame(this,this, gameName, numberOfFilms, timePerDuel)
+        GameManager.startNewGame(this, gameName, numberOfFilms, timePerDuel)
 
         showMovieSelectionActivity()
     }
@@ -78,6 +77,7 @@ class MovieMatchActivity : AppCompatActivity() {
         val intent = Intent(this, MovieSelection::class.java)
         startActivity(intent)
     }
+
     private fun showMovieHistory() {
         GameHistoryBottomSheetFragment().apply {
             isCancelable = true

@@ -1,9 +1,9 @@
 package com.mafaly.moviematch.di.modules
 
-import com.mafaly.moviematch.repo.MovieViewModel
 import com.mafaly.moviematch.repos.MovieRepository
 import com.mafaly.moviematch.services.MovieServiceClient
 import com.mafaly.moviematch.tools.NetworkConnectivityObserver
+import com.mafaly.moviematch.viewmodel.MovieViewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
