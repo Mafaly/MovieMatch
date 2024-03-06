@@ -26,14 +26,6 @@ class DuelService {
             }
         }
 
-        suspend fun getIncompleteDuelsForGame(context: Context, gameId: Long): List<DuelEntity> {
-            return withContext(Dispatchers.IO) {
-                val appDatabase = AppDatabase.getInstance(context)
-                val deferredDuels = async { appDatabase.duelDao().getIncompleteDuelsForGame(gameId) }
-                deferredDuels.await()
-            }
-        }
-
         suspend fun insertDuel(context: Context, duelEntity: DuelEntity) {
             withContext(Dispatchers.IO) {
                 val appDatabase = AppDatabase.getInstance(context)

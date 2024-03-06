@@ -1,4 +1,4 @@
-package com.mafaly.moviematch.repo
+package com.mafaly.moviematch.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData

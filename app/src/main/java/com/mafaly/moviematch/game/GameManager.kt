@@ -3,9 +3,6 @@ package com.mafaly.moviematch.game
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
-import com.mafaly.moviematch.db.AppDatabase
 import com.mafaly.moviematch.db.entities.DuelEntity
 import com.mafaly.moviematch.db.entities.GameEntity
 import com.mafaly.moviematch.services.DuelService
@@ -16,7 +13,6 @@ import com.mafaly.moviematch.views.MovieWinnerActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -26,7 +22,6 @@ object GameManager {
 
     fun startNewGame(
         context: Context,
-        lifecycleOwner: LifecycleOwner,
         gameName: String,
         gameMovieCount: Int,
         gameTimePerDuel: Int,
@@ -36,7 +31,7 @@ object GameManager {
 
         val newGame = GameEntity(0, gameName, formattedDate, gameMovieCount, gameTimePerDuel, null)
 
-        lifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+        CoroutineScope(Dispatchers.IO).launch {
             GameService.insertNewGame(context, newGame)
             currentGame = GameService.getLastGame(context)
         }
@@ -50,30 +45,20 @@ object GameManager {
         return currentGame
     }
 
-    fun getAllGames(context: Context, callback: (List<GameEntity>?) -> Unit) {
-        val appDatabase = AppDatabase.getInstance(context)
+    fun finishDuel(context: Context, duelId: Long, winnerId: Long) {
         CoroutineScope(Dispatchers.IO).launch {
-            val list = appDatabase.gameDao().getAllGames()
-            withContext(Dispatchers.Main) {
-                callback(list)
-            }
-        }
-    }
-
-    fun finishDuel(context: Context, lifecycleOwner: LifecycleOwner, duelId: Long, winnerId: Long) {
-        lifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             val duel = DuelService.getDuel(context, duelId)
 
             duel.duelWinnerId = winnerId
             DuelService.updateDuel(context, duel)
 
-            handleGameStep(context, lifecycleOwner)
+            handleGameStep(context)
         }
     }
 
-    fun handleGameStep(context: Context, lifecycleOwner: LifecycleOwner) {
+    fun handleGameStep(context: Context) {
 
-        lifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+        CoroutineScope(Dispatchers.IO).launch {
             if (currentGame != null) {
                 if (currentGame!!.gameWinnerId != null) {
                     val movieWinnerIntent = Intent(context, MovieWinnerActivity::class.java)
@@ -99,7 +84,7 @@ object GameManager {
 
                 if (isRoundFinished(lastRoundDuels)) {
                     // the round is finished so let's generate the next round
-                    generateNewRound(context, lifecycleOwner, lastRoundDuels)
+                    generateNewRound(context, lastRoundDuels)
                 } else {
                     // the round is not finished so let's start the next duel
                     val duelIdToDisplay = lastRoundDuels.firstOrNull { it.duelWinnerId == null }?.id
@@ -136,7 +121,7 @@ object GameManager {
         }
     }
 
-    private suspend fun generateNewRound(context: Context, lifecycleOwner: LifecycleOwner, duels: List<DuelEntity>) {
+    private suspend fun generateNewRound(context: Context, duels: List<DuelEntity>) {
         val currentGame = currentGame ?: return
 
         if (duels.size == 1) {
@@ -171,7 +156,7 @@ object GameManager {
                 }
             }
         }
-        handleGameStep(context, lifecycleOwner)
+        handleGameStep(context)
     }
 
     private fun filterLastRoundDuels(duels: List<DuelEntity>): List<DuelEntity> {

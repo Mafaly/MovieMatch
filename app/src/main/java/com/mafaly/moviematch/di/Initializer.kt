@@ -4,6 +4,7 @@ import android.content.Context
 import com.mafaly.moviematch.di.modules.TMDBJsonConf
 import com.mafaly.moviematch.di.modules.coreModules
 import com.mafaly.moviematch.di.modules.remoteModule
+import com.mafaly.moviematch.di.modules.roomDbModules
 import com.mafaly.moviematchduel.BuildConfig
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.loadKoinModules
@@ -31,4 +32,4 @@ fun parseConfigurationAndAddItToInjectionModules() {
     })
 }
 
-private val modules = mutableListOf(coreModules, remoteModule)
+private val modules = mutableListOf(coreModules, remoteModule, roomDbModules)

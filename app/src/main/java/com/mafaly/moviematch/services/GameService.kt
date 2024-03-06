@@ -12,13 +12,6 @@ import kotlinx.coroutines.withContext
 class GameService {
 
     companion object {
-        suspend fun getGameById(context: Context, gameId: Long): GameEntity {
-            return withContext(Dispatchers.IO) {
-                val appDatabase = AppDatabase.getInstance(context)
-                val deferredGame = async { appDatabase.gameDao().getGameById(gameId) }
-                deferredGame.await()
-            }
-        }
 
         suspend fun getLastGame(context: Context): GameEntity? {
             return withContext(Dispatchers.IO) {
@@ -28,12 +21,13 @@ class GameService {
             }
         }
 
-        suspend fun insertNewGame(context: Context, gameEntity: GameEntity) {
-            withContext(Dispatchers.IO) {
+        fun insertNewGame(context: Context, gameEntity: GameEntity) {
+            CoroutineScope(Dispatchers.IO).launch {
                 val appDatabase = AppDatabase.getInstance(context)
                 appDatabase.gameDao().insertNewGame(gameEntity)
             }
         }
+
         fun getAllGames(context: Context, callback: (List<GameEntity>?) -> Unit) {
             val appDatabase = AppDatabase.getInstance(context)
             CoroutineScope(Dispatchers.IO).launch {
@@ -44,8 +38,8 @@ class GameService {
             }
         }
 
-        suspend fun updateGame(context: Context, gameEntity: GameEntity) {
-            withContext(Dispatchers.IO) {
+        fun updateGame(context: Context, gameEntity: GameEntity) {
+            CoroutineScope(Dispatchers.IO).launch {
                 val appDatabase = AppDatabase.getInstance(context)
                 appDatabase.gameDao().updateGame(gameEntity)
             }
