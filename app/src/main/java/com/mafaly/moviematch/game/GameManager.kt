@@ -32,8 +32,7 @@ object GameManager {
         val newGame = GameEntity(0, gameName, formattedDate, gameMovieCount, gameTimePerDuel, null)
 
         CoroutineScope(Dispatchers.IO).launch {
-            GameService.insertNewGame(context, newGame)
-            currentGame = GameService.getLastGame(context)
+            currentGame = GameService.insertNewGame(context, newGame)
         }
     }
 

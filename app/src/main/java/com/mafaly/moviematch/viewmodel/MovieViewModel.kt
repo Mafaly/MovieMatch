@@ -116,6 +116,7 @@ class MovieViewModel(
     }
 
     fun clearSelectedMovies() {
+        endSelectionProcessObservable.postValue(false)
         selectedMovieLiveData.value?.let {
             val currentSelectedMovies = it.toMutableList()
             currentSelectedMovies.clear()
